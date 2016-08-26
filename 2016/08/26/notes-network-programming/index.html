@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>notes-network-programming | 平凡之路</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">notes-network-programming</h1><a id="logo" href="/.">平凡之路</a><p class="description">东坡烟尘的博客</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">notes-network-programming</h1><div class="post-meta">Aug 26, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><h2 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h2><ol>
+<li><p>UDP编程相关函数</p>
+<p> <strong>客户端</strong>：<br>（1）库函数inet_pton：功能是把字符串ip地址转换到网络地址结构成员变量中去，转换以后的结果是一个二进制的数字。pton的意思就是presentation_to_numeric（表达式转成数值）。与之相反的库函数是inet_ntop，将整形ip地址转换成ASCII字符串。<br>（2）向系统申请一个网络套接字<code>int socket(int family, int type, int protocol)</code>：网络套接字与文件句柄的功能完全类似，所以计算机网络编程又叫套接字编程。<br>（3）库函数sendto：将数据由指定的socket传给对方主机，成功则返回实际传送出去的字符数，失败则返回－1，错误原因存于errno中。<br>（4）库函数recvfrom：接收来自服务器的数据并保存源地址，成功则返回接收到的字符数，失败则返回－1，错误原因存于errno中。调用此函数时，此函数会一直处于阻塞状态，直到接收到服务器发送过来的数据。</p>
+<p> <strong>服务器端</strong>：（<code>project_network/project_udp_v1.0.0/udp_server.c</code>）<br>（1）企业用的服务器端可能有多个网口，那么我们在写程序时就需要指定从某个网口收发数据，即捆绑网口，也可以捆绑所有的网口。代码的第40行，宏INADDR_ANY的意思就是捆绑所有网口。</p>
+</li>
+<li><p>UDP网络编程函数调用图，见《UNIX网络编程》第186页。</p>
+</li>
+<li><p>TCP网络编程</p>
+<p> <strong>客户端</strong>：（<code>project_network/project_tcp_v1.0.0/tcp_client.c</code>）<br>（1）第34行代码，socket函数的第二个参数是SOCK_STREAM，表示字节流套接字，也表示TCP套接字。<br>（2）库函数connect：在调用此函数时，系统后台会立刻发起与服务端的连接，连接过程中如果服务器端没有启动，那么此函数会返回错误（错误号111，Connection refused）。如果连接成功，此函数就会返回一个0. 所以，一旦此函数调用，就会阻塞（默认情况），直到连接成功或失败。有时候，我们不希望函数处于阻塞状态，希望它能立马返回，那么可以把这个套接字设置为非阻塞（代码在v1.1.0）。</p>
+<blockquote>
+<p>怎样理解同步异步与阻塞非阻塞的区别：<a href="https://www.zhihu.com/question/19732473" target="_blank" rel="external">https://www.zhihu.com/question/19732473</a></p>
+</blockquote>
+<p> （3）库函数send：发送数据给对方主机，通过flags设置是阻塞模式还是非阻塞模式，但是，如果套接字是非阻塞模式，则不能把send函数设置为阻塞模式。若无错误发生，该函数返回所发送数据的总数。<br>TCP套接字编程中，系统会为套接字申请两段缓存，一段内存用于保存用户将要发送的内容，另一段内存用于接收对方主机发送过来的数据。</p>
+<p> （4）库函数recv：接收对方发送过来的数据。若无错误发生，返回所接收数据的总数。</p>
+<p> <strong>服务端</strong>：<br> （1）库函数listen：函数原型<code>int listen(int sockfd, int backlog)</code>，成功则返回0。其中backlog用于规定内核为此套接口排队的最大连接数。比如10个客户端同时调用connect函数连接服务器，那么服务器这边调用listen之后就会得到10个链接，系统会将这10个连接组织成链表，称为连接管理队列。这个链表的最大节点数就由backlog确定。那么这个参数是不是就决定了服务器支持的最大连接数呢？不是的，尽管系统会帮我们管理连接，但我们还是要自己管理的，因为要通过连接向客户端返回数据。怎么管理呢？通过accept函数把连接从链表里取出来，之后系统就会将该节点从队列中删除，再之后就需要我们自己的应用程序来管理这个连接了。这样系统又有空闲的节点去接受新的链接，所以我们也可以把系统的这个链表叫做连接的缓冲区。<br> （2）库函数accept：功能是从已完成连接的系统队列头返回下一个已完成连接，获取客户端的信息，创建新的套接字，并返回该套接字的文件描述符。此函数是阻塞的，即一直阻塞到有一个客户端完成了连接才返回。当然也可以设置成非阻塞的。</p>
+<blockquote>
+<p>accept函数是配合listen使用的。理论上，listen一旦监听到客户端的连接，就应该立即调用accept函数，把客户端的连接从系统的连接里面取出到应用程序里面，这样客户端发送过来的数据，服务端才能接收到，否则就会影响整体网络的速度。</p>
+</blockquote>
+<p> （3）代码第87，88行，提醒我们在服务器端有两类套接字：一类是自己监听的套接字；另一类是客户端连接时创建的套接字，这个套接字在连接断开、出错时，要进行关闭，否则就会产生资源泄漏。</p>
+<p> <strong>发送缓存与接收缓存</strong>：<br> （1）缓存，也叫缓冲，数据首先是从网卡传入的，之后就会存放在内核的缓冲区内（对应socket缓冲区内），然后应用程序调用recv函数把这个数据从内核缓冲区读到应用程序自己的内存中。如果应用进程一直不调用recv函数读取的话，此数据会一直留在socket接收缓冲区中。recv函数所作的事情，不过是把内核缓冲区中的数据拷贝到应用层用户的buffer里面，仅此而已，并未直接与客户端通信。<br> （2）进程调用send函数时也是类似，最简单情况（也是一般情况）下，将数据拷贝进入socket的内核发送缓冲区中，然后send就在上层返回。换句话说send()返回之时，数据不一定会发送到对端去（和write写文件有些类似），send仅仅是把应用层buffer的数据拷贝进socket的内核发送buffer中，发送是TCP的事情，和send其实没有太大关系。<br> （3）接收缓冲区被TCP用来缓存网络上来的数据，一直保存到应用进程读走为止。对于TCP，如果应用进程一直没有读取，接收缓冲区满了之后，发生的动作是：收端通知发端，接收窗口关闭（win=0）。这个便是滑动窗口的实现，保证TCP套接口接收缓冲区不会溢出，从而保证了TCP是可靠传输。因为对方不允许发出超过所通告窗口大小的数据。这就是TCP的流量控制，如果对方发送超出窗口大小的数据，接收方将丢弃它。可通过<code>cat /proc/sys/net/ipv4/tcp_wmem</code>查看发送缓冲区的大小，这个值是不固定的，由系统自动分配，当然也可以自己调用库函数进行修改。</p>
+</li>
+<li><p>UDP编程的补充<br>（1）UDP无需调用connect，但在实际编程中，收发数据之前我们经常会调用connect函数，所以我们把UDP套接字分为两种：未连接的套接字和已连接的套接字。<br>（2）UDP编程时调用connect与TCP调用connect是不同的，它没有三路握手的过程。内核只是检查一些立即可知的错误（比如不可达的目标）并且立马返回，如果没有立即可知的错误就记录ip和端口号，下次调用发送数据的函数时就可以不带上目标地址信息了。<br>（3）已连接的套接字在编程上与未连接的套接字相比有一些变化：发送数据时sendto可改用write或send；接收数据时recvfrom可改用read、recv或revmsg；已连接UDP套接字引发的异步错误会返回给它归属的进程，而未连接的套接字不接受任何异步错误。比如发送一个数据之后，如果对端没有启动接收的进程，那么UDP将丢弃这个数据，并且生成一个相应的ICMP端口不可达错误。<br>（4）可以出于以下目的给一个UDP套接字多次调用connect：1.指定新的IP地址和端口号（TCP不能）；2.断开套接字（将sin_family设置成AF_UNSPEC）。<br>（5）要注意，UDP仍然是“无连接”的，因为上面“已连接的套接字”中的“连接”（简单地记录ip和端口）与TCP中的“连接”（三次握手的过程）不是一回事。</p>
+</li>
+<li><p>面试题：怎样用UDP实现可靠传输？<br> 在应用层实现。当一端的应用程序发送一个UDP数据后，对端必须回应一下。如果一端时间之后没有收到这个回应，那么就再次重新发送。</p>
+</li>
+<li><p>网络字节序是大端的，如果机器的字节序是小端的话，需要调用socket函数htons、ntohs等进行转换。</p>
+</li>
+</ol>
+<h2 id="端口复用"><a href="#端口复用" class="headerlink" title="端口复用"></a>端口复用</h2><ol>
+<li><p>通过select实现I/O复用。</p>
+</li>
+<li><p>select函数非常重要，可以确定一个或多个套接口的状态，一般我们用此函数来确定套接字是否可读（有数据可读区）、可写，用得最多的是判断多个套接字是否可读。select可以通过参数timeout设置等待的超时时间（即在timeout时间内阻塞）。调用此函数之前，一般会把所有的套接字加入一个集合（库函数FD_SET），再用select判断网络中是否有数据可读，如果有，再判断具体那个套接字可读（库函数FD_ISSET）。select编程在处理多连接的时候是经常用到的。源代码示例： <code>project_network/project_tcp_v2.0.0_select</code></p>
+</li>
+<li><p>select函数的实现过程是linux内核中最难的部分，其调用路径是 sys_select-&gt;core_sys_select-&gt;do_select，前面两个函数主要做一些准备工作，所以主要分析do_select函数。</p>
+</li>
+<li><p>了解了select的原理后，可以分析出v2.0.0_select中的tcp_data_process_thread效率并不理想。它分了4步：第一步，把所有套接字加入集合；第二步，通过select判断是否有套接字可读；第三步，判断具体的某个套接字是否在可读的集合中；第四步，读取套接字的数据。第一、二、三步都遍历了一遍套接字，有重叠，v2.1.0_select对此作了改进。当服务器程序监听到连接后，就把新的套接字放进套接字集合中，当发现连接无效时，再把此套接字从集合中删除，从而可以把第一步去掉。</p>
+</li>
+</ol>
+<h2 id="三个重要的数据处理过程"><a href="#三个重要的数据处理过程" class="headerlink" title="三个重要的数据处理过程"></a>三个重要的数据处理过程</h2><ol>
+<li><p>清楚以下三个数据处理过程，对于解决项目实际问题会有很大帮助：（1）连接的建立过程，（2）数据的发送、接收过程，（3）连接的关闭过程。重点研究TCP/IP协议。</p>
+</li>
+<li><p>TCP/IP协议族的四层模型：应用层、传输层、网络层、链路层。<br> （1）链路层：网卡就属于链路层，负责从上层接收IP数据报并发送，或者从网络上接收物理帧，抽出IP数据报，交给IP层。链路层具有流量控制、错误检测和纠正等功能，数据的单位是帧（以太网的帧值总是在一定范围内浮动，最大的帧值是1518字节，最小的帧值是64字节。在实际应用中，帧的大小是由设备的MTU，即每次能够传输的最大字节数来自动确定的）。<br> （2）网络层：负责相邻计算机之间的通信，主要的协议有IP协议、ICMP协议、ARP协议（根据IP 查MAC地址，也有很多人说ARP是链路层的）、RARP协议（根据MAC地址查IP地址），其功能包括三方面：处理来自传输层（上层）的分组发送请求；处理输入的数据报（即接收下层的数据报请求）；处理路径、流控（即不会发送大于下一跳缓冲大小的数据）、拥塞（通过ICMP传递）等问题。注意弄清协议的概念和拥塞的概念。<br> （3）传输层：网络层负责点对点（point to point，这里的“点”指主机或路由器）的传输，而传输层负责端到端（end to end，这里的“端”指源主机和目的主机）的传输，提供应用程序间的通信。其功能主要是提供可靠传输，为此，传输层协议规定了接收端必须发回确认，并且假如分组丢失，必须重新发送。传输层协议主要是TCP（传输控制协议）和UDP（用户数据报协议），在这一层，数据的单位称为段。<br> （4）应用层：自己的软件，如telnet、http、ftp、DNS、SMTP、POP3等。</p>
+</li>
+<li><p>数据封装过程<br>   《TCP/IP详解》卷1，第7页，图1-7。</p>
+<pre><code>以下几个问题也通过此书学习。
+</code></pre></li>
+<li><p>TCP数据的传输过程总结<br> （1） TCP三次握手后，收发双方建立起连接通道，双方协商并确定要采用的MSS(最大分段长度，对于以太网，可达1460bytes)，之后当用户调用send函数发送数据时，TCP层会把用户数据按照MSS大小进行分段，各个分段数据被逐一添加TCP报头后，送给下一层网络层。<br> （2）网络层接收到这些分段后，在添加端主机的IP报头前，按照主机所在的局域网链路层的MTU（最大传输单元，一般设置为1500bytes）进行分片，并在分片后分别添加20字节的IP报头。<br> （3）接收端的网络层，对分片按照标记序号进行重组，并交给上一层传输层进行处理，传输层去掉各分片的IP报头，形成完整的分段。</p>
+</li>
+<li><p>数据传输过程中的一些异常处理</p>
+</li>
+<li><p>滑动窗口的原理是怎样的？（面试会问到，《TCPIP详解》P212）</p>
+</li>
+<li><p>打开连接三次握手、关闭连接四次握手（这是由TCP的半关闭造成的，既然TCP连接是全双工的，故每个方向必须单独地进行关闭）</p>
+</li>
+<li><p>TCP连接过程中的TIMED WAIT状态是什么？<br>TIMED WAIT状态是TCP关闭过程中的状态，即TCP完成了四个报文的交互之后所处的状态。在此状态下，还要等待2个MSL的时间，才会清除。目的在于保证发送的ACK被对方收到（《TCPIP详解》P183）</p>
+</li>
+<li><p>网络层IP提供的是一种不可靠的服务，它只是尽可能快地把分组从源结点送到目的结点，但并不提供任何可靠性保证。TCP通过超时重传、确认分组等机制在不可靠的IP层上提供了一个可靠的运输层。</p>
+</li>
+<li><p>ping程序是对两个TCP/IP系统连通性进行测试的基本工具。它只利用ICMP回显请求和回显应答报文，而不用经过传输层（TCP/UDP）。</p>
+</li>
+<li><p>TCP和 UDP用端口号来区分进程。<br>注意《TCP/IP详解》卷1，第194页，第一段话，并将其与应用层进程相区别：TCP使用由本地地址和远端地址组成的4元组：目的ip地址、目的端口地址、源ip地址、源端口地址。所以，对服务器而言，多个已建立的tcp连接可能具有相同的本地端口。</p>
+</li>
+<li><p>TFTP（简单文件传送协议，熟知端口69）是使用UDP传送，(而FTP是使用TCP传送)。TFTP提供一定形式的并发，客户端通过熟知端口与服务器建立连接后，服务器会新申请一个端口用于文件传送，以便熟知端口能够监听来自其他主机的连接请求。由于TFTP设计用于系统引导进程，没有提供安全特性（用户名和口令）。</p>
+</li>
+<li><p>广播和多播仅限于UDP，因为TCP是一个面向连接的协议。（IP地址的分类，查看《TCPIP详解》）<br>D类IP地址就是多播地址（32位bit的前四位为1110，点分十进制从224.0.0.0到239.255.255.255）.能够接收发往一个特定多播组地址数据的主机集合称为主机组（host group）。一个主机组可以跨越多个网络。主机组中成员可以跨越多个网络。主机组中对主机的数量没有限制，同时不属于某一主机组的主机可以向该组发送信息。另外，一些多播地址被IANA确定为知名的地址，即已经被占用了。比如224.0.0.1表示子网内的所有系统组，224.0.0.2表示子网内的所有路由器组。224.0.1.1被用作网络时间协议NTP，224.0.0.9被用作RIP-2。多播的具体实现需要路由器支持。</p>
+</li>
+<li><p>广播容易产生广播风暴，因此应尽量使用多播（组播），网上视频会议、网上视频点播特别适合采用多播方式。<br>参考：组播IP地址到底是谁的IP地址：<br><a href="http://www.zhihu.com/question/27233903" target="_blank" rel="external">http://www.zhihu.com/question/27233903</a></p>
+<blockquote>
+<p>P2P会造成大量的数据重复，并且给路由器造成很大的压力，广播又让每一个接收者去判断流量是不是给自己的，在浪费带宽的同时也给所有人带来判断流量的压力。组播便应运而生，它实现的关键技术在于把流量给合适的路由器，并且在合适的节点复制，尽可能的减轻网络负担。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="网络服务器（TCP模块）设计要点"><a href="#网络服务器（TCP模块）设计要点" class="headerlink" title="网络服务器（TCP模块）设计要点"></a>网络服务器（TCP模块）设计要点</h2><ol>
+<li><p>应用层数据要可靠传输<br> 因为虽然TCP会保证数据到达对端，但它不会告诉应用层数据到达了对端。解决方法很简单，只要在应用层加上确认机制就可以了。如果没有收到对端应用层的回应，就重发或者打印错误日志。<br> 有时候还要再加上序列号机制，即客户端每次向服务器端发送的数据都有一个唯一的编号（一般是递增的）。在金融行业，丢失数据是一件很严重的事，比如上次收到的数据编号是97，这次收到的是100，说明有数据丢失，必须打印错误日志。</p>
+</li>
+<li><p>分层<br> 在做服务器时必须有层次的概念，你要设计的TCP网络层是个独立的模块，这个模块的功能就是确保数据能正确高效地传输给对端。不要关心上层究竟发了什么数据。一般来说，这个模块需要加上一个自定义的包头，包头至少包含如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">typedef struct msg_head_struct</div><div class="line">&#123;</div><div class="line">    int iCmd; //操作命令，比如管理命令、数据传送命令</div><div class="line">    unsigned int uSng; //命令序列号</div><div class="line">    unsigned int uUserDataLen; //用户数据的长度</div><div class="line">&#125; msg_head_st;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>通过第三个变量，接收端就知道后面的用户数据有多长了。</p>
+<ol>
+<li>断点续传<br> 比如传输一个1G的大文件的时候，如果最后一个分组无法到达，前面所有的数据都会失效。一般来说，如果应用程序让你的TCP模块传输一个很长的数据，那么你也应该进行分段传输。代码上实现也很简单，上面的结构体中的uSng是区分命令的数据号，如果数据太长，需要对数据分段编号，加上一个子序列号就可以了。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">typedef struct msg_head_struct</div><div class="line">&#123;</div><div class="line">    int iCmd; //操作命令，比如管理命令、数据传送命令</div><div class="line">    unsigned int uSng; //命令序列号</div><div class="line">    unsigned int uSonSng; //子序列号</div><div class="line">    unsigned int uUserDataLen; //用户数据的长度</div><div class="line">&#125; msg_head_st;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>除此之外，客户端与服务端还要协商好总数据长度，总分段数目等。</p>
+<ol>
+<li><p>心跳机制<br> 如果一端出现宕机、掉线、交换机故障等问题，另一端如何快速感知呢？最有效的方法是采用心跳机制，在规定的时间内没有收到对端的消息，就认为对端出故障了，就关闭TCP连接，之后等待客户端再次发起连接。心跳间隔一般设为5秒，其中也有很多技巧。比如如果在5秒内收到了消息（非心跳消息），那么也可以认为是一个心跳消息，对端就无需再额外发送心跳消息了。另外，心跳消息也可以附带其他数据（比如CPU、内存的使用情况等）。面试的时候会问客户端连接出现了问题怎么办，或者连接断开了怎么办。对此，可以回答，在两端采用心跳机制，如果三次还没有收到对端的心跳消息，那么一端就认为另外一端出现了问题。<br> 系统内核也为TCP编程提供了一套类似心跳的选项SO_KEEPALIVE，但一般还是自己来实现心跳机制比较灵活。</p>
+</li>
+<li><p>会话（session）与状态<br> 一个会话建立在一个连接、或多个连接甚至多种连接之上。<br> 利用状态来管理连接，比如用户登录成功之前是一种状态，登录之后是一种状态，不同状态有不一样的权限。</p>
+</li>
+<li><p>有时候需要自己对服务器的网口进行管理，捆绑不同网口的IP。</p>
+</li>
+<li><p>数据流量统计<br> 对于一个网络服务器来说，用户需要知道自己所使用的系统服务器每秒数据流量的多少，这个流量分接收数据的流量和发送数据的流量。统计时一般以秒为单位。</p>
+</li>
+</ol>
+<h2 id="select、poll、epoll编程对比"><a href="#select、poll、epoll编程对比" class="headerlink" title="select、poll、epoll编程对比"></a>select、poll、epoll编程对比</h2><ol>
+<li><p>必须要<strong>了解</strong>poll网络编程，<strong>熟悉</strong>epoll网络编程。<br> poll()和select()函数要处理的问题是相同的，而epoll()是linux2.6在2003年才推出来的新技术。<br> select、poll、epoll都是IO多路复用的机制。所谓IO多路复用，就是通过一种机制，监视多个描述符，一旦某个描述符就绪，能够通知程序进行相应的读写操作。这个过程对select、poll、epoll来说本质上都是差不多的。</p>
+</li>
+<li><p>select、poll、epoll之间的区别总结<br> <a href="http://www.cnblogs.com/Anker/p/3265058.html" target="_blank" rel="external">http://www.cnblogs.com/Anker/p/3265058.html</a></p>
+</li>
+<li><p>设想有100万个客户端同时与一个服务器进程保持着TCP连接，而每一时刻，通常只有几百上千个TCP连接是活跃的，如何实现这样的高并发？<br> 在select/poll时代，系统内核要去轮询100万个套接字上是否有事件发生，这一过程资源消耗较大。因此，select/poll一般只能处理几千的并发连接。<br> epoll的设计和实现与select完全不同。epoll通过在linux内核中申请一个简易的文件系统（文件系统一般用B+树实现），把原先的select/poll调用分成了3个部分：<br> （1）调用epoll_create()建立一个epoll对象（在epoll文件系统中为这个句柄对象分配资源）；<br> （2）调用epoll_ctl()向epoll对象中添加这100万个连接的套接字；<br> （3）调用epoll_wait()收集发生事件的连接（效率非常高，不需要系统去遍历所有连接）。</p>
+</li>
+<li><p>IO多路复用的“水平触发模式”与“边缘触发模式”（概念来源于示波器）<br> <a href="http://www.jianshu.com/p/dfd940e7fca2" target="_blank" rel="external">http://www.jianshu.com/p/dfd940e7fca2</a></p>
+</li>
+<li><p>虽然epoll有很好的扩展性，但是，除非你做的项目是用在互联网上，并且需要支持的连接数特别多，否则不建议采用epoll编程。实际而言，我们做的绝大多数项目无需支持太多的连接，一般都是50个以下，建议使用更简便的select编程。</p>
+</li>
+</ol>
+<h2 id="网络拥塞和带外数据"><a href="#网络拥塞和带外数据" class="headerlink" title="网络拥塞和带外数据"></a>网络拥塞和带外数据</h2><ol>
+<li><p>网络拥塞，是指在分组网络中传送分组的数目太多时，由于存储转发节点（路由器或交换机）的资源有限而造成网络传输性能下降的情况。解决网络拥塞的方法是拥塞控制。</p>
+</li>
+<li><p>带外数据(out-of-band data)，有时也称为加速数据，是指连接双方中的一方发生重要事情，想要迅速地通知对方。这种通知在已经排队等待发送的任何“普通”数据之前发送（高优先级）。带外数据是映射到现有的连接中的，而不是在客户机和服务器间再用一个连接。一般来说，几乎所有的传输层协议（不仅仅是TCP协议）都会有带外数据，但UDP协议是没有实现带外数据的。</p>
+</li>
+<li><p>TCP没有真正的带外数据，而是提供了一个“紧急模式”。带外数据在实际的商用项目中使用较少，了解即可。</p>
+</li>
+</ol>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.1" async></script><a data-url="http://yoursite.com/2016/08/26/notes-network-programming/" data-id="cisb98wlp00009vhycb8xaqgt" class="article-share-link">分享到</a><div class="tags"><a href="/tags/网络编程/">网络编程</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/notes-network-programming/">notes-network-programming</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">平凡之路.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
