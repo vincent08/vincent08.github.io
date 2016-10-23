@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>进程与线程要点 | 东坡烟尘</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">进程与线程要点</h1><a id="logo" href="/.">东坡烟尘</a><p class="description">静能生悟，即鸟啼花落，都是化机。</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/timeline/"><i class="fa fa-calendar"> 时间线</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">进程与线程要点</h1><div class="post-meta">Sep 5, 2016<span> | </span><span class="category"><a href="/categories/technology/">technology</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-thread-key="2016/09/05/processAndThread/" href="/2016/09/05/processAndThread/#comments" class="ds-thread-count"></a><div class="post-content"><h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><ol>
+<li><p>在Linux中，当用户注销或者网络断开时，终端会收到HUP（hang up）信号，从而关闭其所有子进程。那么如何让程序不随着终端的关闭而停止运行呢？两个思路：（1）让进程忽略HUP信号:  比如<code>nohup ./process01 &amp;</code>  ;（2）让进程运行在新的会话里，从而成为不属于此终端的子进程：比如 <code>setsid ./process01</code> 或者 <code>(./process01 &amp;)</code> 。</p>
+<blockquote>
+<p>将一个或多个命令包含在小括号中就能让这些命令在子shell中运行，从而扩展出很多有趣的功能。<br>Linux下第一个用户进程是init，它的进程号是1。</p>
+</blockquote>
+</li>
+<li><p>创建线程的库 pthread.h 不是linux系统的默认库，所以编译时要上库的名称作为参数，即<code>gcc process.c -lpthread</code>.<br>线程创建函数为 <code>thread_create</code>，第一个参数为指向线程标志符的指针，第二个参数用来设置线程属性，第三个参数是线程运行函数的起始地址，最后一个参数是运行函数的参数。详细参考文章： <a href="http://www.cnblogs.com/wainiwann/p/3550748.html" target="_blank" rel="external">http://www.cnblogs.com/wainiwann/p/3550748.html</a></p>
+</li>
+<li><p>操作系统资源分配的基本单位是进程， 处理器调度的基本单位是线程。<br>现代操作系统的时间分片调度是以线程（而不是进程）为最小单位的，程序中定义的全局变量，在每个线程都可以直接进行读写。这个在面试中经常涉及。</p>
+</li>
+<li><p>线程退出有三种形式：（1）线程函数执行完毕后退出，（2）被同一进程的其他线程取消，pthread_cancel（3）线程调用 pthread_exit 退出。<br>绝大部份项目中采用的会是第二种。注意pthread_cancel只是告知操作系统要取消线程1，但系统不会马上取消，而是等待线程1点代码运行到了一个取消点才会取消该进程。POSIX定义了一些取消点。一般能引起线程阻塞的函数都是取消点，比如sleep, open, wait, recvmsg等函数。</p>
+</li>
+<li><p>线程退出资源回收：当调用pthread_create创建子线程时，系统会给子线程分配相关资源，当子线程退出时，资源需要安全回收。<br>（1）可以在创建子线程之后，使用 pthread_join函数，等待子线程退出，线程退出后该函数才返回。<br>（2）可以调用函数 pthread_detach 使进程分离， 此时就不需要调用 pthread_join了，当线程退出时，系统会自动回收此线程的所有资源，但如果想要子线程一直运行，那么主线程必须不能退出。</p>
+</li>
+<li><p>线程私有数据<br>大公司面试中可能会出现。<br>线程私有数据也叫线程特定数据，是存储和查找某个线程相关数据的一种机制，每个线程都可以访问它自己的数据副本，而不需要担心与其它线程的同步问题。<br>线程的私有数据包括：<br>（1）errno：errno是系统调用失败时设置的值，为了让线程也能够使用那些原本基于进程的系统调用，errno被重新定义为线程私有数据。这样一个线程重置了errno的值，也不会影响其他线程或者进程的errno值。<br>（2）栈，可以被其他进程访问，但仍可认为是私有数据。即线程函数里的局部变量是线程私有数据。<br>（3）寄存器<br>（4）调度优先级和策略<br>（5）线程ID<br>（6）信号屏蔽字：创建线程的时候，线程继承了进程的信号屏蔽字，但是线程也可以使用 pthread_sigmask 修改自己的屏蔽字。</p>
+</li>
+<li><p>线程状态<br>创建状态（NEW），就绪状态（READY），运行状态（RUNNING），等待状态或阻塞状态（BLOCKED），结束状态（EXIT）。<br>会画线程状态变化图。</p>
+</li>
+<li><p>线程重命名<br>为了区别同一进程下的多个线程，可通过以下代码为线程命名：<br><code>prctl(PR_SET_NAME, &quot;THREAD_NAME&quot;)</code><br>调用此函数时，必须包含头文件 <code>#include&lt;sys/prctl.h&gt;</code></p>
+</li>
+<li><p>段错误(Segmentation fault)<br>一个线程在链表中插入节点，另一个线程取出节点，由于CPU是基于时间分片对线程进行调度的，可能插入操作进行到一半就切换到另一个线程进行删除操作，这样当数据不一致时可能会访问非法内存，产生段错误。</p>
+</li>
+<li><p>两个线程同时操作一个数据链表或者数据对象，叫做线程同步，或者并行操作。解决步骤：<br>（1）向系统申请锁: pthread_mutex_init 函数<br>（2）获取锁并上锁：pthread_mutex_lock 函数，如果函数返回说明上锁成功，如果一直不返回表示无法获取到锁，可能发生了死锁；<br>（3）解锁：pthread_mutex_unlock函数，加锁之后一定要解锁，只有解锁了其他进程才能获取到锁。</p>
+</li>
+<li><p>死锁：两个或两个以上的进程在执行过程中，由于竞争资源或者由于彼此通信造成的一种阻塞的现象。此时称系统处于死锁状态，这些互相等待的线程称为死锁线程。死锁发生的四个必要条件：<br>（1）互斥条件，即线程需要在一段时间内独占资源<br>（2）请求和保持条件，即线程至少已保持一个资源，又提出了新的资源请求，但该资源被其他线程占用。又都对自己的资源保持不放。<br>（3）不剥夺条件：即线程在使用完资源后自己释放，中途不能被剥夺。<br>（4）环路等待条件：必然形成环路 p0-p1-p2-…-pn-p0.</p>
+</li>
+<li><p>只要打破四个必要条件之一就能有效预防死锁的发生。在面试中，锁、死锁、死锁的必要条件、怎样预防死锁是必然会涉及的。</p>
+</li>
+<li><p>锁的类型：互斥锁（常用）、读写锁、旋转锁、递归锁、信号量</p>
+</li>
+</ol>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><ol>
+<li><p>进程：进程是一个具有独立功能的程序。它可以申请和拥有系统资源，是一个动态的概念，是一个活动的实体。不只是程序代码，还包括当前的活动。UNIX系统中的两个特殊进程：<br>pid=0的进程：调度进程，是内核的一部分，它的功能是调度其他进程<br>pid=1的进程：init进程，在自举（自己检查自己后激活自己）结束时由内核调用，该进程负责启动一个unix系统。init进程绝对不会终止，它是第一个普通的进程（相对于内核进程），它是以root身份运行的。</p>
+</li>
+<li><p>可执行文件解析<br>进程运行后在内存的分布：</p>
+</li>
+</ol>
+<hr>
+<p>内核虚拟存储器           —–高地址<br>用户栈<br>堆<br>未初始化数据段<br>初始化数据段</p>
+<h2 id="正文段-—-低地址"><a href="#正文段-—-低地址" class="headerlink" title="正文段                           —-低地址"></a>正文段                           —-低地址</h2><p><strong>正文段</strong>：代码区，存放机器指令，父子进程共享它，一个进程多次运行也共享它，它是只读的。<br><strong>初始化数据段</strong>：通常称为数据段（data），<strong>初始化</strong>的变量放在这里，如全局变量，静态变量，常量（const修饰的变量）等等，前提是他们在定义的时候就被赋值了，如果这些变量没有初始化，那么就不存放在此处。<br><strong>未初始化数据段</strong>：通常称为bss段，在程序执行之前，内核将此段中的数据初始化为0，或者NULL，<strong>未初始化</strong>的全局变量就放在这里。<br><strong>堆</strong>：通常在堆中进行动态存储空间的分配，之前我们用malloc函数分配内存，就在此处管理。<br><strong>栈</strong>：自动变量和每次<strong>函数调用</strong>所需保存的信息都存放在此处。栈的空间是有限的，所以临时变量不能占用太多空间，比如在一个函数里，不要定义一个超大的数组，如果要空间，就用malloc申请。用命令<code>ulimit -s</code>可以查看栈的空间，可以在配置文件中修改栈的空间大小，但一般不建议修改。<br><strong>内核虚拟存储器</strong>：对用户代码而言不可见的存储器，有些地方也叫它内核的指令和环境变量区。</p>
+<ol>
+<li><p>可执行文件存储映像<br>Linux下面，目标文件、共享对象文件、可执行文件都是使用ELF文件格式来存储的。程序经过编译之后会输出目标文件，然后经过链接得到共享对象文件或者可执行文件。<br>代码和数据是分开存放的，这样设计的原因在于：<br>（1）代码一般是只读的，而数据是可读可写的。<br>（2）现代CPU一般有强大的缓存体系，程序和代码分离可以提高程序的局部性，增加缓存命中的概率。<br>（3）若有多个程序副本在运行，只读部分可以在只内存中保留一份，可以大大节省内存。<br>在ELF的定义中，把它们分开存放的地方称为一个Section，就是一个段。一个ELF文件中重要的段包括：<br>.text段：存储只读的程序，<br>.data段：存储已经初始化的全局变量和静态变量，<br>.bss段：存储未经初始化的全局变量和静态变量，因为这些变量还未初始化，所以这个段在文件当中不占据空间，<br>.rodata段：存储只读数据，比如字符串常量。<br>代码编译好后，可以用 file命令来查看编译好的文件信息。</p>
+</li>
+<li><p>问题：对于全局变量，即使我不初始化，系统也会自动将其初始化，那么我们编程的时候到底应不应该将其初始化呢？<br>最好养成初始化的习惯，对于不想给别的文件使用的全局变量，尽量使用 static 修饰。</p>
+</li>
+<li><p>问题：为什么要把可执行文件分为数据段和代码段？<br>因为对计算机而言，“指令”和“数据”都是二进制比特流，没有任何区别。采用指令和数据分开存放的方法，在代码段读到的统一被解释为机器指令，在数据段读到的统一解释为操作数。这样就能把代码和数据区分开来了。</p>
+</li>
+<li><p>fork函数<br>fork函数的功能是创建一个子进程，奇妙之处在于一次调用，两次返回，它可能有三种不同的返回值：<br>（1）在父进程中，fork返回新创建子进程的进程ID；<br>（2）在子进程中，fork返回0，这个时候子进程的名称与父进程的名称是相同的，但进程号pid是不同的；<br>（3）如果出现错误，fork返回一个负值；内存不足或者用户已到达最大进程数时，fork才会失败。<br>一般来说，fork之后是父进程先执行还是子进程先执行是不确定的，这取决于内核所使用的调度算法。</p>
+</li>
+<li><p>vfork函数<br>用于创建一个子进程，而该进程的目的是调用exec相关函数执行一个新程序。<strong>特别需要注意的是</strong>，在子进程调用exec之前，它都运行在父进程空间，这种优化工作在某些unix的页式虚拟存储器实现中提高了效率。<br>vfork与fork的另外一个区别是，vfork保证子进程先运行，在它调用exec相关函数之后父进程才可能被调度运行（注意产生死锁）。</p>
+</li>
+<li><p>exit函数<br>功能：关闭所有文件，终止正在运行的程序<br>头文件：stdlib.h<br>说明：<br>（1）exit函数会调用_exit函数；<br>（2）exit(0)表示正常退出，exit(x)（x不为0）都表示异常退出，正常退出与main中调用return是一样的。<br>（3）return和exit()的另一个区别在于，即使在main()之外的函数中调用exit()，它也将终止程序。<br>（4）当最后一个线程从其启动例程返回时，该进程以终止状态0返回。<br>（5）进程的最后一个线程调用pthread_exit函数，进程终止状态总是0，这与传送给 pthread_exit的参数无关。</p>
+</li>
+<li><p>exit与_exit不同<br>（1）在由fork创建的子进程分支里，正常情况下使用exit是不正确的，因为它会导致标准输入输出的缓冲区被清空两次。还有一些特殊情况，比如守护程序，他们的父进程需要调用 _exit 而不是子进程；适用于绝大多数情况的基本规则是， exit 在每次进入main函数后只能调用一次。<br>（2）_exit 函数不执行标准IO的刷洗操作。我们知道，printf，fopen，fwrite这些函数，在内存中都有缓冲区，有时我们写入了文件，但实际上它还在缓冲区，这是如果用 _exit 直接将进程关闭，缓冲区中的数据就会丢失。如果要保持数据的完整性，就一定要使用exit函数。</p>
+</li>
+<li><p>多进程控制<br>控制进程p1和进程p2并发运行的流程（从p1转换到p2）：<br>（1）执行完进程转换前的最后一条指令；<br>（2）保留当前进程p1的上下文（context），这些信息保留在PCB（进程控制块）里；<br>（3）调用调度模块（scheduler）选择下一个要运行的进程p2；<br>（4）恢复p2的context（从其PCB里读取）；<br>（5）开始执行p2的指令。<br>上述过程也叫进程切换过程。</p>
+<blockquote>
+<p>为了描述控制进程的运行，系统为每个进程定义了一个数据结构——进程控制块（PCB），它是进程实体的一部分，是操作系统中最重要的记录性数据结构，用于描述进程的当前情况以及控制进程运行的全部信息。<br>系统总是通过PCB对进程进行控制的，即系统是根据进程的PCB而不是别的东西来感知到进程存在的。所以PCB是进程存在的唯一标志。</p>
+</blockquote>
+</li>
+<li><p>僵尸进程<br>当进程由于某种原因终止时（包括正常终止），内核并不是立即把它从系统中清除，而是将此进程保持在一种已终止的状态，直到它的父进程将其回收。一个终止了但还未被回收的进程称为僵尸进程。</p>
+</li>
+<li><p>避免僵尸进程的方法<br>（1）父进程为子进程收尸（wait函数和waitpid函数）<br>（2）杀死父进程，僵尸进程会成为“孤儿进程”，系统会自动将其过继给1号进程init，init会负责回收僵尸进程<br>（3）父进程显式忽略SIGCHLD信号（不同内核版本可能有差别）<br>（4）fork两次，然后祖父进程杀死父进程，这样孙子进程就被init接管。</p>
+</li>
+<li><p>只有程序运行起来了，才能称之为进程，这是一个动态的概念。所以进程的状态包括三种：运行态（正在被CPU执行）、就绪态（可运行，但尚未分配到CPU）、阻塞态</p>
+</li>
+<li><p>exit(0)，exit(1)，与 return 的区别<br>exit(0): 正常运行程序被退出程序<br>exit(1): 非正常运行导致退出程序<br>return: 返回函数，若在主函数中，则会退出函数并返回值</p>
+<blockquote>
+<p>return是关键字，而exit是一个函数<br>return是语言级别的，它表示了调用堆栈的返回；而exit是系统调用级别的，它表示了一个进程的结束<br>return是函数的退出，而exit是进程的退出<br>return是C语言提供的，exit是操作系统提供的<br>非主函数调用中，return和exit的区别很明显</p>
+</blockquote>
+</li>
+<li><p>面试题</p>
+<blockquote>
+<p>请问子进程自父进程继承了什么？未继承什么？<br>一般面试会是选择题，需要记住，子进程从父进程继承了大部分资源，但不包括：<br>（1）父进程的文件锁<br>（2）pending alarms（未处理闹钟）<br>（3）pending signals（未处理信号）<br>（4）进程ID和父进程ID<br>《UNIX环境高级编程》（P184）8.3 fork函数 全部有提到。</p>
+</blockquote>
+</li>
+<li><p>虚拟地址空间是真实存在的吗？为什么？<br>虚拟地址空间不是真实存在的，每个进程都有自己的虚拟地址空间，每个进程都有一个叫作堆的虚拟地址，这个空间很大。堆就是虚拟出来的地址空间，我们调用malloc函数申请内存的时候就是向堆申请的。malloc成功返回时，这个返回值只是虚拟地址空间（堆空间）的大小，但不是真正内存的大小。当你申请成功之后，往其中读写数据时，操作系统才会把真正的内存空间分给堆空间，形成一种映射关系。</p>
+<blockquote>
+<p>malloc出来的内存就是进程所占用的内存吗？<br>不是，只有往里面读写数据时，系统才会把真正的内存空间分配给进程。</p>
+</blockquote>
+</li>
+<li><p>linux的交换分区类似于windows的虚拟内存，当内存不足时，把一部分硬盘空间虚拟成内存使用，从而缓解内存紧张的情况。</p>
+</li>
+<li><p>简单描述一下应用可执行文件运行启动的过程是怎样的？<br>比如可执行文件test，当在shell中键入 ./test 之后：当前shell进程fork出一个子进程（子shell），子进程使用execve来脱离和父进程的关系，加载test文件（ELF格式）到内存中。如果test使用了动态链接库，就需要加载动态链接器（或者叫程序解释器），进一步加载test使用到的动态链接库到内存，并重定位以供test调用。最后从test的入口地址开始执行test。</p>
+</li>
+<li><p>wait函数<br>wait函数应该与fork函数成套出现，并且总是出现在fork函数之后。<br>子进程退出时会发出SIGCHLD信号，默认情况总是忽略SIGCHLD信号，子进程状态仍保留在内存中。但父进程直到使用wait函数时才收集状态信息并将其清空。用wait来等待一个子进程终止运行称为回收进程。注意，当没有子进程退出的时候，程序运行到wait就会一直阻塞；当所有子进程都已退出或者没有子进程时，wait直接返回 -1。</p>
+</li>
+<li><p>回收子进程的代码实现有两种方法，一种叫<strong>主动扫描</strong>，简单，但是会导致父进程阻塞，效率低下，另外一种叫<strong>触发</strong>，稍复杂，但是效率高。做项目时建议采用触发方式。</p>
+<blockquote>
+<p>主动扫描的代码： project_process_lizi/process004.c ，直接在父进程主函数使用wait<br>触发的代码： project_process_lizi/process005.c ，原理是注册一个处理SIGCHLD信号的函数，当父进程收到SIGCHLD信号的时候，调用该函数来处理</p>
+</blockquote>
+</li>
+<li><p>上述触发代码仍然存在的问题：如果父进程创建的过多，而同一时间有很多子进程退出时，有些信号在系统队列里面可能会被丢弃，而使处理函数不能响应，产生僵尸进程，导致资源泄漏。process006演示了这种情况。</p>
+</li>
+<li><p>哎呀，一直傻不拉几的以为，子进程会执行父进程所有的代码，就是我因为错误的理解了一句话“子进程是父进程的完全拷贝”，这句话，理解错的原因是因为认为拷贝只是简单的“父进程程序的拷贝”，其实子进程拷贝父进程，包括拷贝父进程的一切有关信息，包括状态信息，当然就有程序计数器PC也在内了，所以在父进程执行到fork的时候，它的程序计数器的PC内容绝对不会是从main函数开头执行的了，其实PC此时存放的是进程下一条要执行的指令地址，所以子进程总是从fork之后开始执行。<br>所以一定要正确的理解进程的“动态”，所谓的动态就是体现在这儿了。<br>但是子进程和父进程的数据段是独立的，代码段是共享的。<br>一个简单的想法就是：<br>fork确实创建了一个子进程并完全复制父进程，但是子进程是从fork后面那个指令开始执行的。<br>对于原因也很合逻辑，如果子进程也从main开头到尾执行所有指令，那它执行到fork指令时也必定会创建一个子子进程，如此下去这个小小的程序就可以创建无数多个进程可以把你的电脑搞瘫痪</p>
+</li>
+<li><p>为了解决丢失信号的情况，引入 waitpid 函数（process008.c）<br>定义： <code>pid_t waitpid(pid_t pid, int* status, int options);</code><br>waitpid函数的功能比wait函数的功能要强大得多。<br>第一个参数pid：（1）pid&gt;0时只等待ID等于pid的子进程，只要指定的子进程还没有结束，waitpid就会一直阻塞下去；（2）pid＝0时，等待同一进程组中的任何子进程，如果子进程已经加入了别的进程组，waitpid不会对它做任何理睬；（3）pid=-1时，等待任何一个子进程退出，此时waitpid和wait的作用一样；（4）pid&lt;-1时，等待一个指定进程组中的任何子进程，这个进程组的ID等于pid的绝对值。<br>第三个参数options：（1）WNOHANG：即使没有子进程退出，它也会立即返回，不会像wait那样永远等待下去；（2）WUNTRACED：阻塞执行，直到子进程进入暂停或者进程终止。<br>waitpid的返回值：<br>（1）正常返回时，waitpid返回收集到的子进程的进程ID；<br>（2）如果设置了选项WHOHANG，而调用中waitpid发现没有已退出的子进程可收集，则返回0；<br>（3）如果调用中出错，则返回－1，这是errno会被设置成相应的值以指示错误所在；<br>（4）当pid指示的子进程不存在，或此进程存在，但不是调用进程的子进程，waitpid就会出错返回，这时errno被设置为ECHILD.</p>
+</li>
+<li><p>waitpid函数提供了wait函数没有的三个功能：<br>（1）waitpid可等待一个特定的进程，而wait则返回任一终止的进程的状态；<br>（2）waitpid提供了一个wait的非阻塞版本，有时希望获取一个子进程的状态，但不想阻塞；<br>（3）waitpid通过WUNTRACED和WCONTINUED选项支持进程控制。</p>
+</li>
+</ol>
+<h2 id="进程间通讯"><a href="#进程间通讯" class="headerlink" title="进程间通讯"></a>进程间通讯</h2><ol>
+<li><p>先回顾一下多线程：进程与线程有本质的不同，进程有独立的地址空间，而线程没有。线程间通信可以非常简单，比如定义一个全局变量，另外在两个线程需要同步的时候增加一些锁的操作就可以了。在线程技术尚不成熟时，人们普遍采用多进程来完成项目。</p>
+</li>
+<li><p>进程间通信（IPC）主要有以下几种方式：</p>
+<blockquote>
+<ul>
+<li>管道</li>
+<li>共享内存</li>
+<li>信号量</li>
+<li>消息队列</li>
+<li>信号</li>
+<li>套接字</li>
+</ul>
+</blockquote>
+</li>
+<li><p>管道：管道的实现并没有使用专门的数据结构，两个进程只是打开同一个文件（open），一个进程写入（write），一个进程读出（read）。进程间通讯的管道分为无名管道和有名管道。</p>
+</li>
+<li><p>无名管道：半双工，同一时间数据只能单向流动，而且只能在具有亲缘关系（父子关系）的进程间使用。所谓无名，就是对用户不可见，只在内存中创建，不写入磁盘。<br>函数原型：<code>int pipe(int pipe_fd[2]);</code><br>功能：创建无名管道<br>pipe_fd： 数组名，一个长度为2的int数组，pipe_fd[0]用作读， pipe_fd[1]用作写<br>返回值：成功返回0，失败返回－1，并且pipe_fd会被赋值</p>
+</li>
+<li><p>有名管道（命名管道）：也是半双工，但它允许无亲缘关系的进程间的通信。（name_pipe_read.c与name_pipe_write.c）<br>函数原型： `int mkfifo(const char* pathname, mode_t mode);｀<br>功能：创建命名管道<br>pathname：文件路径<br>mode：标志，包括打开模式与权限<br>返回值：成功则返回0，否则返回－1，错误原因存于errno中。</p>
+</li>
+<li><p>管道说明：<br>（1）管道就是对文件的操作，一端读，一端写，但这个文件占用内存的大小是有限制的；<br>（2）读写具有互斥性，调用者不必关心数据的同步问题，因为内核用锁来实现了读写的互斥问题；<br>（3）支持多进程读写操作；<br>（4）可以设置阻塞与非阻塞，默认是阻塞的。所谓阻塞，就是如果一端一直写，而另一端不读，待内存写满后，write函数就会阻塞，直到写入成功才返回。<br>（5）设置阻塞标志时（默认），调用mkfifo后，管道的两端必须都打开，如果有一方未打开，那么在调用open的时候会阻塞；<br>（6）设置非阻塞标志时，如果希望打开管道的写端，则先需要另一个进程打开该管道的读端，即写进程必须在读进程之后，否则写端的open将失败。</p>
+</li>
+<li><p>共享内存<br>一般而言，每个进程有自己独立的资源，不能相互访问。但可以借助操作系统来使用共享内存。<br>共享内存是进程间通信的一种方式，此方式会开辟一部分可以被多个进程共享访问的物理内存区域，进行通信的多个进程分别将该内存区域映射到自己的虚拟地址空间，从而实现访问和通信。<br>ftok 是一个系统库函数，它的作用是告诉操作系统，本进程要建立IPC通讯，想操作系统申请一个key值。</p>
+<blockquote>
+<p>原型： <code>key_t ftok(const char* fname, int id)</code><br>参数fname：文件路径<br>参数id：ftok函数根据这个id值返回不同的key值。<br>利用库函数shmget来创建、获取指定的共享内存ID。<br>原型： <code>int shmget(key_t key, size_t size, int shmflg)</code><br>参数size：设置共享内存的大小<br>参数shmflg：标志位<br>返回值：共享内存ID<br>利用shmat，把共享内存映射到自己的进程中来，之后就可以直接使用这段内存空间了。<br>原型： <code>void * shmat(int shmid, const void * shmaddr, int shmflg)</code><br>参数shmid：共享内存ID<br>参数shmaddr：指定共享内存出现在进程内存地址的什么位置，通常指定为NULL，让内核自己决定一个合适的位置<br>参数shmflg：SHM_RDONLY为只读模式，其他为读写模式<br>返回值：返回本进程可用的<strong>地址指针</strong>，这样后面的代码就可以直接使用共享内存了。</p>
+</blockquote>
+</li>
+<li><p>依次采用上面三个函数就可以实现共享内存的创建、访问了，除此之外还了解一下 shmctl （控制管理共享内存）函数和 shmdt（断开共享内存映射链接） 函数</p>
+</li>
+<li><p>共享内存相关的shell命令：<br>查看共享内存： <code>ipcs -m</code><br>删除共享内存：<code>ipcrm -m shmid</code></p>
+</li>
+<li><p>共享内存的优缺点<br>优点：读写速度快<br>缺点：各进程对共享内存的操作不互斥，存在数据同步问题（可利用信号量等工具解决）。</p>
+</li>
+<li><p>信号量(P操作与V操作)<br>同步：多个进程为了完成同一个任务相互协作，就形成了同步关系。<br>互斥：不同进程为了争夺有限的硬件或软件资源会进入竞争状态，而这个资源在某时刻只允许一个进程使用，这就是进程间的互斥关系。<br>临界资源：在同一时刻只允许有限个（通常只有一个）进程可以访问的资源。访问临街资源的代码叫临界区，临界区本身也会成为临界资源。<br>信号量就是用来解决同步与互斥问题的一种通信机制，与之前介绍的线程锁的作用是一样的，但是功能更强大，不仅可用在多线程，更多地用在多进程。<br>创建信号量的过程与创建共享内存是类似的，首先利用ftok获取一个key。<br>再利用 semget 函数创建或获取指定的信号量</p>
+<blockquote>
+<p>原型：<code>int semget(key_t key, int nsems, int semflg);</code><br>利用semctl 函数设置信号量的值<br>原型： <code>int semctl(int semid, int semnum, int cmd, union union_arg);</code><br>利用semop函数来操作信号量<br>原型： <code>int semop(int semid, struct sembuf *sops, size_t nsops);</code></p>
+</blockquote>
+</li>
+<li><p>面试的时候会问到P操作与V操作<br>在进程间通信的时候，如果采用信号量来进行同步操作，那么信号量就是采用P、V操作来实现的。所谓的P操作，就是将信号量减1，而V操作，就是将信号量加1，如果在该信号量的等待队列中有进程在等待资源，则唤醒一个阻塞进程。</p>
+</li>
+<li><p>信号量shell调试命令：<br>显示当前所有信号量信息： <code>ipcs -s</code><br>删除信号量： <code>ipcrm -s semid</code></p>
+</li>
+<li><p>消息队列<br>定义：多个独立的进程之间可以通过消息缓冲机制来相互通信。这种通信的实现是以消息缓冲区为中间介质。通信双方的发送和接收操作均以消息为单位。在存储器中，消息缓冲区被组织成队列。消息队列一旦创建后即可由多进程共享。发送消息的进程可以在任意时刻发送任意数量的消息到指定的消息队列上，并检查是否有接受进程在等待它所发送的消息，若有则唤醒它。内核（操作系统）就是用链表来管理这些消息的。<br>特点：<br>（1）有些地方也叫数据报，发送和接收是以数据报为单位进行的。<br>（2）消息队列可以实现消息的随机查询，消息不一定要以先进先出的次序读取，也可以按消息的类型读取。<br>使用过程：<br>（1）利用ftok函数获取key<br>（2）利用msgget函数建立消息队列，并返回 msgid<br>（3）利用msgsnd函数向队列发送数据，利用msgrcv函数从队列中获取消息<br>（4）利用msgctl函数控制管理队列（比如进行删除操作）</p>
+</li>
+<li><p>使用消息队列需要注意的地方<br>（1）消息队列的读写在内核中已经解决了数据同步的问题，编程时不用担心<br>（2）Linux使用宏MSGMAX和MSGMNB来限制一条消息的最大长度和一个队列的总长度，分别是8192、16384<br>（3）发送和接收可以通过标志位设置阻塞模式和非阻塞模式，默认是阻塞</p>
+</li>
+<li><p>消息队列的缺点：<br>消息队列的读写需要消耗cpu的额外资源，不适合信息量大和操作频繁的场合。</p>
+</li>
+<li><p>消息队列调试的系统命令：<br>显示当前所有消息队列信息: ipcs -q<br>删除消息队列： ipcrm -q msgid</p>
+</li>
+<li><p>信号<br>信号与信号量不是同一个概念，功能与作用都不同，不能混淆。<br>每个信号的名字都是以SIG开头的，一个进程接收到信号之后，会立刻停止正在执行的程序（中断），去执行信号处理函数。<br>硬中断、软中断的概念。<br>使用方法：注册信号处理函数，捕捉信号。如果没有定义自己的信号处理函数，则按系统默认方式处理。<br>部分常见信号：<br>子进程状态的改变，比如创建、终止，系统会向父进程发送SIGCHLD信号；<br>踩地址（段错误），系统给进程发送SIGSEGV信号；<br>kill杀死进程，系统给进程发送SIGTERM信号；<br>CTRL+C退出，系统给进程发送SIGINT信号；<br>调用定时器alarm，信号是SIGALRM；<br>系统关机时，系统给每个进程发送SIGTERM信号；<br>TCP链接断开，套接字无效了，系统给进程发送 SIGPIPE信号。</p>
+</li>
+<li><p>信号需要注意的地方<br>（1）所有信号必须经过操作系统转发。<br>（2）信号就是一种软件中断，对于一般的操作系统，如果在信号处理函数的执行过程中又收到同一个进程的同一个信号，则会之间将其丢弃。我们编程时应该认为信号是不可靠的（即可能发生信号丢失）。<br>（3）信号名称是由操作系统规定好的，不同操作系统可能有差别。<br>（4）信号在实际项目中使用较少，可能出于以下原因：携带的信息量太少；中断程序的正常运行；如果信号太过频繁，进程间的强制切换会占用较多的CPU资源<br>（5）面试的时候，可能会问：你用过或者知道哪些信号？</p>
+</li>
+<li><p>套接字：进程间通过网络连接进行通信。</p>
+</li>
+<li><p>进程间通信总结<br>（1）管道：通过文件的形式来进行读写，操作过程需要遵循文件的操作过程；<br>（2）消息队列：内核实现了读写的同步问题，效率较高，但是消息队列所能容纳的数据量较小，另外系统要分配额外的内存来存储用户的数据；<br>（3）信号：实时性比较强，但会打断程序的正常运行过程，如果过多的话，内核进程的切换会消耗较多的CPU资源，另一个问题是所能携带的数据太少；<br>（4）共享内存：读写效率最高，但内部没有实现读写的同步，给编程带来一定的麻烦；<br>（5）信号量：P、V操作，不能携带数据；<br>（6）套接字：易扩展、易移植、跨平台性好， 缺点是：数据通信的效率很低，稳定性较差（受网络环境影响）。</p>
+</li>
+</ol>
+</div><div class="tags"><a href="/tags/计算机/">计算机</a></div><div class="post-nav"><a href="/2016/09/07/database/" class="pre">数据库要点</a><a href="/2016/09/04/note/" class="next">复习笔记</a></div><div data-thread-key="2016/09/05/processAndThread/" data-title="进程与线程要点" data-url="http://yanggang.site/2016/09/05/processAndThread/" class="ds-share flat"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a href="javascript:void(0);" class="ds-more">分享到：</a></li><li><a href="javascript:void(0);" data-service="weibo" class="ds-weibo">微博</a></li><li><a href="javascript:void(0);" data-service="qzone" class="ds-qzone">QQ空间</a></li><li><a href="javascript:void(0);" data-service="qqt" class="ds-qqt">腾讯微博                     </a></li><li><a href="javascript:void(0);" data-service="wechat" class="ds-wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div data-thread-key="2016/09/05/processAndThread/" data-title="进程与线程要点" data-url="http://yanggang.site/2016/09/05/processAndThread/" data-author-key="1" class="ds-thread"></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/emotion/">emotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/technology/">technology</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/计算机/" style="font-size: 15px;">计算机</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/平凡/" style="font-size: 15px;">平凡</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/interview/">腾讯面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/11/networkProgramming/">网络编程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/09/compiling/">编译过程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/07/database/">数据库要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/05/processAndThread/">进程与线程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/04/note/">复习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/03/dataStructure/">数据结构要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/01/c/">C语言要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/26/ordinary-road/">平凡之路</a></li></ul></div><div class="widget"><div class="comments-title"><i class="fa fa-comment-o"> 最近评论</i></div><div data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城" target="_blank">屠城</a><ul></ul><a href="http://ibruce.info/" title="不如" target="_blank">不如</a><ul></ul><a href="http://coderlin.coding.me/" title="Edgar的博客" target="_blank">Edgar的博客</a><ul></ul><a href="https://www.the5fire.com/" title="the5fire的技术博客" target="_blank">the5fire的技术博客</a><ul></ul><a href="http://www.cnblogs.com/china9117/" title="我的博客园" target="_blank">我的博客园</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2016 <a href="/." rel="nofollow">东坡烟尘.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script>var duoshuoQuery = {short_name:'yanggang0055'};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
