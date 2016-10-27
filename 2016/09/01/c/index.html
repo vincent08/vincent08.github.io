@@ -45,7 +45,7 @@
 </li>
 <li><p>编译预处理：<br>（1）无参数的宏定义：必须写在函数之外，宏名的有效范围是从宏定义开始到本源程序文件结束，或遇到预处理命令 #undef 时止。宏定义不但可以定义常量，还可以定义C语句和表达式，并且不做任何语法检查。<br>（2）有参数的宏定义：格式为【 #define 宏名（形参表） 字符串】，例如 #define M(a,b) a*b.<br>（3）条件编译：控制代码段是否参加编译。指令有 #if, #ifdef, #ifndef, #else, #endif.</p>
 </li>
-<li><p>int main(int argc,char <em>argv[]) ,函数中int argc和argv[]两个参数的说明：<br>（1）argc：命令行总的参数的个数,即argv中元素的个数。<br>（2）</em>argv[ ]: 字符串数组,用来存放指向你的字符串参数的指针数组,每一个元素指向一个参数：<br>argv[0]:指向程序的全路径名；<br>argv[1]:指向在DOS命令行中执行程序名后的第一个字符串；<br>argv[2]:指向第二个字符串。</p>
+<li><p><code>int main(int argc,char *argv[])</code> ,函数中int argc和argv[]两个参数的说明：<br>（1）argc：命令行总的参数的个数,即argv中元素的个数。<br>（2）*argv[ ]: 字符串数组,用来存放指向你的字符串参数的指针数组,每一个元素指向一个参数：<br>argv[0]:指向程序的全路径名；<br>argv[1]:指向在DOS命令行中执行程序名后的第一个字符串；<br>argv[2]:指向第二个字符串。</p>
 </li>
 <li><p>指针地址就是内存的一个编号，这个编号就是个整型常量，所以在32位机上用int（4字节）表示，在64位机上用long int（8字节）表示。</p>
 </li>
@@ -90,7 +90,7 @@
 <li>unsinged short类型变量加前缀usi,如<code>unsinged short usiVal</code>；</li>
 <li>如果定义一个bool类型的变量加前缀b,如<code>int bFlag; char bFlag;</code></li>
 <li>对于字符串类型char[]，如果字符串是需要以0结束符的字符串，则<code>char szCountry[11+1]</code>，这种情况下的字符数组的大小写法是字符个数+1的；如果字符串不需要以0结束符的，则<code>char sCountry[11]</code>。</li>
-<li>对于字符串类型char <em>，如果字符串是需要以0结束符的字符串，则`char </em>pszCountry<code>，这种情况下的字符数组的大小写法是字符个数+1的；如果字符串不需要以0结束符的，则</code>char *psCountry`。</li>
+<li>对于字符串类型<code>char *</code>，如果字符串是需要以0结束符的字符串，则<code>char *pszCountry</code>，这种情况下的字符数组的大小写法是字符个数+1的；如果字符串不需要以0结束符的，则<code>char *psCountry</code>。</li>
 <li>对于指针类型，如果指针变量是通过malloc动态获取内存的，则<code>int * piValPtx</code>，Ptx代表这个变量是需要动态释放内存；如果指针变来那个不是动态获取内存的，则<code>int piValPtr</code>；如果带上了Ptr或者Ptx的后缀，则前缀的p可省略。</li>
 <li>项目的命名在公司内唯一</li>
 <li>文件的命名：如果某些文件是项目唯一使用的，则文件名称加上项目名称简写加上“_”作为前缀;</li>
