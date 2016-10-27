@@ -42,6 +42,7 @@
 <p> 但是第一种方法更好，如果某目标文件依赖的源文件没有改变，就不必重新编译，可以节省时间。</p>
 </li>
 <li><p>大型项目Makefile的书写<br> （1）一个项目分模块放在不同目录下，每个目录下都会有本模块的Makefile，有一个最先被执行的Makefile。<br> （2）每个Makefile文件可能有一些相同的变量，在变量定义时前面加上export即可在全局生效，未用export的变量只在本文件有效。引用变量时用$标记。</p>
+<p> 也可以写在一个Makefile中，比如文章“多个文件目录下Makefile的写法”：<br> <a href="http://www.cnblogs.com/Anker/p/3242207.html" target="_blank" rel="external">http://www.cnblogs.com/Anker/p/3242207.html</a></p>
 </li>
 <li><p>Makefile 参考链接：<br>  <a href="http://blog.csdn.net/liang13664759/article/details/1771246" target="_blank" rel="external">http://blog.csdn.net/liang13664759/article/details/1771246</a></p>
 </li>
