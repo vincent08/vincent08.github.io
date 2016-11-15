@@ -99,6 +99,8 @@ int show_all(int a, int b=1, int c); // 不合法
 </li>
 <li><p>Iterator（迭代器）<br>C++的STL提出了迭代器的概念，这是C所没有的。在一般的使用中，iterator的行为很像C的指针。对于指针，当指向连续内存时，可以用<code>p++</code>进行操作，而对于像链表这样的结构，就不能这样了。C++使用迭代器解决了这个问题，其原理是重载了<code>++</code>运算符。迭代器很多相关方法都是用重载来实现的。<br>iterator（迭代器）又称cursor（游标），用于提供一种方法顺序访问一个聚合对象中的各个元素，而又不暴露该对象的内部表示。<br>迭代器的作用：能够让迭代器与算法不干扰地互相发展，最后又能无间隙地粘合起来。重载了<code>*</code>、<code>++</code>、<code>==</code>、<code>!=</code>、<code>=</code>运算符，用以操作复杂的数据结构。</p>
 </li>
+<li><p>关于用迭代器删除map的注意点<br>删除节点，可能会有如下代码：<br><code>map&lt;string,int&gt;::iterator my_itr;</code><br><code>for(my_itr=my_Map.begin(); my_itr!=my_Map.end(); my_itr++)</code><br><code>{</code><br><code>my_Map.erase(my_itr);</code><br><code>}</code><br>这是一种错误的写法，会导致程序出现意想不到的结果！因为map是关联容器，对于关联容器来说，如果某一个元素已经被删除，那么其对应的迭代器就失效了，不应该再被使用。<br>正确写法应该是：<br><code>map&lt;string,int&gt;::iterator my_itr;</code><br><code>for(my_itr=my_Map.begin(); my_itr!=my_Map.end(); )</code><br><code>{</code><br><code>my_Map.erase(my_itr++);</code><br><code>}</code><br>其原因是在erase的时候，<code>my_itr</code>已经指向了下一个地址。</p>
+</li>
 <li><p>泛型编程<br>C++是一种强制类型的编程语言，而STL容器却是支持任何数据类型的，这就叫泛型编程，它是一种软件复用技术。STL的泛型编程在C++中取得了极大的成功。</p>
 </li>
 <li><p>STL的六大组件<br>（1）容器（Container）：是一种数据结构，如list、vector、deque等，以模板类的形式提供。<br>（2）迭代器（Iterator）：提供了访问容器中对象的方法。常见迭代器类型：iterator、const_iterator、reverse_iterator、const_reverse_iterator。<br>（3）算法（Algorithm）：是用来操作容器中数据的模版函数。例如，STL用<code>sort()</code>来给vector中的数据排序，用<code>find()</code>来搜索list中的对象等。<br>（4）仿函数（Functor，又称函数对象，Function object）：就是重载了函数的<code>()</code>操作符。<br>（5）适配器（Adaptor）：可以理解为封装，比如queue的底层就是采用deque来实现的，它只是在deque的接口上再进行了封装。<br>（6）空间配置器（Allocator）：其主要工作包括两部分：对象的创建与销毁，内存的获取与释放。</p>
