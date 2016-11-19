@@ -116,14 +116,12 @@ int show_all(int a, int b=1, int c); // 不合法
 <li><p>调试帮助：<code>assert</code>预处理宏（行为类似于内联函数）和<code>NDEBUG</code>预处理变量（如果定义了该变量，则assert什么也不做；默认状态下没用定义，assert将执行运行时检查）。<br>assert应该仅用于验证那些确实不可能发生的事情。</p>
 </li>
 <li><p>函数指针：函数是命名了的计算单元，函数指针指向的是函数而非对象。和其他指针一样，函数指针指向某种特定类型。函数的类型由它的返回类型和形参类型共同决定，与函数名无关。声明函数指针时只要用<code>(*pf)</code>替代函数名即可，注意括号必不可少。<br>注意：如果把函数func赋值给pf指针，取地址符<code>&amp;</code>是可选的；当通过指针调用函数时，解引用符<code>*</code>也是可选的。<br>和数组类似，虽然不能定义函数类型的形参，但是可以把指向函数的指针作为形参。如果参数写的就是函数，那么它会隐式地转换成函数指针。即以下两种写法等价：<br><code>void use(const string &amp;s1, bool func(int a));</code><br><code>void use(const string &amp;s1, bool (*pf)(int a));</code></p>
-<ol>
+</li>
 <li><p>IO类（istream、ostream）属于不能被拷贝的类型，因此我们只能通过引用来传递它们。而且，因为读取和写入的操作会改变流的内容，所以两个函数接收的都是普通引用，而非对常量的引用。</p>
 </li>
 <li><p>使用<code>class</code>和<code>struct</code>定义类的唯一区别在于默认访问权限。前者默认成员都是<code>private</code>，后者默认都是<code>public</code>。</p>
 </li>
 <li><p>当我们定义变量时习惯于对其进行初始化，而非先定义、再赋值。比如构造函数尽量写成如下形式，而不是将成员变量的赋值写在函数体中。<br><code>Sales::Sales(const string &amp;s, double price):bookNo(s), bookPrice(price)</code><br>而且，如果成员是常量或者引用的话，必须采用这种方式（<strong>构造函数初始值列表</strong>）初始化。</p>
-</li>
-</ol>
 </li>
 <li><p>IO对象不可拷贝或赋值，因此我们不能将形参或返回类型设为流类型。进行IO操作的函数通常以引用方式传递和返回流。读写一个IO对象会改变其状态，因此传递和返回的引用不能是<code>const</code>的。</p>
 </li>
