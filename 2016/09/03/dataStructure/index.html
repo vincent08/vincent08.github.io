@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>数据结构要点 | 东坡烟尘</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">数据结构要点</h1><a id="logo" href="/.">东坡烟尘</a><p class="description">静能生悟，即鸟啼花落，都是化机。</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/timeline/"><i class="fa fa-calendar"> 时间线</i></a><a href="/guestbook/"><i class="fa fa-comments"> 留言</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">数据结构要点</h1><div class="post-meta">Sep 3, 2016<span> | </span><span class="category"><a href="/categories/technology/">technology</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-thread-key="2016/09/03/dataStructure/" href="/2016/09/03/dataStructure/#comments" class="ds-thread-count"></a><div class="post-content"><p>在计算机科学中，数据结构（英语：data structure）是计算机中存储、组织数据的方式。 数据结构意味着介面或封装：一个数据结构可被视为两个函数之间的介面，或者是由数据类型联合组成的存储内容的访问方法封装。 大多数数据结构都由数列、记录、可辨识联合、引用等基本类型构成。</p>
+<p>大中型服务器软件一般应考虑以下几点：</p>
+<blockquote>
+<ul>
+<li>数据的安全性</li>
+<li>结构清晰（尽量减少耦合）</li>
+<li>易扩展性</li>
+<li>易使用</li>
+<li>易维护、易升级（日志信息充分，易定位问题）</li>
+<li>数据的处理效率</li>
+<li>平台的可移植性</li>
+<li>保证性能的前提下，尽量少占用CPU和内存</li>
+</ul>
+</blockquote>
+<ol>
+<li><p>手写链表，要注意头节点、尾节点的操作，还有参数的合法性，都是得分点，不可大意。</p>
+</li>
+<li><p>队列的原理在实际项目中非常广，栈的应用多在库函数中，实际项目比较少见。</p>
+<blockquote>
+<p>经典题：如何用两个栈实现队列的功能？</p>
+</blockquote>
+</li>
+<li>实现队列有单链表和双链表两种方法。<br>单向链表实现队列可以从头部增加节点，从尾部删除节点，也可以反过来。但是必然有一个操作要遍历整个列表，效率低。因此可采用双向循环链表，减少查询链表尾节点的时间。代价是内存上需要在每个节点上增加一个指针，一个指针在32位系统上占4个字节，如果最大支持1万个节点，那么将比单向链表多占用40M空间，这点内存对于大型服务器软件来说，完全可以忽略不计。</li>
+<li><p>一般会采用三种方法来遍历一棵二叉树，前序遍历、中序遍历、后序遍历。<br>前序遍历：（1）根节点，（2）左子树所有节点，（3）右子树所有节点。（子树同样采用前序遍历）<br>中序遍历：（1）左子树所有节点，（2）根节点，（3）右子树所有节点。（子树同样采用中序遍历）<br>后序遍历：（1）左子树所有节点，（2）右子树所有节点，（3）根节点。（子树同样采用后序遍历）</p>
+</li>
+<li><p>排序二叉树（二叉查找树）<br>特点：<br>（1）左子树节点全部小于根节点的值，右子树节点全部大于根节点的值；<br>（2）没有键值相等的节点；<br>（3）子树也是排序二叉树。</p>
+</li>
+<li><p>平衡二叉树：节点左子树的高度与右子树的高度相差不超过 1<br>插入新数据可能导致二叉树不平衡，无法得到比链表更高的效率，因此需要平衡算法。当树很大的时候平衡算法很复杂。</p>
+</li>
+<li><p>二分查找算法：每次查询某数字都与数组中间的元素进行比较。</p>
+<blockquote>
+<p>面试：二分查找的递归实现和非递归实现（要熟练）。</p>
+</blockquote>
+</li>
+<li><p>运行查找算法的前提条件：（1）数据必须要有序，（2）数据必须是放在连续的存储空间里面的。</p>
+</li>
+<li><p>哈希查找<br>哈希散列算法：按照某种规律把具有相同特性的数据进行分组，这样就有很多组了，或者说很多列了，而这些列之间是没有任何关系的，所以叫散列。<br>比如：把学生按学号除以11的余数不同，将其分为11个组。<br>哈希表中存放列表地址的数组称为桶（bucket）。比起链表算法，哈希算法需要多用一些存储空间，这个存储空间就是桶的存储空间。</p>
+</li>
+<li><p>静态查找表、动态查找表</p>
+</li>
+<li><p>异或操作交换两个变量的数据：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">a[i] = a[i] ^ a[i+1];</div><div class="line">a[i+1] = a[i] ^ a[i+1];</div><div class="line">a[i] = a[i] ^ a[i+1];</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>当然，交换变量值也可以用以下代码实现：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">a = a + b;</div><div class="line">b = a - b;</div><div class="line">a = a - b;</div></pre></td></tr></table></figure></p>
+<p>但是，这种做法有个致命缺陷，就是越界问题。软件工程师在使用加减乘除时要时刻注意是否存在越界问题。</p>
+<ol>
+<li><p>冒泡排序、选择排序、快速排序</p>
+</li>
+<li><p>一般来说，二分算法在笔试里经常出现，而哈希算法在第二轮面试里经常出现。二分算法查找效率很高 log2(n)，但必须保证整个数据在内存空间是连续的，当删除一个数据时，需要把后面的数据都往前挪一个位置，当数据多的时候比较消耗CPU。所以，二分算法适合那些不需要经常增删改的数据，比如全国行政区划列表。而哈希算法适合那些经常增删改的数据，对哈希表操作类似于对链表进行操作，虽然其效率比二分差，但总体来说还是不错的。</p>
+</li>
+<li><p>字节对齐<br>基本是面试必考题。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">typedef struct employee&#123;</div><div class="line">    char sex;</div><div class="line">    int length;</div><div class="line">    char name[10];</div><div class="line">&#125; em_st;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>请问<code>sizeof(em_st)</code>的值是多少？很多人会回答15，其实并不是。<br>在定义的数据结构中，如果出现了三种基本的数据类型 char, short int , int ,我们就以占用内存最大的那个作为字节对齐的方式。比如只有char、short int时，就以2字节对齐。只有char，就以1字节对齐。</p>
+<ol>
+<li>结构成员变量中的位<br>有时候为了节省空间，结构体中的成员变量是按位操作的，比如<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">typedef struct test&#123;</div><div class="line">    char a:5;   // 第一字节的前5位</div><div class="line">    char b:3;   // 第一字节的后3位</div><div class="line">    char c:8;   // 第二字节的前8位</div><div class="line">    char d:2;   // 第三字节的前2位</div><div class="line">    char e:6;</div><div class="line">    char f:7;</div><div class="line">    char g:1;</div><div class="line">&#125; test_em;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>IP地址就可以采用这种形式来定义，比字符串更省空间。</p>
+<ol>
+<li><p>更改系统默认的字节对齐<br>代码前加上 <code>pragma pack(4)</code> 就表示采用4字节对齐。当然，实际情况与系统、CPU、编译器版本都有关。一般记住默认以4字节对齐即可。</p>
+</li>
+<li><p><code>container_of</code>宏<br>内核最经典的宏。<br>作用：从结构体成员变量的指针获取整个结构体的指针。</p>
+</li>
+</ol>
+</div><div class="tags"><a href="/tags/计算机/">计算机</a></div><div class="post-nav"><a href="/2016/09/05/processAndThread/" class="pre">进程与线程要点</a><a href="/2016/09/01/c/" class="next">C语言要点</a></div><div data-thread-key="2016/09/03/dataStructure/" data-title="数据结构要点" data-url="http://yanggang.site/2016/09/03/dataStructure/" class="ds-share flat"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a href="javascript:void(0);" class="ds-more">分享到：</a></li><li><a href="javascript:void(0);" data-service="weibo" class="ds-weibo">微博</a></li><li><a href="javascript:void(0);" data-service="qzone" class="ds-qzone">QQ空间</a></li><li><a href="javascript:void(0);" data-service="qqt" class="ds-qqt">腾讯微博                     </a></li><li><a href="javascript:void(0);" data-service="wechat" class="ds-wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div data-thread-key="2016/09/03/dataStructure/" data-title="数据结构要点" data-url="http://yanggang.site/2016/09/03/dataStructure/" data-author-key="1" class="ds-thread"></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yanggang.site"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/emotion/">emotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/technology/">technology</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/计算机/" style="font-size: 15px;">计算机</a> <a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/网络/" style="font-size: 15px;">网络</a> <a href="/tags/平凡/" style="font-size: 15px;">平凡</a> <a href="/tags/参考/" style="font-size: 15px;">参考</a> <a href="/tags/史铁生/" style="font-size: 15px;">史铁生</a> <a href="/tags/人生/" style="font-size: 15px;">人生</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/11/12/cpp/">C++ 语言要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/01/iscsi/">iSCSI项目要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/shitiesheng2/">史铁生：好运设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/24/shitiesheng1/">史铁生：相逢何必曾相识</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/reference/">技术文章参考链接</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/23/interview/">腾讯面试题</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/01/note/">复习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/11/networkProgramming/">网络编程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/09/compiling/">编译过程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/07/database/">数据库要点</a></li></ul></div><div class="widget"><div class="comments-title"><i class="fa fa-comment-o"> 最近评论</i></div><div data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城" target="_blank">屠城</a><ul></ul><a href="http://ibruce.info/" title="不如" target="_blank">不如</a><ul></ul><a href="http://coderlin.coding.me/" title="Edgar的博客" target="_blank">Edgar的博客</a><ul></ul><a href="https://www.the5fire.com/" title="the5fire的技术博客" target="_blank">the5fire的技术博客</a><ul></ul><a href="http://www.cnblogs.com/china9117/" title="我的博客园" target="_blank">我的博客园</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2016 <a href="/." rel="nofollow">东坡烟尘.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script>var duoshuoQuery = {short_name:'yanggang0055'};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
