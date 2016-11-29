@@ -40,7 +40,7 @@
 </li>
 <li><p>异或操作交换两个变量的数据：</p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a<span class="string">[i]</span> = a<span class="string">[i]</span> ^ a<span class="string">[i+1]</span>;</div><div class="line">a<span class="string">[i+1]</span> = a<span class="string">[i]</span> ^ a<span class="string">[i+1]</span>;</div><div class="line">a<span class="string">[i]</span> = a<span class="string">[i]</span> ^ a<span class="string">[i+1]</span>;</div></pre></td></tr></table></figure>
-<p>当然，交换变量值也可以用以下代码实现：</p>
+<p>但要注意，如果两个变量值相等则不能使用此方法，因为异或会得到0.<br>当然，交换变量值也可以用以下代码实现：</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">a</span> = a + b;</div><div class="line"><span class="attribute">b</span> = a - b;</div><div class="line"><span class="attribute">a</span> = a - b;</div></pre></td></tr></table></figure>
 <p>但是，这种做法有个致命缺陷，就是越界问题。软件工程师在使用加减乘除时要时刻注意是否存在越界问题。</p>
 </li>
