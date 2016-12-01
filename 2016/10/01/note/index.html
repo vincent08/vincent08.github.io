@@ -32,8 +32,13 @@
 <li><p>通过fork使python脚本后台运行<br><a href="http://www.cnblogs.com/MikeZhang/p/pythonDeamon_20150307.html" target="_blank" rel="external">http://www.cnblogs.com/MikeZhang/p/pythonDeamon_20150307.html</a></p>
 </li>
 </ol>
-<p>#</p>
 <h1 id="平台项目（含db、cc、telnet、log、msg等模块）相关笔记"><a href="#平台项目（含db、cc、telnet、log、msg等模块）相关笔记" class="headerlink" title="平台项目（含db、cc、telnet、log、msg等模块）相关笔记"></a>平台项目（含db、cc、telnet、log、msg等模块）相关笔记</h1><ol>
+<li><p>对于一个软件项目，哪些功能是基本的？<br>日志功能，telnet管理功能（或自己实现TCP编程代替telnet），模块间的交互功能，定时器功能格，配置文件功能，各个模块内存的分配等。一般把这些功能归属于一个大的模块中，称之为平台模块。<br>把各个业务都要使用的功能放在平台层来实现，可以节省开发成本，增加系统稳定性。有时把数据库调用、网络传输等模块也放在平台层。</p>
+</li>
+<li><p>简单说明一下平台项目中后台维护系统等实现过程？<br>（1）后台维护系统是通过命令的方式来执行相关操作的。<br>（2）命令分两种，一种是状态命令，一种是普通命令。普通命令必须归属于一个状态命令下，通常一个子模块分配一个状态命令。<br>（3）系统在启动的过程中，就把状态命令注册好，各个模块自己可以注册自己的状态命令、普通命令，而无需平台组干预。这样就可以降低各个模块之间的耦合度。注册过程在各模块自己的init函数中实现。<br>（4）子模块支持再划分，即子模块的子模块都可以有自己的命令。</p>
+</li>
+</ol>
+<ol>
 <li><p>C语言宏定义中的 <code>## __VA_ARGS__</code><br> <a href="http://www.cnblogs.com/alexshi/archive/2012/03/09/2388453.html" target="_blank" rel="external">http://www.cnblogs.com/alexshi/archive/2012/03/09/2388453.html</a></p>
 </li>
 <li><p><code>strchr()</code>函数：查找某字符在字符串中首次出现的位置</p>
