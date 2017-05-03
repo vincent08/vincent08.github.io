@@ -376,32 +376,16 @@
       
         
           
-            <ol>
-<li>使用SELECT子句进行多表查询<br>SELECT 字段名 FROM 表1，表2 … WHERE 表1.字段 = 表2.字段 AND 其它查询条件<br>SELECT a.id,a.name,a.address,a.date,b.math,b.english,b.chinese FROM tb_demo065_tel AS b,tb_demo065 AS a WHERE a.id=b.id<br>注:在上面的的代码中，以两张表的id字段信息相同作为条件建立两表关联，但在实际开发中不应该这样使用，最好用主外键约束来实现</li>
-</ol>
-<p>二使用表的别名进行多表查询<br>如:SELECT a.id,a.name,a.address,b.math,b.english,b.chinese FROM tb_demo065  a,tb_demo065_tel  b WHERE a.id=b.id AND b.id=’$_POST[textid]’<br>SQL语言中，可以通过两种方式为表指定别名<br>第一种是通过关键字AS指定,如<br>SELECT a.id,a.name,a.address,b.math,b.english,b.chinese FROM tb_demo065 AS a,tb_demo065_tel AS b WHERE a.id=b.id<br>第二种是在表名后直接加表的别名实现<br>SELECT a.id,a.name,a.address,b.math,b.english,b.chinese FROM tb_demo065  a,tb_demo065_tel  b WHERE a.id=b.id<br>使用表的别名应注意几下几点<br>(1)别名通常是一个缩短了的表名，用于在连接中引用表中的特定列，如果连接中的多个表中有相同的名称列存在，必须用表名或表的别名限定列名<br>(2)如果定义了表的别名就不能再使用表名</p>
-<p>三合并多个结果集<br>SQL语言中，可以通过UNION 或 ALL将多个SELECT语句的查询结果合并输出，这两个关键字的使用说明如下：<br>UNION:利用该关键字可以将多个SELECT 语句的查询结果合并输出，并删除重复行<br>ALL:利用该关键字可以将多个SELECT 语句的查询结果合并输出，但不会删除重复行<br>在使用UNION或ALL关键字将多个表合并输出时，查询结果必须具有相同的结构并且数据类型必须兼容,另外使用UNION时两张表的字段数量也必须相同，否则会提示SQL语句有错误。<br>e.x:SELECT id,name,pwd FROM tb_demo067 UNION SELECT  uid,price,date FROM tb_demo067_tel</p>
-<p>四简单嵌套查询<br>子查询:子查询是一个SELECT查询，返回单个值且嵌套在SELECT、INSERT、UPDATE和DELETE语句或其它查询语句中，任何可以使用表达式的地方都可以使用子查询.<br>SELECT id,name,sex,date FROM tb_demo068 WHERE id in(SELECT id FROM tb_demo068 WHERE id=’$_POST[test]’)<br>内连接：把查询结果作为WHERE子句的查询条件即称为内连接</p>
-<p>五复杂的嵌套查询<br>多表之间的嵌套查询可以通过谓词IN实现，语法格式如下:<br>test_expression[NOT] IN{<br> subquery<br>}<br>参数说明：test_expression指SQL表达式，subquery包含某结果集的子查询<br>多表嵌套查询的原理:无论是多少张表进行嵌套，表与表之间一定存在某种关联，通过WHERE子句建立此种关联实现查询</p>
-<p>六嵌套查询在查询统计中的应用<br>实现多表查询时，可以同时使用谓词ANY、SOME、ALL,这些谓词被称为定量比较谓词，可以和比较运算符联合使用，判断是否全部返回值都满足搜索条件.SOME和ANY谓词是存在量的，只注重是否有返回值满足搜索条件，这两个谓词的含义相同，可以替换使用;ALL谓词称为通用谓词，它只关心是否有谓词满足搜索要求.<br>SELECT * FROM tb_demo069_people WHERE uid IN(SELECT deptID FROM tb_demo069_dept WHERE deptName=’$_POST[select]’)<br>SELECT a.id,a.name FROM tb_demo067 AS a WHERE id&lt;3)</p>
-<blockquote>
-<p>ANY 大于子查询中的某个值 </p>
-<p>=ANY 大于等于子查询中的某个值<br>&lt;=ANY 小于等于子查询中的某个值<br>=ANY 等于子查询中的某个值<br>!=ANY或&lt;&gt;ANY 不等于子查询中的某个值<br>ALL 大于子查询中的所有值  </p>
-<p>=ALL 大于等于子查询中的所有值<br>&lt;=ALL 小于等于子查询中的所有值<br>=ALL 等于子查询中的所有值<br>!=ALL或&lt;&gt;ALL 不等于子查询中的所有值</p>
-</blockquote>
-<p>七.使用子查询作派生的表<br>在实际项目开发过程中经常用到从一个信息较为完善的表中派生出一个只含有几个关键字段的信息表，通过子查询就可以来实现这一目标,如<br>SELECT people.name,people.chinese,people.math,people.english FROM (SELECT name,chinese,math,english FROM tb_demo071) AS people<br>注:子查询应遵循以下规则:<br>(1)由比较运算符引入的内层子查询只包含一个表达式或列名，在外层语句中的WHERE子句内命名的列必须与内层子查询命名的列兼容<br>(2)由不可更改的比较运算符引入的子查询(比较运算符后面不跟关键字ANY或ALL)不包括GROUP BY 或 HAVING子句，除非预先确定了成组或单个的值<br>(3)用EXISTS引入的SELECT列表一般都由*组成，不必指定列名<br>(4)子查询不能在内部处理其结果</p>
-<p>八使用子查询作表达式<br>SELECT (SELECT AVG(chinese)FROM tb_demo071),(SELECT AVG(english)FROM tb_demo071),(SELECT AVG(math)FROM tb_demo071) FROM tb_demo071<br>注：在使用子查询时最好为列表项取个别名，这样可以方便用户在使用mysql_fetch_array()函数时为表项赋值,如<br>SELECT (SELECT AVG(chinese) FROM tb_demo071) AS yuwen ,(SELECT AVG(english) FROM tb_demo071) AS yingyu,(SELECT AVG(math) FROM tb_demo071) AS shuxue FROM tb_demo071</p>
-<p>九使用子查询关联数据<br>SELECT * FROM tb_demo072_student WHERE id=(SELECT id FROM tb_demo072_class WHERE className = ‘$_POST[text]’)</p>
-<p>十多表联合查询<br>利用SQL语句中的UNION，可以将不同表中符合条件的数据信息显示在同一列中。<br>e.x:SELECT <em> FROM tb_demo074_student UNION SELECT </em> FROM tb_demo074_fasten<br>注:使用UNION时应注意以下两点：<br>(1)在使用UNION运算符组合的语句中，所有选择列表的表达式数目必须相同，如列名、算术表达式及聚合函数等<br>(2)在每个查询表中，对应列的数据结构必须一样。</p>
-<p>十一对联合后的结果进行排序<br>为了UNION的运算兼容，要求所有SELECT语句都不能有ORDER BY语句，但有一种情况例外，那就是在最后一个SELECT语句中放置ORDER BY 子句实现结果的最终排序输出。<br>e.x:SELECT <em> FROM tb_demo074_student UNION SELECT </em> FROM tb_demo074_fasten ORDER BY id<br>使用UNION条件上相对比较苛刻，所以使用此语句时一定要注意两个表项数目和字段类型是否相同<br>十二条件联合语句<br>SELECT <em> FROM tb_demo076_BEIJING GROUP BY name HAVING name=’人民邮电出版社’ OR name=’机械工业出版社’ UNION SELECT </em> FROM tb_demo076_BEIJING GROUP BY name HAVING name &lt;&gt;’人民邮电出版社’ AND name &lt;&gt;’机械工业再版社’ ORDER BY id<br>上面语句应用了GROUP BY分组语句和HAVING语句实现条件联合查询。其实现目的是先保证将’人民邮电出版社’和’机械工业出版社’始终位于名单最前列，然后再输出其它的出版社</p>
-<p>十三简单内连接查询<br>SELECT filedlist FROM table1 [INNER] JOIN table2 ON table1.column1 = table2.column1<br>其中，filedlist是要显示的字段,INNER表示表之间的连接方式为内连接，table1.column1=table2.column1用于指明两表间的连接条件，如:<br>SELECT a.name,a.address,a.date,b.chinese,b.math,b.english FROM tb_demo065 AS a INNER JOIN tb_demo065_tel AS b on a.id=b.id</p>
-<p>十四复杂内连接查询<br>复杂的内连接查询是在基本的内连接查询的基础上再附加一些查询条件，如:<br>SELECT a.name,a.address,a.date,b.chinese,b.math,b.english FROM tb_demo065 AS a INNER JOIN tb_demo065_tel AS b on a.id=b.id WHERE b.id=(SELECT id FROM  tb_demo065 WHERE tb_demo065.name=’$_POST[text]’)<br>总之，实现表与表之间的关联的本质是两表之间存在共同的数据项或者相同的数据项，通过WHERE 子句或内连接INNER JOIN … ON 语句将两表连接起来，实现查询</p>
-<p>十五使用外连接实现多表联合查询<br>(1)LEFT OUTER JOIN表示表之间通过左连接方式相互连接，也可简写成LEFT JOIN,它是以左侧的表为基准故称左连接，左侧表中所有信息将被全部输出，而右侧表信息则只会输出符合条件的信息，对不符合条件的信息则返回NULL<br>e.x:SELECT a.name,a.address,b.math,b.english FROM tb_demo065 AS A LEFT OUTER JOIN tb_demo065_tel AS b ON a.id=b.id<br>(2)RIGHT OUTER JOIN表示表之间通过右连接方式相互连接，也可简写成RIGHT JOIN,它是以右侧的表为基准故称右连接，右侧表中所有信息将被全部输出，而左侧表信息则只会输出符合条件的信息，对不符合条件的信息则返回NULL<br>E.X:SELECT a.name,a.address,b.math,b.english FROM tb_demo065 AS A RIGHT OUTER JOIN tb_demo065_tel AS b ON a.id=b.id</p>
-<p>十六利用IN或NOTIN关键字限定范围<br>e.x:SELECT * FROM tb_demo083 WHERE code IN(SELECT code FROM tb_demo083 WHERE code BETWEEN ‘$_POST[text1]’ AND ‘$_POST[text2]’)<br>利用IN可指定在范围内查询，若要求在某范围外查询可以用NOT IN代替它</p>
-<p>十七由IN引入的关联子查询<br>e.x:SELECT * FROM tb_demo083 WHERE code IN(SELECT code FROM tb_demo083 WHERE code = ‘$_POST[text]’)</p>
-<p>十八利用HAVING语句过滤分组数据<br>HAVING子句用于指定组或聚合的搜索条件，HAVING通常与GROUP BY 语句一起使用，如果SQL语句中不含GROUP BY子句，则HAVING的行为与WHERE子句一样.<br>e.x:SELECT name,math FROM tb_demo083 GROUP BY id HAVING math &gt; ‘95’</p>
-
           
+使用SELECT子句进行多表查询SELECT 字段名 FROM 表1，表2 … WHERE 表1.字段 = 表2.字段 AND 其它查询条件SELECT a.id,a.name,a.address,a.date,b.math,b.english,b.chinese FROM tb_demo065_
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/25/mysql-tutorial/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -541,46 +525,18 @@
       
         
           
-            <p>SVN是Subversion的简称，是一个开放源代码的版本控制系统，相较于RCS、CVS，它采用了分支管理系统，它的设计目标就是取代CVS。互联网上很多版本控制服务已从CVS迁移到Subversion。说得简单一点SVN就是用于多个人共同开发同一个项目，共用资源的目的。</p>
-<ol>
-<li><p>检出</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">svn co <span class="string">http:</span><span class="comment">//路径(目录或文件的全路径)　[本地目录全路径] --username 用户名 --password 密码</span></div><div class="line">svn co <span class="string">svn:</span><span class="comment">//路径(目录或文件的全路径)　[本地目录全路径] --username 用户名 --password 密码</span></div><div class="line">svn checkout <span class="string">http:</span><span class="comment">//路径(目录或文件的全路径)　[本地目录全路径] --username　用户名</span></div><div class="line">svn checkout <span class="string">svn:</span><span class="comment">//路径(目录或文件的全路径)　[本地目录全路径] --username　用户名</span></div></pre></td></tr></table></figure>
-<p>注：<br>如果不带<code>--password</code>参数传输密码的话，会提示输入密码，建议不要用明文的<code>--password</code>选项。<br>其中<code>username</code>与<code>password</code>前是两个短线，不是一个。<br>不指定本地目录全路径，则检出到当前目录下。<br>例子：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">svn co <span class="string">svn:</span><span class="comment">//localhost/测试工具 /home/testtools --username wzhnsc</span></div><div class="line">svn co <span class="string">http:</span><span class="comment">//localhost/test/testapp --username wzhnsc</span></div><div class="line">svn checkout <span class="string">svn:</span><span class="comment">//localhost/测试工具 /home/testtools --username wzhnsc</span></div><div class="line">svn <span class="string">checkouthttp:</span><span class="comment">//localhost/test/testapp --username wzhnsc</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>导出(导出一个干净的不带<code>.svn</code>文件夹的目录树)</p>
-<figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="title">svn</span> ex<span class="keyword">port</span> [-r 版本号] http://路径(目录或文件的全路径) [本地目录全路径]　<span class="comment">--username　用户名</span></div><div class="line">svn export [-r 版本号] svn://路径(目录或文件的全路径) [本地目录全路径]　<span class="comment">--username　用户名</span></div><div class="line">svn export 本地检出的(即带有.svn文件夹的)目录全路径  要导出的本地目录全路径</div></pre></td></tr></table></figure>
-<p>注：<br>第一种从版本库导出干净工作目录树的形式是指定URL。<br>如果指定了修订版本号，会导出相应的版本，如果没有指定修订版本，则会导出最新的，导出到指定位置。<br>如果省略<strong>本地目录全路径</strong>，URL的最后一部分会作为本地目录的名字。<br>第二种形式是指定<strong>本地检出的目录全路径</strong>到<strong>要导出的本地目录全路径</strong>，所有的本地修改将会保留，但是不在版本控制下(即没提交的新文件，因为.svn文件夹里没有与之相关的信息记录)的文件不会拷贝。<br>例子：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">svn <span class="keyword">export</span> svn:<span class="comment">//localhost/测试工具 /home/testtools --username wzhnsc</span></div><div class="line">svn <span class="keyword">export</span> svn:<span class="comment">//localhost/test/testapp --username wzhnsc</span></div><div class="line">svn <span class="keyword">export</span> /<span class="built_in">home</span>/testapp /<span class="built_in">home</span>/testtools</div></pre></td></tr></table></figure>
-</li>
-<li><p>添加新文件 </p>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">svn</span>　<span class="keyword">add　</span>文件名</div></pre></td></tr></table></figure>
-<p>注：<br>告诉SVN服务器要添加文件了，还要用svn commint -m真实的上传上去！<br>例子：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">svn add test<span class="selector-class">.php</span> ＜－ 添加test<span class="selector-class">.php</span> </div><div class="line">svn commit -m “添加我的测试用test.php“ test<span class="selector-class">.php</span></div><div class="line">svn add *<span class="selector-class">.php</span> ＜－ 添加当前目录下所有的php文件</div><div class="line">svn commit -m “添加我的测试用全部php文件“ *.php</div></pre></td></tr></table></figure>
-</li>
-<li><p>提交</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">svn commit -m　“提交备注信息文本“　<span class="string">[-N]</span>　<span class="string">[--no-unlock]</span>　文件名</div><div class="line">svn ci -m　“提交备注信息文本“　<span class="string">[-N]</span>　<span class="string">[--no-unlock]</span>　文件名</div></pre></td></tr></table></figure>
-<p>必须带上<code>-m</code>参数，参数可以为空，但是必须写上<code>-m</code><br>例子：</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">svn commit -<span class="keyword">m</span> “提交当前目录下的全部在版本控制下的文件“ *  <span class="comment">// 注意这个*表示全部文件</span></div><div class="line">svn commit -<span class="keyword">m</span> “提交我的测试用<span class="keyword">test</span>.php“ <span class="keyword">test</span>.php</div><div class="line">svn commit -<span class="keyword">m</span> “提交我的测试用<span class="keyword">test</span>.php“ -<span class="keyword">N</span> --<span class="keyword">no</span>-unlock <span class="keyword">test</span>.php <span class="comment">// 保持锁就用–no-unlock开关</span></div><div class="line">svn <span class="keyword">ci</span> -<span class="keyword">m</span> “提交当前目录下的全部在版本控制下的文件“ * <span class="comment">// 注意这个*表示全部文件</span></div><div class="line">svn <span class="keyword">ci</span> -<span class="keyword">m</span> “提交我的测试用<span class="keyword">test</span>.php“ <span class="keyword">test</span>.php</div><div class="line">svn <span class="keyword">ci</span> -<span class="keyword">m</span> “提交我的测试用<span class="keyword">test</span>.php“ -<span class="keyword">N</span> --<span class="keyword">no</span>-unlock <span class="keyword">test</span>.php <span class="comment">// 保持锁就用–no-unlock开关</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>更新文件<br>svn　update<br>svn　update　-r　修正版本　文件名<br>svn　update　文件名<br>例子：<br>svn update ＜－ 后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本<br>svn update -r 200 test.cpp ＜－ 将版本库中的文件 test.cpp 还原到修正版本（revision）200<br>svn update test.php ＜－ 更新与版本库同步。<br>　　　　　　　　　　　 提交的时候提示过期冲突，需要先 update 修改文件，<br>　　　　　　　　　　　 然后清除svn resolved，最后再提交commit。</p>
-</li>
-</ol>
-<p>6、删除文件<br>svn　delete　svn://路径(目录或文件的全路径) -m “删除备注信息文本”<br>推荐如下操作：<br>svn　delete　文件名<br>svn　ci　-m　“删除备注信息文本”<br>例子：<br>svn delete svn://localhost/testapp/test.php -m “删除测试文件test.php”<br>推荐如下操作：<br>svn delete test.php<br>svn ci -m “删除测试文件test.php”</p>
-<p>７、加锁/解锁<br>svn　lock　-m　“加锁备注信息文本“　[–force]　文件名<br>svn　unlock　文件名<br>例子：<br>svn lock -m “锁信测试用test.php文件“ test.php<br>svn unlock test.php</p>
-<p>8、比较差异<br>svn　diff　文件名<br>svn　diff　-r　修正版本号m:修正版本号n　文件名<br>例子：<br>svn diff test.php＜－ 将修改的文件与基础版本比较<br>svn diff -r 200:201 test.php＜－ 对 修正版本号200 和 修正版本号201 比较差异</p>
-<p>9、查看文件或者目录状态<br>svn st 目录路径/名<br>svn status 目录路径/名＜－ 目录下的文件和子目录的状态，正常状态不显示<br>　　　　　　　　　　　　　【?：不在svn的控制中；  M：内容被修改；C：发生冲突；<br>　　　　　　　　　　　　　　A：预定加入到版本库；K：被锁定】<br>svn  -v 目录路径/名<br>svn status -v 目录路径/名＜－ 显示文件和子目录状态<br>　　　　　　　　　　　　　　【第一列保持相同，第二列显示工作版本号，<br>　　　　　　　　　　　　　　　第三和第四列显示最后一次修改的版本号和修改人】<br>注：svn status、svn diff和 svn revert这三条命令在没有网络的情况下也可以执行的，<br>　　原因是svn在本地的.svn中保留了本地版本的原始拷贝。 </p>
-<p>10、查看日志<br>svn　log　文件名<br>例子：<br>svn log test.php＜－ 显示这个文件的所有修改记录，及其版本号的变化 </p>
-<p>11、查看文件详细信息<br>svn　info　文件名<br>例子：<br>svn info test.php</p>
-<p>12、SVN 帮助<br>svn　help ＜－ 全部功能选项<br>svn　help　ci ＜－ 具体功能的说明</p>
-<p>13、查看版本库下的文件和目录列表<br>svn　list　svn://路径(目录或文件的全路径)<br>svn　ls　svn://路径(目录或文件的全路径)<br>例子：<br>svn list svn://localhost/test<br>svn ls svn://localhost/test ＜－ 显示svn://localhost/test目录下的所有属于版本库的文件和目录 </p>
-<p>14、创建纳入版本控制下的新目录<br>svn　mkdir　目录名<br>svn　mkdir　-m　“新增目录备注文本”　<a href="http://目录全路径" target="_blank" rel="external">http://目录全路径</a><br>例子：<br>svn mkdir newdir<br>svn mkdir -m “Making a new dir.” svn://localhost/test/newdir<br>注：添加完子目录后，一定要回到根目录更新一下，不然在该目录下提交文件会提示“提交失败”<br>svn update<br>注：如果手工在checkout出来的目录里创建了一个新文件夹newsubdir，<br>　　再用svn mkdir newsubdir命令后，SVN会提示：<br>　　svn: 尝试用 “svn add”或 “svn add –non-recursive”代替？<br>　　svn: 无法创建目录“hello”: 文件已经存在<br>　　此时，用如下命令解决：<br>　　svn add –non-recursive newsubdir<br>　　在进入这个newsubdir文件夹，用ls -a查看它下面的全部目录与文件，会发现多了：.svn目录<br>　　再用 svn mkdir -m “添hello功能模块文件” svn://localhost/test/newdir/newsubdir 命令，<br>　　SVN提示：<br>　　svn: File already exists: filesystem ‘/data/svnroot/test/db’, transaction ‘4541-1’,<br>　　path ‘/newdir/newsubdir ‘</p>
-<p>15、恢复本地修改<br>svn　revert　[–recursive]　文件名<br>注意: 本子命令不会存取网络，并且会解除冲突的状况。但是它不会恢复被删除的目录。<br>例子：<br>svn revert foo.c ＜－ 丢弃对一个文件的修改<br>svn revert –recursive . ＜－恢复一整个目录的文件，. 为当前目录 </p>
-<p>16、把工作拷贝更新到别的URL<br>svn　switch　<a href="http://目录全路径" target="_blank" rel="external">http://目录全路径</a>　本地目录全路径<br>例子：<br>svn switch <a href="http://localhost/test/456" target="_blank" rel="external">http://localhost/test/456</a> . ＜－ (原为123的分支)当前所在目录分支到localhost/test/456</p>
-<p>17、解决冲突<br>svn　resolved　[本地目录全路径]<br>例子：<br>$ svn update<br>C foo.c<br>Updated to revision 31.<br>如果你在更新时得到冲突，你的工作拷贝会产生三个新的文件：<br>$ ls<br>foo.c<br>foo.c.mine<br>foo.c.r30<br>foo.c.r31<br>当你解决了foo.c的冲突，并且准备提交，运行svn resolved让你的工作拷贝知道你已经完成了所有事情。<br>你可以仅仅删除冲突的文件并且提交，但是svn resolved除了删除冲突文件，还修正了一些记录在工作拷贝管理区域的记录数据，所以我们推荐你使用这个命令。</p>
-<p>18、不checkout而查看输出特定文件或URL的内容<br>svn　cat　<a href="http://文件全路径" target="_blank" rel="external">http://文件全路径</a><br>例子：<br>svn cat <a href="http://localhost/test/readme.txt" target="_blank" rel="external">http://localhost/test/readme.txt</a><br>19、新建一个分支copy<br>svn copy branchA branchB  -m “make B branch” // 从branchA拷贝出一个新分支branchB<br>20、合并内容到分支merge<br>svn merge branchA branchB  // 把对branchA的修改合并到分支branchB</p>
+          SVN是Subversion的简称，是一个开放源代码的版本控制系统，相较于RCS、CVS，它采用了分支管理系统，它的设计目标就是取代CVS。互联网上很多版本控制服务已从CVS迁移到Subversion。说得简单一点SVN就是用于多个人共同开发同一个项目，共用资源的目的。
 
-          
+检出
+1234svn co
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/25/svn-tutorial/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -720,144 +676,18 @@
       
         
           
-            <p>  C++是C语言的继承，它既可以进行C语言的过程化程序设计，又可以进行以抽象数据类型为特点的基于对象的程序设计，还可以进行以继承和多态为特点的面向对象的程序设计。因而C++就适应的问题规模而论，大小由之。</p>
-<p>  近日复习C++语言基础，将其要点记录于此。</p>
-<ol>
-<li><p>面向对象的编程思想<br>通俗地讲，用C语言描述一个系统时，我们会说这个系统有哪些模块，这个模块的具体功能是什么，最后数据是怎样通过这些模块得到处理的。而用面向对象来描述一个系统时，需要从另一个角度来说，我这个系统有哪些成员变量，然后我是如何操作这些成员变量。</p>
-</li>
-<li><p>面向对象的编程方法具有四个基本特征：<br>抽象、封装、继承、多态性<br>类的基本思想是<strong>数据抽象</strong>和<strong>封装</strong>。数据抽象是一种依赖于<strong>接口</strong>和<strong>实现</strong>分离的编程技术。封装实现了类的接口和实现的分离，隐藏了类的实现细节。<br>封装有两个重要的优点：一是确保用户代码不会无意间破坏封装对象的状态；二是被封装的类的具体实现细节可以随时改变，而无需调整用户级别的代码。</p>
-</li>
-<li><p><code>std::endl</code>的作用是结束当前行，并且将关联的缓存区的数据写到IO设备上去。<br><code>std::cerr</code>：告警或错误信息<br><code>std::clog</code>：一般性的日志信息<br>使用using声明命名空间之后，就可以直接使用名字了。</p>
-</li>
-<li><p>C++中，动态内存的申请方法如下：<br>（1）申请单个对象：<br>   <code>数据类型 指针变量 ＝ new 数据类型; // int *pInt = new int</code><br>   释放：<br>   <code>delete 指针变量</code><br>（2）申请数组对象：<br>   <code>数据类型 指针变量 ＝ new 数据类型[个数]; // int *pInt = new int[100]</code><br>   释放：<br>   <code>delete []指针变量</code></p>
-</li>
-<li><p>引用：在C++中引入了引用，这是C语言中所没有的。例如，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">   <span class="keyword">int</span> a=<span class="number">100</span>;</div><div class="line">   <span class="keyword">int</span> &amp;j=a; <span class="comment">//这就是引用</span></div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"j="</span>&lt;&lt;j&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">   <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可理解为，引用为对象（包括变量）起了一个别名。其原理是：定义引用时，程序会把引用和初始化的对象绑定在一起，而不是将初始化的对象值拷贝给引用。一旦完成，引用和初始化的对象就一直捆绑在一起，不能再重新捆绑。所以引用必须在定义的时候进行初始化。注意，引用只是一个别名，不是对象，因此不能定义引用的引用（如 <code>int &amp;&amp;k = a</code>是非法的）。<br>引用的数据类型必须与初始化的数据类型一致（如 <code>char &amp;k = a</code>是非法的）。<br>在实际项目中，引用一般会用在函数参数中。例如，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">change_value</span><span class="params">(<span class="keyword">int</span> &amp;a)</span></span></div><div class="line">&#123;</div><div class="line">    a = <span class="number">1000</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> b=<span class="number">10</span>;</div><div class="line">    change_value(b);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"b="</span>&lt;&lt;b&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其输出结果是<code>b=1000</code>。<br>引用比指针更安全，因为不存在空引用，而且引用一旦初始化就不可改变。从效率来讲，指针和引用是差不多的；从编码来讲，指针需要判断其是否非空，而引用不需要。<br>总结：指针指向一块内存，其内容是所指内存的地址，并且可以为空；引用是某块内存的别名，不可改变指向。</p>
-</li>
-<li><p>函数参数默认值：在C语言中，调用函数必须传递与声明中数量相同的参数；但C++中可以设置参数默认值，不一定传递每个参数。为避免引起混乱，一般在定义函数的时候，最后一个参数、或者最后几个参数有默认值才是合法的。</p>
-<pre><code>int show_all(int a, int b=1, int c=2); //合法
-int show_all(int a, int b=1, int c); // 不合法
-</code></pre></li>
-<li><p>函数重载：在C语言中，不允许定义两个名称完全相同的函数。但C++是允许的，只要参数个数或类型不完全相同即可。所谓函数重载，即一个作用域内几个函数名字相同，但参数不同。main函数不能重载。</p>
-</li>
-<li><p>类的成员函数实现也可以写在类的定义中，但在实际项目中，一般会把类的定义放在头文件（<code>.h</code>）中，类成员函数的实现放在<code>.cpp</code>文件中。</p>
-</li>
-<li><p>访问控制：<br><code>private</code>：只能由该类中的函数、其友元函数访问，不能被该类的对象访问。<br><code>protected</code>：可以被该类中的函数、子类的函数、其友元函数访问，但不能被该类的对象访问。<br><code>public</code>：可以被该类中的函数、子类的函数、其友元函数访问，也可以被该类的对象访问。</p>
-</li>
-<li><p>构造函数与析构函数：<br>构造函数：对象创建时自动调用的函数<br>析构函数：对象销毁时自动调用的函数（程序执行到将要超出对象作用域时）<br>注意：构造函数与析构函数没有返回值，不允许加<code>void</code>。<br>构造函数可以重载（即定义多个构造函数，但它们的参数不同）。此时在定义对象时，如果要传递参数，则写成<code>Employee em(&quot;LiLei&quot;, 28);</code>，如果不传参数，则应写成<code>Employee em;</code>，不能写成<code>Employee em();</code>。<br>析构函数不能重载。析构函数的作用是完成对成员变量占用内存空间的释放（如果没有<strong>动态</strong>申请内存空间，那么就不需要释放了）。</p>
-</li>
-<li><p>继承与派生（派生类&lt;子类&gt;继承基类&lt;父类&gt;）<br><strong>如果不写继承方式的话</strong>，默认是<code>private</code>。<br>存在继承关系时构造函数的运行顺序是（可理解为父类“照看”着子类）：<br><code>父类构造函数-&gt;子类构造函数-&gt;...-&gt;子类析构函数-&gt;父类析构函数</code><br>子类能否访问一个父类的成员函数、成员变量受两个因素控制：<br>（1）父类的成员变量、成员函数的访问权限；<br>（2）继承方式。</p>
-</li>
-<li><p>继承方式<br>（<strong>记忆：基类的private始终不可访问，public和protected视情况而定</strong>）<br>1) <code>public</code>继承方式（公有继承）<br>基类中所有<code>public</code>成员在派生类中为<code>public</code>属性；<br>基类中所有<code>protected</code>成员在派生类中为<code>protected</code>属性；<br>基类中所有<code>private</code>成员在派生类中不可访问。</p>
-<p>2) <code>protected</code>继承方式（保护继承）<br>基类中的所有<code>public</code>成员在派生类中为<code>protected</code>属性；<br>基类中的所有<code>protected</code>成员在派生类中为<code>protected</code>属性；<br>基类中的所有<code>private</code>成员在派生类中仍然不可访问。</p>
-<p>3) <code>private</code>继承方式（私有继承）<br>基类中的所有<code>public</code>成员在派生类中均为<code>private</code>属性；<br>基类中的所有<code>protected</code>成员在派生类中均为<code>private</code>属性；<br>基类中的所有<code>private</code>成员在派生类中均不可访问。</p>
-</li>
-<li><p>派生类的构造函数<br>设计派生类的构造函数时，还要考虑基类的初始化，调用基类的构造函数即可。(《C++编程思想（第一卷）》P329 构造函数的初始化表达式表)<br>重点要注意构造函数和析构函数与众不同之处在于每一层函数都被调用。而对于普通成员函数，只是这个函数被调用，而它的那些基类版本并不会被调用。如果还想调用成员函数的基类版本，必须显式地去做。</p>
-</li>
-<li><p>多重继承引起的二义性<br>（1）两个基类具有相同的函数名，并且参数也相同。比如C继承于A和B，且A和B都有<code>print()</code>函数，那么C的对象<code>c_obj</code>调用A的<code>print()</code>函数要写成<code>c_obj.A::print()</code>。<br>（2）派生类与两个基类有同名的成员。这就是overriding（重写），默认访问派生类的，但是依然可以用（1）中的方法去访问基类的同名成员。</p>
-</li>
-<li><p>虚基类<br>如果B、C继承于A，而D继承于B、C，且A有成员变量iAge，那么在D中将会有两份iAge，它们分别归属于B和C。这种现象一般是我们不希望出现的。<br>C++提供虚基类的方法，使得继承间接共同基类时只保留一份成员。使用方法：<strong>在继承方式前加一个关键字virtual即可</strong>。此时从B和C访问iAge将得到同一个值，也可以通过C访问得到同样的值。<br><strong>注意</strong>：虚基类并不是在定义基类的时候声明的，而是在声明派生类的时候，通过修饰继承方式来声明的。一个基类可以在派生类中作为虚基类，而在生成另外一个派生类时不作为虚基类。<br>如果B、C、D继承于A，E继承于B、C、D，且A有成员变量iAge，为保证iAge在E中只存在一个拷贝，应该在B、C、D的继承定义中<strong>均把A声明为虚基类</strong>，缺一不可。<br>虚基类对象的初始化：B、C、D各自的初始化表达式中会对A中的iAge进行初始化，由于对E而言，A是虚基类，所以在E的初始化表达式中除了有对直接基类B、C、D的初始化之外还要有对虚基类A的初始化，并且<strong>iAge的值以A初始化的值为准</strong>。这就保证了虚基类的成员数据不会被多次初始化。</p>
-</li>
-<li><p>基类与派生类的类型转换<br>（1）可以使用派生类的对象来给基类的对象赋值（实际只是<strong>对基类的成员变量赋值</strong>），这个过程将舍弃派生类的额外成员，即大材小用。<br>（2）可以使用派生类的对象来给基类的引用赋值（如：B继承自A，且有 <code>A a; B b; A &amp;aa=a; aa=b;</code> 注意，此时<code>aa</code>不是<code>b</code>的别名，也不与<code>b</code>共享同一段存储单元。最后一条语句应理解为用<code>b</code>给<code>aa</code>指向的内存赋值，而不是将<code>aa</code>指向<code>b</code>）。<br>（3）如果函数的形参是基类对象或者基类对象的引用，那么实参可以是派生类对象。此时，函数只能访问派生类对象中的基类成员。<br>（4）可以使用派生类对象的地址来给基类对象的指针赋值（C++：把特殊的赋给一般的，类似特殊类型的指针可以赋给<code>void*</code>指针，但反过来不行）。</p>
-</li>
-<li><p>C++中类所占内存空间的总结<br><a href="http://blog.sina.com.cn/s/blog_69c189bf0100mkeu.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_69c189bf0100mkeu.html</a><br>C++中引用不能重新赋值的理解<br><a href="http://blog.sina.com.cn/s/blog_61853b6b0100leg5.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_61853b6b0100leg5.html</a></p>
-</li>
-<li><p>类结构占用内存的分析<br>基类（非派生类）的占用内存：（1）成员函数在编译时被放在正文段，不占用类的空间.（2）空类占用1个字节，因为每个实例在内存中都要占有一个独一无二的地址，所以编译器一般会给<strong>空类</strong>加上一个字节。(3)类与结构类似，有内存对齐的问题。<br>派生类的占用内存：基类占用的空间加上自身成员变量占用的空间。(如果B继承自A，A为空类，B也未添加成员变量，那么A、B均占用1字节；如果A有一个成员变量，而B未添加成员变量，那么A、B均不是空类，占用内存大小相同。)</p>
-</li>
-<li><p>对象数组的初始化<br>注意易错点，初始化与赋值的区别（初始化不用生成对象）<br><a href="http://zhujiangtao.com/?p=925" target="_blank" rel="external">http://zhujiangtao.com/?p=925</a></p>
-</li>
-<li><p>定义对象指针后可以用<code>-&gt;</code>运算符访问对象的成员。</p>
-</li>
-<li><p><code>this</code>指针<br><code>this</code>指针是C++所特有的。类的所有对象共享成员函数的代码，那么成员函数被执行时如何知道是哪个对象要调用自己呢？解决方案很简单，在每个成员函数中都包含有一个特殊的指针，这个指针的名字是固定的，即<code>this</code>指针，它是指向本对象的指针（常量指针）。它的指针值是当前被调用的成员函数<strong>所在的对象</strong>的起始地址。<br>注意：<br>(1)<code>this</code>指针只有在成员函数中才有定义。因此，不能通过对象使用<code>this</code>指针，只能在成员函数里使用。<br>(2)<code>this</code>在成员函数开始执行前构造，在成员函数执行结束后清除。<br>(3)<code>this</code>指针的典型用法（对象引用传递、判断两个对象是否相同）：<br> <a href="http://www.cnblogs.com/hnrainll/archive/2011/05/20/2051939.html" target="_blank" rel="external">http://www.cnblogs.com/hnrainll/archive/2011/05/20/2051939.html</a><br> 引用传递的好处(引用是对象的别名，获取引用的地址要用<code>&amp;</code>运算符)：<br> <a href="http://www.cnblogs.com/xiaofengkang/archive/2011/05/16/2048262.html" target="_blank" rel="external">http://www.cnblogs.com/xiaofengkang/archive/2011/05/16/2048262.html</a></p>
-</li>
-<li><p>对象的动态内存<br>关于<code>operator new</code>和<code>operator delete</code>，以及对象数组内存空间的<code>new</code>和<code>delete</code>。(《C++编程思想（第一卷）》第13章 动态对象创建)<br><code>new</code>分两步：<br>（1）分配空间：调用 <code>operator new</code> 来实现。<br>（2）调用构造函数：调用 <code>placement new</code> 来实现。<br><a href="http://blog.csdn.net/xiaorenwuzyh/article/details/44514815" target="_blank" rel="external">http://blog.csdn.net/xiaorenwuzyh/article/details/44514815</a></p>
-</li>
-<li><p>对象的赋值<br>同类的对象之间可以相互赋值（只是成员变量，非成员函数），因为C++默认实现了每个类对赋值运算符<code>=</code>的重载。<br><strong>注意</strong>：类的数据成员中不能包括动态分配的数据，如果类中存在动态分配内存的，赋值过程中会产生内存泄漏。（例如，类的成员变量中含有字符串指针<code>char *pszName</code>，并且在构造函数中使用<code>new</code>分配了内存。）</p>
-</li>
-<li><p>对象的复制<br>对象复制的场景：有时候我们需要多个完全相同的对象，并进行相同的初始化；或者要将对象某一瞬间的状态保留下来。<br>使用类似<code>Employee A(&quot;Zhangsan&quot;); Employee B(A);</code> 的语句即可完成对象的复制。因为C++默认为每个类实现了复制构造函数（拷贝构造函数）。复制构造函数也是构造函数（无返回类型），但它只有一个参数，就是对象的引用。复制构造函数对成员变量一一进行赋值。<br>(《C++ Primer》第13章 拷贝控制)<br>“浅拷贝”与“深拷贝”（在“深拷贝”的情况下，对于对象中动态成员，就不能仅仅简单地赋值了，而应该重新动态分配空间.）<br><a href="http://blog.csdn.net/bluescorpio/article/details/4322682" target="_blank" rel="external">http://blog.csdn.net/bluescorpio/article/details/4322682</a></p>
-</li>
-<li><p>C++11 中值得关注的几大变化<br><a href="http://coolshell.cn/articles/5265.html" target="_blank" rel="external">http://coolshell.cn/articles/5265.html</a></p>
-</li>
-<li><p>静态数据成员<br>实际项目中，有时候会希望某个成员变量是所有对象共享的，就可以将其定义为静态数据成员。静态数据成员在内存只占一份空间，所有对象都可以引用它。（类似于对象之间的“全局变量”）<br>类中的<code>static int i;</code>语句只是静态变量的声明。静态成员变量的定义和初始化必须放在类的外部（除非是初始化为常量表达式），因为静态数据成员不属于类的任何一个对象，不是由类的构造函数初始化的。<br><strong>注意</strong>：<em>静态成员函数可以在类的内部定义，也可以在类的外部定义。</em><br>静态数据成员的初始化语句格式：<code>类型名 类名::成员变量名[=初值]</code><br>静态数据成员可以用类名访问，也可以用类的对象访问，但要遵循 <code>private</code>、<code>protected</code> 和 <code>public</code> 关键字的访问权限限制。<br>C++的静态数据成员的创建与释放不依赖于对象的建立与销毁（与C中静态局部变量不依赖于函数的执行类似）。<br>(参考《C++ Primer》P269 第7.6节 类的静态成员)</p>
-</li>
-<li><p>静态成员函数<br>静态成员函数是为了能够处理静态数据成员。通过对象访问静态成员函数和通过类名访问静态成员函数的效果是一样的。<br>可以说，静态成员函数与非静态成员函数的根本区别是：非静态成员函数有 this 指针，而静态成员函数没有 this 指针(因为它不属于哪一个具体的对象)。由此决定了静态成员函数不能访问本类中的非静态成员。(<strong>注意</strong>：在普通成员函数中可以访问静态成员变量)<br>参考链接：<br><a href="http://c.biancheng.net/cpp/biancheng/view/209.html" target="_blank" rel="external">http://c.biancheng.net/cpp/biancheng/view/209.html</a></p>
-</li>
-<li><p>友元<br>友元有两种，一种是友元函数，一种是友元类。<br>（1）友元函数。普通函数加<code>friend</code>关键字，在访问类的成员变量时，不能像类的成员函数那样直接访问，必须通过类的对象来访问。<br>（2）友元成员函数。声明其他类中的成员函数为友元函数。要注意声明顺序，避免编译器报错。<br>（3）友元类。把类B声明为类A的友元，那么B中所有的成员函数都是类A的友元函数。注意友元的关系是单向的，而且不可传递。<br>参考链接： <a href="http://c.biancheng.net/cpp/biancheng/view/211.html" target="_blank" rel="external">http://c.biancheng.net/cpp/biancheng/view/211.html</a></p>
-</li>
-<li><p>函数模板<br>定义方法：<code>template &lt;typename DataType1, typename DataType2, ...&gt;</code><br>其中关键字<code>typename</code>也可以用<code>class</code>替代。</p>
-</li>
-<li><p>类模板<br>定义方法：<code>template &lt;class DataType1, class DataType2, ...&gt;</code><br>其中关键字<code>class</code>也可以用<code>typename</code>替代。<br>应用（实例化）时的格式为<code>类模版名称&lt;实际类型&gt; 对象名(参数表)</code></p>
-</li>
-<li><p>模板的编译原理<br>当运行中的程序<strong>调用</strong>函数模板时，会用实际类型将模板<strong>实例化</strong>。注意模板与宏的机制不同，宏替换是在预编译阶段，而模板的实例化是在<strong>编译阶段</strong>。<br>模板编译过程:<br><a href="http://houjixin.blog.163.com/blog/static/35628410201252093052611/" target="_blank" rel="external">http://houjixin.blog.163.com/blog/static/35628410201252093052611/</a></p>
-</li>
-<li><p>运算符重载<br>定义方法：<code>&lt;返回类型说明符&gt; operator&lt;运算符符号&gt; (&lt;参数表&gt;) {}</code><br>运算符重载的实质就是函数重载。在实现过程中，首先把指定的运算表达式转化为对运算符的调用，运算对象转化为运算符函数的实参，然后根据实参的类型来确定需要调用的函数。<strong>这是在编译过程中完成的</strong>。<br>可以把运算符重载为成员函数，也可以重载为友元函数。这两种形式都可以访问类中的私有成员。<br>运算符重载不改变原运算符的优先级和结合性。<br>（《C++ Primer》第14章 重载运算与类型转换）</p>
-</li>
-<li><p>多态性<br>在面向对象语言中，接口的多种不同的实现方式即为多态。<br>多态性又分两种，一种是静态多态性，另外一种是动态多态性。<br>静态多态性是通过函数的重载来实现的，或者说由函数重载或者运算符重载形成的多态属于静态多态性，要求在程序编译时就知道调用函数的具体信息。所以静态多态性又被称为编译时的多态性。（由于编译时就已经知道了具体的实现，所以在程序运行时，静态多态性具有运行快、效率高的特点。）<br>动态多态性的特点是：不在编译的时候确定调用哪个函数，而是在程序运行过程中才动态地确定操作所针对的对象。动态多态性是通过虚函数来实现的。</p>
-</li>
-<li><p>虚函数<br>通过定义虚函数，可以让基类指针更灵活，既可以指向基类对象，又可以指向派生类对象。<br>注意：<br>（1）在基类中用关键字<code>virtual</code>声明成员函数为虚函数，如果此成员函数的具体实现是在类外定义，那么在外部定义的时候不必再加上<code>virtual</code>；<br>（2）在派生类中重新定义此函数时，函数名、参数类型、参数个数必须与基类的虚函数相同；<br>（3）当一个成员函数被声明为虚函数后，其派生类中的同名函数都自动成为虚函数，也可以加上关键字<code>virtual</code>；<br>（4）通过该指针变量调用此虚函数时，调用的就是指针指向的对象的同名函数；<br>什么时候应该把一个函数声明为虚函数呢？<br>（1）首先看成员函数所在的类是否作为基类，然后看成员函数在类的继承后有无可能被更改。如果派生类希望更改此函数的功能，那么就将它声明为虚函数；<br>（2）如果对成员函数的调用是通过基类的<strong>指针</strong>或者<strong>引用</strong>来访问，那么就应该把它声明为虚函数。如果只是通过派生类自己的对象来访问，那么就无需定义为虚函数；<br>（3）有时候在定义虚函数时，并不定义其函数体，即函数体是空的，它的作用只是定义虚函数名，具体功能留给派生类去添加。这就是所谓的<strong>纯虚函数</strong>。</p>
-</li>
-<li><p>使用虚函数，系统要有一定的空间开销，当一个类带有虚函数时，编译系统会为该类构造一个<strong>虚函数表</strong>，简称V-Table。它是一个指针数组，存放着每个虚函数的入口地址，系统在动态关联的时候要用到它。<br>问题：为什么基类指针在执行派生类对象时，能访问到派生类的虚函数呢？<br>答：这是通过虚函数表来实现的。基类和派生类都各自的虚函数表，实例化后会带到对象的内存中，虚函数表指明了实际应该调用的函数。</p>
-</li>
-<li><p>虚析构函数<br>（1）如果将基类的析构函数声明为虚析构函数，那么由该类派生出的所有派生类的析构函数都自动成了虚析构函数。<br>（2）最好把基类的析构函数声明为虚析构函数。这样的话，基类的析构函数、派生类的析构函数都可以得到正确的运行（比如，有个基类指针指向用new动态分配内存的派生类对象的情形，直接用delete释放即可，如果没有声明为虚析构函数，那么派生类的析构函数不会运行，只运行基类的析构函数，导致内存泄漏）。<br>（3）一般来说，软件工程师都会把析构函数声明为虚析构函数。即使基类并不需要析构函数，也显式地定义一个空的虚析构函数，以保证在撤销动态分配空间时能得到正确的处理。但是，当确定一个类不需要多态性的时候，就不必这样做，因为使用虚函数会有额外的空间开销。<br>（4）构造函数不能声明为虚函数，这是因为在执行构造函数时，类对象还未完成建立过程，就更谈不上把函数与类对象捆绑了。</p>
-</li>
-<li><p>纯虚函数<br>定义：<code>virtual 类型 函数名(参数列表) = 0;</code><br>注意纯虚函数是没有具体实现的，即没有函数体，加大括号<code>{}</code>是不对的。<br>一个类如果包含纯虚函数，那么这个类不能用来定义对象。<br>如果在一个类中声明了纯虚函数，而在其派生类中没有实现该函数，那么该虚函数在派生类中仍然为虚函数，该派生类依然不能用来定义对象。</p>
-</li>
-<li><p>抽象类<br>只要是包含纯虚函数的类都是抽象类，抽象类不能创建对象。<br>在派生类中只有实现了抽象基类的所有纯虚函数之后，才能被用来定义对象。只要有一个纯虚函数没被实现，那么这个派生类仍然是个抽象类。<br>派生类虽然不能用来定义对象，但可以用来定义指针变量，并且该指针可以指向派生类的对象，从而实现多态。</p>
-</li>
-<li><p>对多态性的理解<br>一个对象或者一个函数，可以以不同的形式存在或使用。比如运算符或函数可以重载，又比如派生类可以通过基类指针访问。<br>多态性是面向对象语言的一个基本特征。</p>
-</li>
-<li><p>C++怎样使用C语言的库<br>如果有两个文件<code>file1.c</code>和<code>file2.cpp</code>，file2调用file1，那么先用<code>gcc</code>编译file1，再在file2的起始用以下语句声明后，带上<code>file1.o</code>用<code>g++</code>编译：<br><code>extern &quot;C&quot;</code><br><code>{  // 声明file1中自己定义的函数，C标准库函数不用声明</code><br>  <code>void my_func1();</code><br>  <code>void my_func2();</code><br><code>}</code><br>为什么要用<code>extern &quot;C&quot;</code>声明C语言编译的函数呢？<br>C++由于支持函数重载，C语言不支持，所以C++与C对某个函数编译之后产生的函数名是不同的。必须告诉编译器哪些函数是C写的，以便按C的编译规则进行查找。</p>
-</li>
-<li><p>异常处理<br>程序的错误分为编译时的错误和运行时的错误，我们把运行时错误统称为异常。<br>C++中处理异常的过程是这样的：在执行程序发生异常时，可以不在本函数处理，而是抛出一个错误信息，把它传递给上一级的函数来解决，上一级解决不了，再传给上一级。如此逐级上传，直到最高一级还无法处理的话，运行系统会自动调用函数<code>terminate</code>，由它调用<code>abort</code>终止程序。<br>C++异常处理机制有三步：<br>（1）检查（try）：一个try可以对应多个catch，具体调用哪个catch要看throw抛出的数据的类型和哪个catch的参数能对应上。<br>（2）抛出（throw）：只能抛出一个变量，如果有多个数据，可以用结构体。<br>（3）捕捉（catch）：类似函数，后面要有参数。如果参数用不上，可以只写参数类型。如果catch后没有参数，可写成<code>catch(...){}</code>，表示捕捉任何类型的异常。类似switch语句的default，一般把它写在多个catch语句的最后。<br>try－catch结构可以与throw出现在同一个函数中，也可以不在同一个函数中。当throw抛出一个异常后，依次往上一个函数中查找匹配的catch语句。<br>如果捕获了一个异常，但不想处理，可以用<code>throw;</code>语句继续像上一层抛出。<br>编程风格：<br>如果自己写的函数定义了抛出异常，可类似以下格式进行声明和定义：<br><code>int division(int a,int b) throw(int, char, double);</code><br>这个声明表示<code>division</code>函数可能抛出三种类型的异常。</p>
-</li>
-<li><p>命名空间<br>定义：如下，把类和函数的定义放在namespace的大括号中即可。<br><code>namespace newname</code><br><code>{</code><br><code>class A { }</code><br><code>int fun() { }</code><br><code>}</code><br>如果不写newname，那么就是无名的命名空间，可用于将代码的作用域限制为本文件。<br>在main函数中调用时可用<code>namespace nn = newname</code>给命名空间取别名，以简化书写。</p>
-</li>
-<li><p>string类<br>面试题：用C++代码实现string类，包括常用运算符的重载。</p>
-</li>
-<li><p>vector<br>刚开始vector一次性分配一段内存后，可循秩访问，速度很快；但当空间不足时，会重新申请一段更大的空间，并且把原来空间的数据拷贝到新的空间，再释放原来的空间，这一步操作很慢。<br><strong>注意</strong>：vector动态增加大小时，并不是在原空间之后持续新空间（因为无法保证原空间之后尚有可供配置的空间），而是以原大小的两倍另外配置一块较大的空间，然后将原内容拷贝过来，然后才开始在原内容之后构造新元素，并释放原空间。因此，对vector的任何操作，一旦引起空间重新配置，指向原vector的所有迭代器就都失效了。这是程序员易犯的一个错误，务需小心。</p>
-</li>
-<li><p>Iterator（迭代器）<br>C++的STL提出了迭代器的概念，这是C所没有的。在一般的使用中，iterator的行为很像C的指针。对于指针，当指向连续内存时，可以用<code>p++</code>进行操作，而对于像链表这样的结构，就不能这样了。C++使用迭代器解决了这个问题，其原理是重载了<code>++</code>运算符。迭代器很多相关方法都是用重载来实现的。<br>iterator（迭代器）又称cursor（游标），用于提供一种方法顺序访问一个聚合对象中的各个元素，而又不暴露该对象的内部表示。<br>迭代器的作用：能够让迭代器与算法不干扰地互相发展，最后又能无间隙地粘合起来。重载了<code>*</code>、<code>++</code>、<code>==</code>、<code>!=</code>、<code>=</code>运算符，用以操作复杂的数据结构。</p>
-</li>
-<li><p>关于用迭代器删除map的注意点<br>删除节点，可能会有如下代码：<br><code>map&lt;string,int&gt;::iterator my_itr;</code><br><code>for(my_itr=my_Map.begin(); my_itr!=my_Map.end(); my_itr++)</code><br><code>{</code><br><code>my_Map.erase(my_itr);</code><br><code>}</code><br>这是一种错误的写法，会导致程序出现意想不到的结果！因为map是关联容器，对于关联容器来说，如果某一个元素已经被删除，那么其对应的迭代器就失效了，不应该再被使用。<br>正确写法应该是：<br><code>map&lt;string,int&gt;::iterator my_itr;</code><br><code>for(my_itr=my_Map.begin(); my_itr!=my_Map.end(); )</code><br><code>{</code><br><code>my_Map.erase(my_itr++);</code><br><code>}</code><br>其原因是在erase的时候，<code>my_itr</code>已经指向了下一个地址。</p>
-</li>
-<li><p>泛型编程<br>C++是一种强制类型的编程语言，而STL容器却是支持任何数据类型的，这就叫泛型编程，它是一种软件复用技术。STL的泛型编程在C++中取得了极大的成功。</p>
-</li>
-<li><p>STL(标准模板库可以说是标准库的子集)的六大组件<br>（1）容器（Container）：是一种数据结构，如list、vector、deque等，以模板类的形式提供。<br>（2）迭代器（Iterator）：提供了访问容器中对象的方法。常见迭代器类型：iterator、const_iterator、reverse_iterator、const_reverse_iterator。<br>（3）算法（Algorithm）：是用来操作容器中数据的模版函数。例如，STL用<code>sort()</code>来给vector中的数据排序，用<code>find()</code>来搜索list中的对象等。<br>（4）仿函数（Functor，又称函数对象，Function object）：就是重载了函数的<code>()</code>操作符。<br>（5）适配器（Adaptor）：可以理解为封装，比如queue的底层就是采用deque来实现的，它只是在deque的接口上再进行了封装。<br>（6）空间配置器（Allocator）：其主要工作包括两部分：对象的创建与销毁，内存的获取与释放。</p>
-</li>
-<li><p>动态链接库<br>如果想把一个模块编译成动态链接库（dll），则需要在定义类的时候加上关键字<code>DLLEXPORT</code>（这是一个宏），如<code>class DLLExport Employee {};</code>。<br>在实际工作中，我们一般会把代码编译成静态库。</p>
-</li>
-<li><p>const<br>（1）可以用<strong>非常量</strong>初始化一个底层const对象，但是反过来不行。<br>（2）一个普通的引用必须用同类型的对象初始化。<br>（3）对于函数中不会被改变的形参，应定义其为常量引用。否则在其他函数（正确地）将它们的形参定义成常量引用时，该函数将不能正常使用（因为不能用const初始化非const变量）。<br>顶层const（常量指针）与底层const（指向常量的指针）：<br><a href="https://segmentfault.com/a/1190000005168641" target="_blank" rel="external">https://segmentfault.com/a/1190000005168641</a><br>（4）在类的成员函数定义中，可用const紧跟参数列表之后，表示这是常量成员函数。常量对象，以及常量对象的指针或引用都只能调用常量成员函数。</p>
-</li>
-<li><p>return：返回值的方式和初始化一个变量或形参的方式完全一样：返回的值用于初始化调用点的一个临时量，该临时量就是函数调用的结果。<br>不要返回局部对象的引用或指针，因为函数终止后，它们将指向不再有效的内存区域。<br>调用一个返回<strong>引用</strong>（常量引用除外）的函数得到左值，其他返回类型得到右值。<br>如果<code>main</code>函数中没有return语句，编译器将隐式地插入一条<code>return 0;</code>语句。</p>
-</li>
-<li><p>inline：一般来说，内联机制用于优化规模较小、流程直接、频繁调用的函数。内联说明只是编译器发出的一个请求，编译器可以忽略这个请求。<br>constexpr函数：能用于常量表达式的函数。函数的返回类型及所有形参答类型都得是字面值类型。</p>
-</li>
-<li><p>调试帮助：<code>assert</code>预处理宏（行为类似于内联函数）和<code>NDEBUG</code>预处理变量（如果定义了该变量，则assert什么也不做；默认状态下没用定义，assert将执行运行时检查）。<br>assert应该仅用于验证那些确实不可能发生的事情。</p>
-</li>
-<li><p>函数指针：函数是命名了的计算单元，函数指针指向的是函数而非对象。和其他指针一样，函数指针指向某种特定类型。函数的类型由它的返回类型和形参类型共同决定，与函数名无关。声明函数指针时只要用<code>(*pf)</code>替代函数名即可，注意括号必不可少。<br>注意：如果把函数func赋值给pf指针，取地址符<code>&amp;</code>是可选的；当通过指针调用函数时，解引用符<code>*</code>也是可选的。<br>和数组类似，虽然不能定义函数类型的形参，但是可以把指向函数的指针作为形参。如果参数写的就是函数，那么它会隐式地转换成函数指针。即以下两种写法等价：<br><code>void use(const string &amp;s1, bool func(int a));</code><br><code>void use(const string &amp;s1, bool (*pf)(int a));</code></p>
-</li>
-<li><p>IO类（istream、ostream）属于不能被拷贝的类型，因此我们只能通过引用来传递它们。而且，因为读取和写入的操作会改变流的内容，所以两个函数接收的都是普通引用，而非对常量的引用。</p>
-</li>
-<li><p>使用<code>class</code>和<code>struct</code>定义类的唯一区别在于默认访问权限。前者默认成员都是<code>private</code>，后者默认都是<code>public</code>。</p>
-</li>
-<li><p>当我们定义变量时习惯于对其进行初始化，而非先定义、再赋值。比如构造函数尽量写成如下形式，而不是将成员变量的赋值写在函数体中。<br><code>Sales::Sales(const string &amp;s, double price):bookNo(s), bookPrice(price)</code><br>而且，如果成员是常量或者引用的话，必须采用这种方式（<strong>构造函数初始值列表</strong>）初始化。</p>
-</li>
-<li><p>IO对象不可拷贝或赋值，因此我们不能将形参或返回类型设为流类型。进行IO操作的函数通常以引用方式传递和返回流。读写一个IO对象会改变其状态，因此传递和返回的引用不能是<code>const</code>的。</p>
-</li>
-<li><p>除了顺序容器外，标准库还定义了三个顺序容器适配器：stack、queue和priority_queue。<strong>适配器</strong>是标准库中的一个通用概念。一个容器适配器接受一种已有的容器类型，使其行为看起来像一种不同的类型。默认情况下，stack和queue是基于deque实现的，priority_queue是在vector之上实现的。不过我们可以在创建一个适配器时将一个命名的顺序容器作为第二个类型参数，来重载默认容器类型。</p>
-</li>
-<li><p><code>explicit</code>关键字<br><a href="http://www.cnblogs.com/winnersun/archive/2011/07/16/2108440.html" target="_blank" rel="external">http://www.cnblogs.com/winnersun/archive/2011/07/16/2108440.html</a> </p>
-</li>
-<li><p>C++命名风格<br>Google开源项目C++风格指南中文版：<br><a href="http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/" target="_blank" rel="external">http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/</a><br>一般而言：<br>（1）类：<code>MyClass</code><br>（2）函数、变量：<code>myMethod</code><br>（3）常量：<code>const double PI=3.1415926</code><br>C++标准库和Boost库采用以下约定：<br>（1）宏：<code>INT_MAX</code><br>（2）模板参数名：<code>InputInterator</code><br>（3）其他名：<code>unordered_map</code><br>对于类的成员变量，加上<code>m_</code>，如<code>m_width</code>、<code>m_height</code>，可理解为member。<br>对于类的成员函数的形参，加上<code>t_</code>，如<code>t_width</code>、<code>t_height</code>，可理解为the。</p>
-</li>
-<li><p>C++最佳实践<br>(1)安全性<br>C++ 11中推荐使用<code>nullptr</code>。<br>为了保持跨平台特性，应始终使用正确的integer类型，如<code>size_t</code>类型，不要简单地用<code>int</code>替代。<br>使用<code>std::array</code>或者<code>std::vector</code>替代C风格的数组。<br>使用异常机制。<br>使用C++风格的类型转换机制（<code>static_cast</code>、<code>dynamic_cast</code>）。<br>（2）可维护性<br>避免使用编译器宏（如<code>#define PI 3.14159</code>）<br>（3）线程安全<br>避免使用全局数据，而是使用静态数据、共享指针和单例。<br>避免堆操作。<br>（4）性能<br>尽量使用<code>class MyClass;</code>语句替代<code>#include &quot;MyClass.h&quot;</code>，可以减少编译时间。<br>简化代码，一般来说，越简洁的代码编译器优化得越好。<br>使用初始化列表进行初始化。<br>减少使用临时变量（比如应直接写<code>doSomeThing(getObj1(), getObj2())</code>，而不要定义临时变量存储obj1和obj2的值）。<br>变量应该尽可能晚地声明，使其在必要的尽量小的作用域。<br>尽量使用<code>double</code>来替代<code>float</code>。<br>尽量使用<code>++i</code>而不是<code>i++</code>。</p>
-</li>
-</ol>
+            C++是C语言的继承，它既可以进行C语言的过程化程序设计，又可以进行以抽象数据类型为特点的基于对象的程序设计，还可以进行以继承和多态为特点的面向对象的程序设计。因而C++就适应的问题规模而论，大小由之。
+  近日复习C++语言基础，将其要点记录于此。
 
-          
+面向对象的编程思想通俗地讲，用C语言描述一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/11/12/cpp/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -997,10 +827,16 @@ int show_all(int a, int b=1, int c); // 不合法
       
         
           
-            <p>   要是今生遗憾太多，在背运的当儿，你独自呆一会儿，不妨随心所欲地设想一下自己的来世。干嘛不想想呢?我就常常这样去想。</p>
-<p>　　我想，倘有来世，我先要占住几项先天的优越：聪明、漂亮和一副好身体。命运从一开始就不公平，人一生下来就有走运的和不走运的。譬如说一个人很笨，这该怨他自己吗?然而由此所导致的一切后果却完全要由他自己负责——饱受了轻蔑终也不知道这事到底该怨谁。再譬如说，一个人生来就丑，再怎么想办法去美容都无济于事，这难道是他的错误他的罪过，不是。那为什么就该他难得姑娘们的喜欢呢?因而婚事就变得格外困难，一旦终于有了孩子，不要说别人，就连他自己都希望孩子千万别长得像他自己，为什么就该他是这样呢?再说身体，有的人生来就肩宽腿长，潇洒英俊(或者婀娜妩媚，娉娉婷婷)，生来就有一身好筋骨，精力旺盛，而且很少生病，可有的人却与此相反，生来就样样都不如人。对于身体，我体会尤甚。所以我只盼下辈子能够谨慎投胎，有健壮优美如卡尔·刘易斯一般的身材和体质，有潇洒漂亮如周恩来一般的相貌和风度，有聪明智慧如阿尔伯特·爱因斯坦一般的大脑和灵感。<br>　　<br>　　降生在什么地方相当重要。20年前插队在偏远闭塞的陕北乡下，我见过不少健康漂亮尤其聪慧超群的少年，当时我就想，他们要是生在一个恰当的地方，他们必都会大有作为，无论他们做什么都必定成就非凡。但在穷乡僻壤，吃饱肚子尚且是一件颇为荣耀的成绩，哪还有余力去奢想什么文化呢?他们没有机会上学，没有书读，看不到报纸、电视，甚至很少看得到电影，不知道外面的世界，便只能遵循了祖祖辈辈的老路，日出而作，日入而息，日复一日，年复一年。然后他们娶妻生子，成家立业，才华耗尽变作纯朴而无梦想的汉子。然后如他们的父辈一样地老去，唯单调的岁月在身上留下注定的痕迹。然后他们恐惧着、祈祷着、惊慌着听命于死亡随意安排。再然后倘若那地方没变，他们的儿女们必定还是这样磨钝了梦想，一代代去完成同样的过程。我希望我的来世千万不要是这样。<br>　　<br>　　那么降生在大城市，生在个贵府名门，父亲是政绩斐然的总统，要不是个家藏万贯的大亨，再不就是位声名赫赫的学者，或者父母都是不同寻常的人物，你从小就在一个倍受宠爱恭维的环境中长大，呈现在你面前的是无忧无虑的现实，绚烂辉煌的前景，左右逢源的机遇，一帆风顺的坦途……这样是不是就好呢?一般来说，这样的境遇也是一种残疾，也是一种牢笼。这样的境遇经常造就着蠢材，不蠢的概率很小，有所作为的比例很低，而且大凡有点水平的姑娘都不肯高攀这样的人。<br>　　<br>　　生在穷乡僻壤，有孤陋寡闻之虞，不好；生在贵府名门，又有骄狂愚妄之险，也不好。生在一个介于此二者之间的位置上怎么样?嗯，可能不错。<br>　　<br>　　既知晓人类文明的丰富璀璨，又懂得生命路途的坎坷艰难；既了解达官显贵奢华而危惧的生活，又体会平民百姓清贫而深情的岁月；既有博览群书并入学府深造的机缘，又有浪迹天涯独自在社会上闯荡的经历；既能在关键时刻得良师指点如有神助，又时时事事都要靠自己努力奋斗绝非平步青云；既饱尝过人情友爱的美好，又深知了世态炎凉的正常，故而能如罗曼·罗兰所说：“看清了这个世界，而后爱它。”——这样的位置好虽好，不过在哪儿呢?<br>　　<br>　　你最好生在一个普通知识分子的家庭。<br>　　<br>　　也就是说，你父亲是知识分子，但千万不要是那种炙手可热过于风云的知识分子，否则“贵府名门”式的危险和不幸仍可能落在你头上：没有一个健全、质朴的童年。一个人长大了若不能怀恋自己的童年，当是莫大的缺憾。你应该有一大群来自不同家庭的男孩儿和女孩儿做你的朋友，跟他们一块认真地吵架翻脸，然后一块哭着和好如初。当你父母不在家时，把好朋友都叫来，痛痛快快随心所欲地折腾一天，把冰箱里能吃的东西都吃光，然后载歌载舞地庆祝。你还可以跟你的朋友们一起去冒险，拿点钱，瞒过父母，然后出发，义无反顾。把新帽子扯破了新鞋弄丢了一只没关系，把膝盖碰出了血把白衬衫上洒了一瓶紫药水没关系，你母亲不会怪你，因为当晚霞越来越淡夜色越来越浓的时候，你父亲也沉不住气了，你母亲庆幸还庆幸不过来呢。“他们回来啦，他们回来啦!”仿佛全世界都和平解放了，一群群平素威严的父亲都乖乖地跪出来迎接你们，同样多的一群母亲此刻转忧为喜光顾得摩挲你们的脸蛋和亲吻你们的脑门儿。一个幸运者的童年就得是这样。<br>　　<br>　　你的母亲也要有知识，但不要像你父亲那样关心书胜过关心你。也不要像某些愚蠢的知识妇女，料想自己功名难就，便把一腔希望全赌在了儿女身上，生了个女孩就盼她将来是个居里夫人，养了个男娃就以为是养了个小贝多芬。一个幸运者的母亲必然是一个幸运的母亲，她教育你的方法不是来自于教育学，而是来自她对一切生灵乃至天地万物由衷的爱，由衷的颤栗与祈祷，由衷的镇定和激情。她难得给你什么命令，她深信你会爱这个世界。<br>　　<br>　　在你两三岁的时候你就光是玩，别着急背诵《唐诗三百首》和弄通百位数以内的加减法，去玩撒尿和泥，然后不洗手再去玩你爷爷的胡子。到你四五岁的时候，在你母亲的皮鞋上钻几个洞看看会有什么效果，往你父亲录音机里撒把沙子听听声音会不会更奇妙。上小学时你门门功课都得上三四分就够了，剩下的时间做些别的事，让你父亲有机会给人家赔几块玻璃。一上中学尤其一上高中，所有熟人都对你刮目相看，各种奖啊奖啊奖啊并不构成你的好运，你的好运是说你其实并没花太多时间在功课上。你爱好广泛，神魂聚注若癫若狂。<br>　　<br>　　你热爱音乐，古典的交响乐，现代的摇滚乐，温文尔稚的歌剧，粗犷豪放的民谣，你都听得心醉神迷。你喜欢美术，你从色彩感受生命，由造型体味空间，在线条上嗅出时光的流动，在连接天地的方位发现生灵的呼喊。体育也是你的擅长，差不多所有的体育项目你都玩得精彩、洒脱、漂亮。你把体育变得不仅仅是体育了，那是舞蹈，是人间最自然坦诚的舞蹈，那是艺术，是上帝选中的最朴实辉煌的艺术形式。<br>　　<br>　　接下来你到了恋爱的季节。你正在一所名牌大学里读书，读得出色，各种奖啊奖呵又闹着找你，你的动静坐卧举手投足都流溢着男子汉的光彩，明显地追逐你的和不露声色地爱慕着你的姑娘们已是成群结队，但你一向只是婉言而真诚地拒绝、善意而巧妙地逃避，弄得一些自命不凡的姑娘们委屈地流泪。但是有一天，你在运动场上正放松地慢跑，你忽然看见一个陌生的姑娘也在慢跑，她的健美一点不亚于你，生命对她的宠爱，青春对她的慷慨，这些绝不亚于你，而她似乎根本没有发现你，仿佛除了她和她的美丽这世界上并不存在其他东西。而你却被她的美丽和自信震慑了，被她的优雅和茁壮惊呆了，被她的倏然降临搞得心恍神惚手足无措。于是你不跑了，光是看她。你很想冲她微笑一下表示一点敬意，但她并不给你这样的机会，她跑了一圈又一圈，然后她走了。简单极了，就走了。走了很久而你还站在原地，操场空空旷旷只剩了你一个人，你头一回感到了惆怅和孤零。但你把她记在了心里，幸运之神依然和你在一起。你在她周围不露声色地卖弄你的千般技巧万种本事，终于引起了她的注意。你又在朋友家里和她一起吃过一次午饭，你们到底认识了，谈了很多，谈得融洽而且热烈。此后不是你去找她，就是她来找你，春夏秋冬春夏秋冬，不是她来找你就是你去找她，春夏秋冬……总之，你们终成眷属。<br>　　<br>　　也许你注意到了，我忽然有了一点疑虑：你能在一场如此称心、顺利、圆满的爱情和婚姻中饱尝幸福吗？没有挫折，没有坎坷，没有望眼欲穿的企盼，没有撕心裂肺的煎熬，没有痛不欲生的痴颠与疯狂，没有万死不悔的追求与等待，当成功到来之时你会有感慨万端的喜悦吗?在成功到来之后还会不会有刻骨铭心的幸福?或者，会不会因为顺利而冲淡其魅力?会不会因为圆满而阻塞了渴望，限制了想像，丧失了激情，从而在以后漫长的岁月中遵从了一种生理程序，心路却已荒芜，继而是麻木——会不会?地球如此方便如此称心地把月亮搂进了自己的怀中，没有了阴晴圆缺，没有了潮汐涨落，没有了距离便没有了路程，没有了斥力也就没有了引力，那是什么呢?很明白，那是死亡。如果你再诚实点，事情可能会更难办：人类是要消亡的，地球是要毁灭的，宇宙在走向热寂。我们的一切聪明和才智、奋斗和努力、好运和成功到底有什么价值?我们的目的何在?我们的救赎之路何在?我们真的已经无路可走真的已入绝境了吗?是的，我们巳入绝境。现在我们只占着一项便宜，那就是死神还没驾到，我们还有时间想想对付绝境的办法，当然不是逃路，当然你也跑不了。其他的办法，看看，还有没有。<br>　　<br>　　过程。对，过程——只剩了它了。对付绝境的办法只剩它了。事实上你惟一具有的就是过程。一个只想使过程精彩的人是无法被夺剥的，因为死神也无法将一个精彩的过程变成不精彩的过程，因为坏运也无法阻挡你去创造一个精彩的过程，相反你可以把死亡也变成一个精彩的过程，相反坏运更利于你去创造精彩的过程。于是绝境溃败了，它必然溃败。你立于目的的绝境却现实着、欣赏着、饱尝着过程的精彩，你便把绝境送上了绝境。梦想使你迷醉，距离就成了欢乐；追求使你充实，失败和成功都是伴奏；当生命以美的形式证明其价值的时候，幸福是享受，痛苦也是享受。<br>　　<br>　　过程！对，生命的意义就在于你能创造这过程的美好与精彩，生命的价值就在于你能够镇静而又激动地欣赏这过程的美丽与悲壮。但是，除非你看到了目的的虚无你才能够进入这审美的境地，除非你看到了目的的绝望你才能找到这审美的救助。但这虚无与绝望难道不会使你痛苦吗?是的，除非你为此痛苦，除非这痛苦足够大，大得不可消灭大得不可动摇，除非这样你才能甘心从目的转向过程，从对目的的焦虑转向对过程的关注，除非这样的痛苦与你同在，永远与你同在，你才能够永远欣赏到人类的步伐和舞姿，赞美着生命的呼喊与歌唱，从不屈获得骄傲，从苦难提取幸福，从虚无中创造意义，直到死神和天使一起来接你回去。你依然没有玩够，但你不惊慌，你知道过程怎么能有个完呢?过程在到处继续，在人间、在天堂、在地狱，过程都是上帝的巧妙设计。<br>　　<br>　　但是我们的设计呢?<br>　　<br>　　我看出来了——我又走回来了。我看出来了，我们的设计只能就这样了，我不知道怎么办了，不知道还能怎么办。上帝爱我！——我们的设计只剩这一句话了，也许从来就只有这一句话吧。</p>
-
-          
+             要是今生遗憾太多，在背运的当儿，你独自呆一会儿，不妨随心所欲地设想一下自己的来世。干嘛不想想呢?我就常常这样去想。
+　　我想，倘有来世，我先要占住几项先天的优越：聪明、漂亮和一副好身体。命运从一开始就不公平，人一生下来就有走运的和不走运的。譬如说一个人很笨，这该怨他自己吗?然而由此所导致的一切
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/24/shitiesheng2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1286,69 +1122,21 @@ int show_all(int a, int b=1, int c); // 不合法
       
         
           
-            <p>收集、整理工作中遇到的有价值的文章链接。</p>
-<ol>
-<li><p>Webbench 一款 Linux 下的压力测试工具 for Mac</p>
-<p> <a href="http://www.open-open.com/news/view/d6dff4" target="_blank" rel="external">http://www.open-open.com/news/view/d6dff4</a></p>
-</li>
-<li><p>Linux优化、安全运维、黑客攻防</p>
-<p> <a href="http://www.cnblogs.com/cp-miao/p/5515074.html" target="_blank" rel="external">http://www.cnblogs.com/cp-miao/p/5515074.html</a></p>
-</li>
-<li><p>理解https与中间人攻击</p>
-<p> <a href="http://techblog.youdao.com/?p=1159" target="_blank" rel="external">http://techblog.youdao.com/?p=1159</a></p>
-</li>
-<li><p>理解网关的概念：WSGI/CGI 等各种网关协议</p>
-<p> <a href="https://liuliqiang.info/compare-between-wsgi-cgi/" target="_blank" rel="external">https://liuliqiang.info/compare-between-wsgi-cgi/</a></p>
-</li>
-<li><p>用python脚本监控服务器</p>
-<p> <a href="https://www.ibm.com/developerworks/cn/linux/1312_caojh_pythonlinux/" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/linux/1312_caojh_pythonlinux/</a></p>
-</li>
-<li><p>关于api接口签名认证的问题</p>
-<p> 微信开发的时候一直想不清调用支付接口时传给服务器的md5签名是如何防止请求伪造的，还好这片文章解决了疑惑。</p>
-<p> 参考：开放API接口签名认证</p>
-<p> <a href="http://www.cnblogs.com/codelir/p/5327462.html" target="_blank" rel="external">http://www.cnblogs.com/codelir/p/5327462.html</a></p>
-</li>
-<li><p>使用sphinx生成python项目文档</p>
-<p> <a href="https://pythonhosted.org/an_example_pypi_project/sphinx.html" target="_blank" rel="external">https://pythonhosted.org/an_example_pypi_project/sphinx.html</a></p>
-</li>
-<li><p>git使用教程</p>
-<p> 参考链接如下，看完这两篇，就能满足日常使用了。</p>
-<p> <a href="http://www.cnblogs.com/tugenhua0707/p/4050072.html" target="_blank" rel="external">http://www.cnblogs.com/tugenhua0707/p/4050072.html</a></p>
-<p> <a href="http://pm.readthedocs.io/vcs/git/usage.html" target="_blank" rel="external">http://pm.readthedocs.io/vcs/git/usage.html</a></p>
-</li>
-<li><p>Linux入侵检测基础</p>
-<p> <a href="https://maimai.cn/article/detail?fid=54252094&amp;ref=rec_tops&amp;rec_tops_id=17988" target="_blank" rel="external">https://maimai.cn/article/detail?fid=54252094&amp;ref=rec_tops&amp;rec_tops_id=17988</a></p>
-</li>
-<li><p>GCC的-I（-i的大写）参数和-l （-L的小写）参数</p>
-<p>今天练习C语言连接mysql数据库，由于mac上头文件mysql.h位于/usr/local/mysql/include/目录下，gcc编译时提示找不到头文件。加上-I参数指定头文件路径就可以成功编译了。还要加上 -lmysqlclient参数。 记录于此。</p>
-<p>参考链接：</p>
-<p><a href="http://www.cnblogs.com/benio/archive/2010/10/25/1860394.html" target="_blank" rel="external">http://www.cnblogs.com/benio/archive/2010/10/25/1860394.html</a></p>
-<p><a href="http://blog.csdn.net/tangsun999/article/details/44493663" target="_blank" rel="external">http://blog.csdn.net/tangsun999/article/details/44493663</a></p>
-<p><a href="http://www.cnblogs.com/ITEagle/archive/2013/07/06/3175206.html" target="_blank" rel="external">http://www.cnblogs.com/ITEagle/archive/2013/07/06/3175206.html</a></p>
-</li>
-<li><p>使用Nginx+FFMPEG搭建HLS直播转码服务器</p>
-<p>原文链接：</p>
-<p><a href="http://m.blog.csdn.net/article/details?id=42292787" target="_blank" rel="external">http://m.blog.csdn.net/article/details?id=42292787</a></p>
-<p>ffmpeg常用推流命令：</p>
-<p><a href="http://www.jianshu.com/p/d541b317f71c" target="_blank" rel="external">http://www.jianshu.com/p/d541b317f71c</a></p>
-<p>参数解释：</p>
-<p><a href="http://blog.csdn.net/dongdong_java/article/details/19604975" target="_blank" rel="external">http://blog.csdn.net/dongdong_java/article/details/19604975</a></p>
-</li>
-<li><p>Linux下使用命令行获取网页截图，CentOS7 安装方法</p>
-<p><a href="https://www.zybuluo.com/rickyChen/note/456834" target="_blank" rel="external">https://www.zybuluo.com/rickyChen/note/456834</a></p>
-<p>注意这个包目前只有python2版本，安装好之后可直接在命令行运行。<br>截图中只显示英文，不显示中文，是因为中文字体未安装。按下面的链接，用<code>yum -y install wqy-zenhei-fonts.noarch</code>安装中文字体即可。</p>
-<p><a href="http://type.so/linux/centos6-webkit2png.html" target="_blank" rel="external">http://type.so/linux/centos6-webkit2png.html</a></p>
-<p>对微信公众号文章进行截图时，截取不到图片，是因为微信采用了利用js控制延迟加载图片的方法。网上的解释如下：</p>
-<ul>
-<li>这是因为微信文章使用了图片延迟加载技术.<br>具体来说就是将图片的url保存在data-src属性，然后在需要的时候使用javascript将其他更新到图片的src属性，浏览器才能显示出图片。<br>此问题能解决是因为幸好微信在data-src中保存的是图片的真实地址，我发现有部分网站在data-src保存的是一串编码后的字符串，然后使用javascript解码，对此类网站就没办法了，除非能执行javascript。<br>还有data-src不是标准要求，随便你使用什么属性名都可以，只是很多人都习惯使用data-src或datasrc了，但是就是因为不是标准，所以此解决方案不适合所有网站。<br>另外：微信公众号文章的图片还采用了防盗链技术，只能在微信自己的域名下才能获取到图片。</li>
-</ul>
-</li>
-<li><p>为终端设置shadowsocks代理</p>
-<p><a href="http://droidyue.com/blog/2016/04/04/set-shadowsocks-proxy-for-terminal/index.html" target="_blank" rel="external">http://droidyue.com/blog/2016/04/04/set-shadowsocks-proxy-for-terminal/index.html</a></p>
-</li>
-</ol>
+          收集、整理工作中遇到的有价值的文章链接。
 
-          
+Webbench 一款 Linux 下的压力测试工具 for Mac
+ http://www.open-open.com/news/view/d6dff4
+
+Linux优化、安全运维、黑客攻防
+ http://www.cnblogs.com/cp-miao
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/23/reference/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1488,129 +1276,19 @@ int show_all(int a, int b=1, int c); // 不合法
       
         
           
-            <p>Linux 系统开发常见面试题<br>Linux 网络开发常见面试题<br>常见算法笔试题</p>
-<p>参考博客：<br><a href="http://logic0.blog.163.com/blog/static/188928146201412325629952/" target="_blank" rel="external">http://logic0.blog.163.com/blog/static/188928146201412325629952/</a></p>
-<h2 id="腾讯C-面试"><a href="#腾讯C-面试" class="headerlink" title="腾讯C++面试"></a>腾讯C++面试</h2><ol>
-<li>大端与小端的概念？各自的优势是什么？</li>
-<li>TIME_WAIT状态的产生、危害、如何避免？</li>
-<li>select/poll/epoll的区别</li>
-<li>系统调用与库函数的区别</li>
-<li>守护进程、僵尸进程、孤儿进程的概念</li>
-<li>TCP和UDP的区别</li>
-<li>请画出TCP的头部</li>
-<li>new和malloc的区别</li>
-<li>指针和引用的区别</li>
-<li>为什么TCP叫数据流模式，UDP叫数据报模式？</li>
-<li>简述一下TCP的滑动窗口机制</li>
-<li>TCP的拥塞控制机制是什么？请简单说说。</li>
-<li>为什么析构函数要设为虚函数？</li>
-<li>linux下你常用的命令有哪些？</li>
-<li>static关键字的作用？</li>
-<li>C++的内存分区</li>
-<li>C++对象的内存布局</li>
-<li>vector、map/multimap、unordered_map/unordered_multimap的底层数据结构，以及几种map容器如何选择？</li>
-<li>栈溢出的原因及解决办法</li>
-<li>内存泄漏怎么产生的？如何避免？</li>
-<li>TCP建立连接为什么需要三次？断开连接又为什么需要四次？</li>
-<li>core产生的原因，如何调试定位问题？</li>
-<li>死锁产生的四个条件，死锁发生后怎么检测和恢复？</li>
-<li>堆和栈的区别</li>
-<li>简单描述一下TCP三次握手和四次挥手的过程</li>
-<li>数据库索引的优缺点</li>
-<li>数据库的三范式</li>
-<li>如何在一个不安全的环境中实现安全的数据通信</li>
-<li>说几个C++ 11的新特性</li>
-<li>C++ STL中vector内存用尽后，为啥每次是两倍增长，而不是3倍或其他倍数？</li>
-<li>阻塞IO、非阻塞IO、同步IO、异步IO的区别？</li>
-<li>分时系统与实时系统的区别？</li>
-<li>除了sleep之外，usleep也是linux系统调用，它号称自己是微秒级的，你相信它真的有这么快吗？为什么？</li>
-<li>简述一下ping的原理</li>
-<li>进程调度算法有哪些？Linux使用的什么进程调度方法？</li>
-<li>static_cast和dynamic_cast的区别</li>
-<li>DNS使用什么协议</li>
-<li>traceroute命令有什么作用？原理是什么？</li>
-<li>什么是事务？事务有哪些特性？</li>
-<li>MySQL的引擎InnoDB和MyISAM的区别。</li>
-</ol>
-<p>来源及参考答案见：<br><a href="http://m.blog.csdn.net/article/details?id=51327586" target="_blank" rel="external">lisong694767315的CSDN博客</a></p>
-<h2 id="腾讯python电话面试"><a href="#腾讯python电话面试" class="headerlink" title="腾讯python电话面试"></a>腾讯python电话面试</h2><p>电话面试的问题大致分为项目经历、计算机基础和python基础三个部分。</p>
-<p>计算机基础方面问了线程和进程的区别，http三次握手的过程，TCP/IP协议栈等，进程间通信时共享内存、管道的实现方式等，不算太难。 </p>
-<p>而Python语言方面问得更深一些，除了数据类型、用法之外，还问到了这几个问题：</p>
-<p>（1）元组和列表的区别？为什么python要设计一个元组类型？它有什么用途是列表不能替代的？</p>
-<p>   元组和列表相比有一个很重要的区别，元组是一种不可变类型。正因为这个原因，元组能做一些列表不能做的事情，例如，用做一个字典的 key（必须是可哈希的对象）。另外当处理一组对象时,这个组默认是元组类型。<br>   最好使用不可变类型变量的一个情况是,如果你在维护一些敏感的数据,并且需要把这些数据传递给一个并不了解的函数(或许是一个根本不是你写的 API),作为一个只负责一个软件某一部分的工程师,如果你确信你的数据不会被调用的函数篡改,你会觉得安全了许多。</p>
-<p>（2）python解释器是怎么运行的？或者说，当你在命令行输入python hello.py之后，内部的运行过程是怎样的？</p>
-<p><a href="http://www.restran.net/2015/10/22/how-python-code-run/" target="_blank" rel="external">http://www.restran.net/2015/10/22/how-python-code-run/</a></p>
-<p>（3）知道python的duck类型吗？</p>
-<p><a href="http://www.jianshu.com/p/650485b78d11" target="_blank" rel="external">http://www.jianshu.com/p/650485b78d11</a></p>
-<p>（4）解释一下python的装饰器，以及使用装饰器有什么优点？</p>
-<p><a href="https://www.zhihu.com/question/31265857" target="_blank" rel="external">https://www.zhihu.com/question/31265857</a></p>
-<p>（5）知道GIL吗？</p>
-<p><a href="http://cenalulu.github.io/python/gil-in-python/" target="_blank" rel="external">http://cenalulu.github.io/python/gil-in-python/</a></p>
-<p>机会确实是留给有准备的人的，想做成一件事，就要深入，一个一个细节地抠，力争弄清楚每一个，积少成多。努力一年可以进步很大。</p>
-<p><a href="http://www.dongwm.com/archives/liao-liao-pythonmian-shi-zhe-jian-shi-er/" target="_blank" rel="external">http://www.dongwm.com/archives/liao-liao-pythonmian-shi-zhe-jian-shi-er/</a></p>
-<p>上面的链接推荐了一些python的面试题，概括得比较全面，比如：</p>
-<p><a href="https://github.com/taizilongxu/interview_python" target="_blank" rel="external">https://github.com/taizilongxu/interview_python</a></p>
-<h2 id="大公司经典面试题系列"><a href="#大公司经典面试题系列" class="headerlink" title="大公司经典面试题系列"></a>大公司经典面试题系列</h2><p><a href="http://blog.csdn.net/fivedoumi/article/details/7961831" target="_blank" rel="external">http://blog.csdn.net/fivedoumi/article/details/7961831</a></p>
-<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><ol>
-<li><p>逻辑地址、线性地址、物理地址之间的关系<br>软件一旦从硬盘加载到内存中，就拥有了最大的内存空间（如果是32位机，那么这个空间就是<code>2^32=4G</code>），这些空间在进程中是分段管理的（代码段、数据段、堆、栈等）。寻址方式是段地址＋偏移量，即逻辑地址。逻辑地址需要转换为线性地址，线性地址经过计算得到页地址，最后得到物理地址。<br><strong>例</strong>：当采用4KB分页大小时，线性地址的高10位为页目录项在页目录表中的编号，中间10位为页表中的页号，其余12位为偏移地址；当采用4MB分页机制时，则高10位是页号，低22位为偏移地址。<br>早先的线性地址就是物理地址，但是采用分页机制后，线性地址就不再是物理地址了。通过分页可以提高内存的使用率。<br>无论你申请1个字节的内存，还是1kB的内存，都会占用一个页的内存。所以为了提高内存的使用率，最好是以4K的整数倍来申请内存空间。<br>内存管理（《操作系统概念》）<br><a href="http://c.biancheng.net/cpp/html/2608.html" target="_blank" rel="external">http://c.biancheng.net/cpp/html/2608.html</a></p>
-</li>
-<li><p>虚拟内存（《操作系统概念》第九章）<br>原理：内存空间不够的时候可以将程序不需要用到的数据交换到磁盘空间上去，以达到扩展内存空间的目的。</p>
-</li>
-<li><p>全局变量能否定义在可被多个<code>.c</code>文件包含的头文件中？为什么？<br>不可以。一般来说编译会报错，因为会造成重复定义。可以在一个<code>.c</code>文件中定义，然后在一个头文件中用<code>extern</code>进行声明，对于要用到这个全局变量的代码文件，只要包含此头文件即可。</p>
-</li>
-<li><p>C、C++中<code>const</code>实现机制的区别：<br><a href="http://www.cnblogs.com/xiaogege/archive/2013/04/11/const_c_cpp.html" target="_blank" rel="external">http://www.cnblogs.com/xiaogege/archive/2013/04/11/const_c_cpp.html</a></p>
-</li>
-<li><p>请定义一个宏，比较两个数a、b的大小，不能使用大于、小于、if语句。<br><code>＃define max(a,b) ((((a)-(b))&amp;&amp;(1&lt;&lt;31))?(b):(a))</code><br><a href="https://www.nowcoder.com/questionTerminal/9240327b0f184184984deb3e387c0e24" target="_blank" rel="external">https://www.nowcoder.com/questionTerminal/9240327b0f184184984deb3e387c0e24</a></p>
-</li>
-<li><p>什么是内存泄漏？怎样定位？如何避免？<br>内存泄漏是指由于疏忽或错误造成程序未能释放已经不再使用的内存的情形。为避免内存泄漏，要保证malloc/free、new/delete成对使用。一些检测工具也是利用这个原理。我们可以通过查看每个进程内存使用的情况来定位，如果进程使用的内存在逐步增加，超出了程序正常运行所需，那么就发生了内存泄漏。</p>
-</li>
-<li><p>什么是线程安全？<br>所谓线程安全，是指在多线程程序中，不同线程在访问同一个资源，能成功进行访问，不会产生错误。如果产生错误，那么就是线程不安全的。通常为了线程安全性，采用互斥锁，或者P、V操作进行。</p>
-</li>
-<li><p>什么是函数可重入？<br>可重入函数主要用于多任务环境中。一个可重入的函数简单来说就是可以被中断的函数，也就是说，可以在这个函数执行的任何时刻中断它，转入OS调度去执行下一段代码，而返回控制时不会出现什么错误。不可重入的函数由于使用了一些系统资源，比如全局变量区、中断向量表等，如果被中断的话可能出现问题，这类函数是不能运行在多任务环境下的。编写可重入函数时，若使用全局变量，则应通过关中断、信号量（P、V操作）等手段对其加以保护。</p>
-</li>
-<li><p>Linux是怎样管理内存的？<br>在linux系统中，采用逻辑地址、线性地址、物理地址来管理内存。程序运行是在逻辑地址之上。为解决内存使用率（内存碎片）的问题，采用分页的方法，即把物理内存空间分页来进行管理，每个内存页占用4kB的空间。Linux系统采用伙伴算法来管理内存空间。</p>
-</li>
-<li><p>进程和线程的差别？<br>（1）线程是指进程内的一个执行单元，也是进程内可调度的实体。<br>（2）调度：线程作为调度和分配的基本单位，进程作为拥有资源的基本单位。<br>（3）并发性：不仅进程之间可以并发执行，同一进程的多个线程之间也可并发执行。<br>（4）拥有资源：进程是拥有资源的一个独立单位，线程不拥有系统资源，但可以访问隶属于进程的资源。<br>（5）系统开销：在创建或撤销进程时，由于系统都要为之分配和回收资源，导致系统的开销明显大于创建或撤销线程的开销。</p>
-</li>
-<li><p>如何从1亿个数字中取出最大的100个？<br>采用电话号码分析树的设计原理，假设每个整数有32位，建立一棵二叉树，左节点都为0，右节点都为1，这个整数的32位的每一位都是一个节点，高位放在上层。此节点的结构包括如下两个元素：是否是数据、相同的数据当前有多少个。<br>考虑到内存不够，不可能把这1亿个数据都建立在这棵树上，当此二叉树有了100个数字后（包括相同的数字），每插入一个数字时，就把最小的（靠最左边的）数字删除掉。</p>
-</li>
-<li><p>SQL语句性能调优<br><a href="http://coolshell.cn/articles/1846.html" target="_blank" rel="external">http://coolshell.cn/articles/1846.html</a><br>经验表明 80%-90% 的性能调优是在应用级做的，而不是在数据库级。<br><a href="https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1002limh/" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1002limh/</a></p>
-</li>
-<li><p>两个整数集合A和B，求其交集？<br>（1）读取集合A中的整数，将读到的整数插入到map中，并把相应的值设为1；<br>（2）读取集合B中的整数，如果该整数在map中存在且值为1，则将此数加入到交集中，并将map中的对应值改为2.</p>
-</li>
-<li><p>给定40亿个不重复的unsigned int型整数，未排序，然后再给几个数，如何快速判断这几个数是否在那40亿个数当中?<br>unsigned int的取值范围是0到<code>2^32-1</code>。我们可以申请连续的<code>2^32/8=512MB</code>的内存，用一个bit对应一个unsigned int数字是否出现过。遍历这40亿个数，并做相应标记。</p>
-</li>
-<li><p>判断机器是大端还是小端的程序：<br><a href="http://bbs.chinaunix.net/thread-2110977-1-1.html" target="_blank" rel="external">http://bbs.chinaunix.net/thread-2110977-1-1.html</a></p>
-</li>
-<li><p>进程一定会遇到的两个信号是什么？<br>一个是引起进程终止执行的SIGSTOP信号，另一个是引起进程退出的SIGKILL信号。这两个信号如果不处理，进程申请的资源就无法回收。</p>
-</li>
-<li><p><code>i++</code>是否是原子操作？<br>如果是32位系统，且i没有跨页，那么是原子操作；如果是64位系统，则一定不是原子操作。<br><code>i++</code>被编译成多条指令，由于中途没有写回内存的操作，系统应该不会中断这个操作，因为一旦中断，寄存器的值就会被冲掉而导致错误，所以可认为是原子操作，即在单线程下是安全的。但是在多线程的情况下，考虑到编译优化和寄存器的作用，并不能保证多个线程同时操作i能同步。<br>所有系统调用都是以原子操作方式执行的。write系统调用在<strong>buf大小不超过内核缓存的时候</strong>是原子操作。</p>
-</li>
-<li><p>说说linux的各类同步机制。<br>信号量（信号灯）：pv操作；<br>互斥锁：计数器；<br>读写锁：<br>条件变量：<a href="http://www.cnblogs.com/blueclue/archive/2010/07/21/1780779.html" target="_blank" rel="external">http://www.cnblogs.com/blueclue/archive/2010/07/21/1780779.html</a><br>(条件变量为我们提供了另一种线程间同步的方法，然而，互斥量是通过控制线程访问数据来实现同步，条件变量允许线程同步是基于实际数据的值。如果没有条件变量，程序员需要让线程不断地轮询，以检查是否满足条件。由于线程处在一个不间断的忙碌状态，所以这是相当耗资源的。条件变量就是这么一个不需要轮询就可以解决这个问题的方法。条件变量总是跟互斥锁（mutex lock）一起使用。)</p>
-</li>
-</ol>
-<ol>
-<li><p>列举说明linux系统的各类异步机制。<br>比如TCP的send函数，它只是把数据写到缓存，并没有到达对端。</p>
-</li>
-<li><p>在C中主流编译器对sizeof(空结构体)编译后执行的结果是0，而在C++中主流编译器对sizeof(空结构体)或对sizeof(空类)编译后执行的结果均为1.<br><a href="http://itindex.net/detail/27437-结构-sizeof" target="_blank" rel="external">http://itindex.net/detail/27437-结构-sizeof</a></p>
-</li>
-<li><p>设计一个洗牌算法，并说明其复杂度。<br><code>for(0&lt;i&lt;55)</code>随机产生一个数k<code>（0&lt;k&lt;5）</code>，与第i张互换。时间复杂度O(n)。</p>
-</li>
-<li><p>注意C++中，如果自己定义了一个构造函数，那么系统就不会自动添加默认构造函数了，如果要用的话必须显式写出来。</p>
-</li>
-<li><p>什么时候可以为类定义一个静态成员变量？<br>当希望类的所有对象共享一个相同的属性值时，就可以定义一个静态成员变量。或者希望不同对象间能相互通讯，也可通过静态成员变量。</p>
-</li>
-<li><p>为什么要把析构函数声明为虚析构函数？<br>（实现多态的需要）这样做是为了当用一个基类的指针删除一个派生类的对象时，派生类的析构函数会被调用。<br>当然，并不是要把所有类的析构函数都写成虚函数。因为当类里面有虚函数的时候，编译器会给类添加一个虚函数表，里面来存放虚函数指针，这样就会增加类的存储空间。所以，只有当一个类被用来作为基类的时候，才把析构函数写成虚函数。<br><a href="http://blog.csdn.net/starlee/article/details/619827" target="_blank" rel="external">http://blog.csdn.net/starlee/article/details/619827</a></p>
-</li>
-<li><p>关键字<code>volatile</code>有什么含义？<br><code>volatile</code>关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素更改，比如：操作系统、硬件或者其他线程等。遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址对稳定访问。声明时的语法是<code>int volatile iValue;</code>。当要求使用<code>volatile</code>声明的变量时，系统总是从它所在的内存中读取数据并且立即保存，即使它前面的指令刚刚读取过该数据。</p>
-</li>
-<li><p>总结<code>const</code>的作用。<br>（1）阻止一个变量被改变。<br>（2）对指针来说，可以指定指针本身是const，也可以指定其指向的数据为const，也可以二者都是const。<br>（3）在函数声明中，const修饰形参，表示在函数内部不得改变其值。<br>（4）const修饰成员函数（const放在声明语句的分号之前），表示其不得修改成员变量的值。<br>（5）const修饰成员函数的返回值类型，表示其返回值不得为左值。</p>
-</li>
-<li><p>C++的空类中，默认产生哪些类成员函数？<br>（1）默认构造函数；<br>（2）默认拷贝构造函数；<br>（3）默认赋值操作符（operator=）；<br>（4）默认取址操作符（operator&amp;）；<br>（5）默认析构函数。</p>
-</li>
-</ol>
-
-          
+          Linux 系统开发常见面试题Linux 网络开发常见面试题常见算法笔试题
+参考博客：http://logic0.blog.163.com/blog/static/188928146201412325629952/
+腾讯C++面试
+大端与小端的概念？各自的优势是什么？
+TIME_WAIT状态的产生、
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/23/interview/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1750,114 +1428,17 @@ int show_all(int a, int b=1, int c); // 不合法
       
         
           
-            <ol>
-<li><p>反转链表<br>可理解为在head左右有分别以pre和next为头节点的两个子链表。</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span></span> * reverseList(<span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span></span> *head)</div><div class="line">&#123;</div><div class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span></span>* pre=NULL;</div><div class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span></span>* next=NULL;</div><div class="line">        <span class="keyword">while</span>(head!=NULL)&#123;</div><div class="line">            next=head-&gt;next;</div><div class="line">            head-&gt;next=pre;</div><div class="line">            pre=head;</div><div class="line">            head=next;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> pre;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>一个有意思的问题：编程语言中为什么要定义数据类型？</p>
-</li>
-</ol>
-<p>Thinking in C++: 数据类型定义了使用存储空间（内存）的方式。通过定义数据类型，告诉编译器怎样创建一片特定的存储空间，以及怎样操纵这片存储空间。</p>
-<ol>
-<li><p>scanf如何读入包含空格的字符串？</p>
-<p><code>scanf( &quot;%[^\n]&quot;, str );</code><br>百分号之后的格式控制串实际上是一种正则表达式。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">  <span class="number">1</span>、定制自己的扫描集 %[abc]、%[a-z]、%[^abc]、%[^a-z]，比<span class="built_in">isdigit</span>()、<span class="built_in">isalpha</span>()更加灵活。[]内是匹配的字符,^表示求反集。</div><div class="line"><span class="keyword">int</span> i;</div><div class="line"><span class="keyword">char</span> str[<span class="number">80</span>], str2[<span class="number">80</span>];</div><div class="line"><span class="comment">// scanf("%d%[abc]%s", &amp;i, str, str2);  </span></div><div class="line"><span class="comment">// printf("%d %s   %s\n",i,str,str2);</span></div><div class="line"><span class="comment">// scanf("%[a-zA-Z0-9]", str);</span></div><div class="line"><span class="comment">// scanf("%[^abce]", str);</span></div><div class="line"><span class="built_in">scanf</span>(<span class="string">"%[^a-z]"</span>, str);</div><div class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>,str);</div><div class="line">  <span class="number">2</span>、读入一个地址并显示内存地址的内容</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</div><div class="line"><span class="keyword">char</span> ch=<span class="string">'c'</span>;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"%p\n"</span>, &amp;ch); <span class="comment">// print the address of ch.</span></div><div class="line"><span class="keyword">char</span> *p;</div><div class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"Enter an address: "</span>;</div><div class="line"><span class="built_in">scanf</span>(<span class="string">"%p"</span>, &amp;p);     <span class="comment">//input the address displayed above</span></div><div class="line"><span class="built_in">printf</span>(<span class="string">"Value at location %p is %c\n"</span>,p,*p);</div><div class="line"><span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"><span class="number">3</span>、丢弃不想要的空白符：<span class="built_in">scanf</span>(<span class="string">"%c %c"</span>)；</div><div class="line"><span class="number">4</span>、控制字符串中的非空白符：导致<span class="built_in">scanf</span>()读入并丢弃输入流中的一个匹配字符。<span class="string">"%d，%d"</span>；</div><div class="line"><span class="number">5</span>、压缩输入：在格式码前加上*，则用户就可以告诉<span class="built_in">scanf</span>()读这个域，但不把它赋予任何变量。</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%c%*c, &amp;ch); 使用此方法可以在字符处理时吃掉多余的回车。</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>linux系统调用和库函数调用的区别</p>
-<p><a href="http://www.cnblogs.com/yanlingyin/archive/2012/04/23/2466141.html" target="_blank" rel="external">http://www.cnblogs.com/yanlingyin/archive/2012/04/23/2466141.html</a></p>
-<p>linux系统调用过程分析</p>
-<p><a href="http://blog.csdn.net/hustyangju/article/details/40340633" target="_blank" rel="external">http://blog.csdn.net/hustyangju/article/details/40340633</a></p>
-</li>
-<li><p>gdb 调试多线程</p>
-<p> <a href="http://blog.163.com/zhangjie_0303/blog/static/99082706201511344758347/" target="_blank" rel="external">http://blog.163.com/zhangjie_0303/blog/static/99082706201511344758347/</a></p>
-</li>
-<li><p>Linux C 线程池<br> <a href="http://www.cnblogs.com/venow/archive/2012/11/22/2779667.html" target="_blank" rel="external">http://www.cnblogs.com/venow/archive/2012/11/22/2779667.html</a></p>
-</li>
-<li><p>Linux C 进程池<br> <a href="https://github.com/vincent08/ProcessPool" target="_blank" rel="external">https://github.com/vincent08/ProcessPool</a></p>
-</li>
-<li><p>Linux C 数据库连接池<br> <a href="http://blog.chinaunix.net/uid-25612258-id-3648185.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-25612258-id-3648185.html</a></p>
-</li>
-<li><p>函数指针的宏定义<br> <a href="http://fouri.iteye.com/blog/483974" target="_blank" rel="external">http://fouri.iteye.com/blog/483974</a></p>
-</li>
-<li><p>原子操作的实现原理. 注意<code>i++</code>不是原子操作<br> <a href="http://m.blog.csdn.net/article/details?id=8434060" target="_blank" rel="external">http://m.blog.csdn.net/article/details?id=8434060</a><br> <a href="http://blog.csdn.net/yeyuangen/article/details/19612795" target="_blank" rel="external">http://blog.csdn.net/yeyuangen/article/details/19612795</a></p>
-</li>
-<li><p>通过fork使python脚本后台运行<br><a href="http://www.cnblogs.com/MikeZhang/p/pythonDeamon_20150307.html" target="_blank" rel="external">http://www.cnblogs.com/MikeZhang/p/pythonDeamon_20150307.html</a></p>
-</li>
-</ol>
-<h1 id="平台项目（含db、cc、telnet、log、msg等模块）相关笔记"><a href="#平台项目（含db、cc、telnet、log、msg等模块）相关笔记" class="headerlink" title="平台项目（含db、cc、telnet、log、msg等模块）相关笔记"></a>平台项目（含db、cc、telnet、log、msg等模块）相关笔记</h1><ol>
-<li><p>对于一个软件项目，哪些功能是基本的？<br>日志功能，telnet管理功能（或自己实现TCP编程代替telnet），模块间的交互功能，定时器功能格，配置文件功能，各个模块内存的分配等。一般把这些功能归属于一个大的模块中，称之为平台模块。<br>把各个业务都要使用的功能放在平台层来实现，可以节省开发成本，增加系统稳定性。有时把数据库调用、网络传输等模块也放在平台层。</p>
-</li>
-<li><p>简单说明一下平台项目中后台维护系统等实现过程？<br>（1）后台维护系统是通过命令的方式来执行相关操作的。<br>（2）命令分两种，一种是状态命令，一种是普通命令。普通命令必须归属于一个状态命令下，通常一个子模块分配一个状态命令。<br>（3）系统在启动的过程中，就把状态命令注册好，各个模块自己可以注册自己的状态命令、普通命令，而无需平台组干预。这样就可以降低各个模块之间的耦合度。注册过程在各模块自己的init函数中实现。<br>（4）子模块支持再划分，即子模块的子模块都可以有自己的命令。</p>
-</li>
-</ol>
-<ol>
-<li><p>C语言宏定义中的 <code>## __VA_ARGS__</code><br> <a href="http://www.cnblogs.com/alexshi/archive/2012/03/09/2388453.html" target="_blank" rel="external">http://www.cnblogs.com/alexshi/archive/2012/03/09/2388453.html</a></p>
-</li>
-<li><p><code>strchr()</code>函数：查找某字符在字符串中首次出现的位置</p>
-</li>
-<li><p>模块注册和模块功能函数的注册：<br>为了通用化，一个项目中，如果需要添加一个新的模块，只需将其在平台层进行注册，而后就可以与其他模块通讯。由平台层统一管理这些模块。<br>而当模块内部需要添加功能时，采用模块功能函数在平台层进行注册的形式，这样平台层通过Telnet接收到命令后交给子模块功能函数去处理，其代码实现大量用到函数指针和宏定义。</p>
-</li>
-<li><p>信号的屏蔽<br>在软件项目设计中，为了系统的稳定性和安全（防止用户误杀进程），有些信号必须要屏蔽。如果一个软件系统是由一个进程加多个线程来实现的，应该把信号的屏蔽工作统一放在平台模块上来处理。</p>
-</li>
-<li><p>平台层的功能还可以有：统一申请内存空间，然后按需分配给其他各个模块，监控各个模块的运行状态等。</p>
-</li>
-<li><p><code>#if</code> 和 <code>#ifdef</code> 的区别<br><a href="http://www.jianshu.com/p/609ff54ec6a5" target="_blank" rel="external">http://www.jianshu.com/p/609ff54ec6a5</a><br>简而言之，<code>#ifdef</code>只关心宏是否被定义，不关心宏逻辑的真假；<code>#if</code>不仅关心宏是否被定义，而且关心宏逻辑的真假。</p>
-</li>
-<li><p>模块间的消息传递采用内存块的双向链表（队列）。消息有优先级，高优先级的消息可以插到队列的前面。消息在被接收后释放内存块。平台层的消息结构中分别记录收发消息的模块，进程id，消息块总长度，以及负载数据（由发消息的模块添加）的首地址和长度。消息的发送是开辟内存并添加元素到消息队列，消息的处理线程负责根据消息内容执行回调函数（就是之前各个模块在平台层注册的回调函数）。</p>
-</li>
-<li><p>链表的宏遍历<br><a href="http://blog.csdn.net/kevinx_xu/article/details/8472411" target="_blank" rel="external">http://blog.csdn.net/kevinx_xu/article/details/8472411</a></p>
-</li>
-<li><p>关于container_of宏，注意<code>NULL</code>和0地址的区别<br><a href="https://www.zhihu.com/question/22203461" target="_blank" rel="external">https://www.zhihu.com/question/22203461</a></p>
-</li>
-<li><p>日志模块中日志消息的多线程读写应该加上锁。</p>
-</li>
-<li><p>定时器的设计采用了三个链表(FreeTimerList, WaitTimerList, TimeoutTimerList)，而链表上的每个元素又有自己的状态（未开始，等待，超时，停止等），超时之后的定时器负责执行消息发送任务或者执行回调函数。模块间传递的消息可以是即时消息，也可以是定时消息(加入消息队列中，但等到计时器时间到才发送，需要定义消息队列每个元素的类型、优先级)。<br><a href="http://blog.csdn.net/zhoudaxia/article/details/9286229" target="_blank" rel="external">http://blog.csdn.net/zhoudaxia/article/details/9286229</a></p>
-</li>
-<li><p>send、recv函数的阻塞、非阻塞<br><a href="http://blog.csdn.net/xiaofei0859/article/details/6037814" target="_blank" rel="external">http://blog.csdn.net/xiaofei0859/article/details/6037814</a></p>
-</li>
-<li><p>多线程中使用信号机制 <code>pthread_sigmask</code> 函数<br><a href="http://blog.csdn.net/i_am_jojo/article/details/7592219" target="_blank" rel="external">http://blog.csdn.net/i_am_jojo/article/details/7592219</a> </p>
-</li>
-<li><p>通过 <code>ioctl</code> + <code>FIONREAD</code> 判定socket数据是否可读，可替代 <code>select</code> 使用。<br><a href="https://my.oschina.net/moooofly/blog/522725" target="_blank" rel="external">https://my.oschina.net/moooofly/blog/522725</a></p>
-</li>
-<li><p><code>do{...} while(0)</code>的使用场合：（1）在宏中使用，用于包含多条分号分隔的单独语句；（2）在程序中使用，包裹多条if语句，if出错时可通过<code>break</code>来跳出。</p>
-</li>
-<li><p>文件指针与文件描述符的区别<br><a href="http://www.cnblogs.com/qianye/archive/2012/11/24/2786357.html" target="_blank" rel="external">http://www.cnblogs.com/qianye/archive/2012/11/24/2786357.html</a></p>
-</li>
-<li><p>长连接和短连接<br><a href="http://www.cnblogs.com/0201zcr/p/4694945.html" target="_blank" rel="external">http://www.cnblogs.com/0201zcr/p/4694945.html</a></p>
-</li>
-<li><p>单例模式及其C++实现<br><a href="http://www.zkt.name/dan-li-mo-shi-singleton-ji-c-shi-xian/" target="_blank" rel="external">http://www.zkt.name/dan-li-mo-shi-singleton-ji-c-shi-xian/</a></p>
-</li>
-<li><p>C++解析配置文件<br><a href="http://cooker.iteye.com/blog/777455" target="_blank" rel="external">http://cooker.iteye.com/blog/777455</a></p>
-</li>
-<li><p>自己写出String类<br>在这个类中包括了指针类成员变量m_data，当类中包括指针类成员变量时，一定要重载其拷贝构造函数、赋值函数和析构函数，这既是对C++程序员的基本要求，也是《Effective　C++》中特别强调的条款。<br><a href="http://www.cnblogs.com/fangyukuan/archive/2010/09/18/1830493.html" target="_blank" rel="external">http://www.cnblogs.com/fangyukuan/archive/2010/09/18/1830493.html</a></p>
-</li>
-<li><p>全局对象是在main函数调用之前创建的,析构在main函数之后,程序结束之前。</p>
-</li>
-<li><p>假设现有一个单向的链表,但是只知道只有一个指向该节点的指针 p,并且假设这个节点 不是尾节点,试编程实现删除此节点。<br>O(1)的办法:用 p 指向的节点的下一节点的值替换 p 指向的节点的值,然后删除 p 指向的节点的下一节点。</p>
-</li>
-<li><p>用&lt;&lt;,&gt;&gt;,|,&amp;实现一个 WORD(2 个字节)的高低位交换。<br>(w &gt;&gt; 8) | (w &lt;&lt; 8),要求w是无符号的。</p>
-</li>
-<li><p>Map与HashMap的选择：<br><a href="http://blog.csdn.net/dongtingzhizi/article/details/8629285" target="_blank" rel="external">http://blog.csdn.net/dongtingzhizi/article/details/8629285</a></p>
-</li>
-<li><p>什么时候需要用<code>new</code>动态分配内存？<br><a href="http://blog.jobbole.com/90147/" target="_blank" rel="external">http://blog.jobbole.com/90147/</a></p>
-</li>
-<li><p>虚拟IP和IP漂移<br><a href="http://xiaobaoqiu.github.io/blog/2015/04/02/xu-ni-iphe-ippiao-yi/" target="_blank" rel="external">http://xiaobaoqiu.github.io/blog/2015/04/02/xu-ni-iphe-ippiao-yi/</a></p>
-</li>
-<li><p>RAID5算法：存储备份，异或运算<br><a href="http://itindex.net/detail/54453-raid5-工作-原理" target="_blank" rel="external">http://itindex.net/detail/54453-raid5-工作-原理</a></p>
-</li>
-<li><p>KMP算法中next表的构造（看前缀集合和后缀集合的交集的字符数）：<br><a href="http://xeostream.github.io/blog/2013/11/10/kmp/" target="_blank" rel="external">http://xeostream.github.io/blog/2013/11/10/kmp/</a></p>
-</li>
-<li><p>Huffman树的构造：<br><a href="http://www.cnblogs.com/kubixuesheng/p/4397798.html" target="_blank" rel="external">http://www.cnblogs.com/kubixuesheng/p/4397798.html</a></p>
-</li>
-<li><p>Hamming Weight的算法分析：<br><a href="http://www.cnblogs.com/yongssu/p/4348479.html" target="_blank" rel="external">http://www.cnblogs.com/yongssu/p/4348479.html</a></p>
-</li>
-<li><p>memcpy和memmove函数的区别和实现<br><a href="http://blog.csdn.net/ce123/article/details/9002276" target="_blank" rel="external">http://blog.csdn.net/ce123/article/details/9002276</a></p>
-</li>
-<li><p>线程的joinable与detached<br>一个可join的线程所占用的内存仅当有线程对其执行了pthread_join()后才会释放，因此为了避免内存泄漏，所有线程的终止，要么已设为DETACHED，要么就需要使用pthread_join()来回收。<br><a href="http://blog.csdn.net/computerhenu/article/details/5860635" target="_blank" rel="external">http://blog.csdn.net/computerhenu/article/details/5860635</a></p>
-</li>
-</ol>
-
           
+反转链表可理解为在head左右有分别以pre和next为头节点的两个子链表。
+123456789101112struct ListNode * reverseList(struct ListNode *head)&#123;        struct ListNode* pre=NULL;   
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/01/note/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1997,152 +1578,18 @@ int show_all(int a, int b=1, int c); // 不合法
       
         
           
-            <p>“一切皆Socket！”话虽些许夸张，但事实也确实如此，现在的网络编程几乎都是用的socket。</p>
-<ol>
-<li><p>UDP编程相关函数</p>
-<p> <strong>客户端</strong>：<br>（1）库函数inet_pton：功能是把字符串ip地址转换到网络地址结构成员变量中去，转换以后的结果是一个二进制的数字。pton的意思就是presentation_to_numeric（表达式转成数值）。与之相反的库函数是inet_ntop，将整形ip地址转换成ASCII字符串。<br>（2）向系统申请一个网络套接字<code>int socket(int family, int type, int protocol)</code>：网络套接字与文件句柄的功能完全类似，所以计算机网络编程又叫套接字编程。<br>（3）库函数sendto：将数据由指定的socket传给对方主机，成功则返回实际传送出去的字符数，失败则返回－1，错误原因存于errno中。<br>（4）库函数recvfrom：接收来自服务器的数据并保存源地址，成功则返回接收到的字符数，失败则返回－1，错误原因存于errno中。调用此函数时，此函数会一直处于阻塞状态，直到接收到服务器发送过来的数据。</p>
-<p> <strong>服务器端</strong>：（<code>project_network/project_udp_v1.0.0/udp_server.c</code>）<br>（1）企业用的服务器端可能有多个网口，那么我们在写程序时就需要指定从某个网口收发数据，即捆绑网口，也可以捆绑所有的网口。代码的第40行，宏INADDR_ANY的意思就是捆绑所有网口。</p>
-</li>
-<li><p>UDP网络编程函数调用图，见《UNIX网络编程》第186页。</p>
-</li>
-<li><p>TCP网络编程</p>
-<p> <strong>客户端</strong>：（<code>project_network/project_tcp_v1.0.0/tcp_client.c</code>）<br>（1）第34行代码，socket函数的第二个参数是SOCK_STREAM，表示字节流套接字，也表示TCP套接字。<br>（2）库函数connect：在调用此函数时，系统后台会立刻发起与服务端的连接，连接过程中如果服务器端没有启动，那么此函数会返回错误（错误号111，Connection refused）。如果连接成功，此函数就会返回一个0. 所以，一旦此函数调用，就会阻塞（默认情况），直到连接成功或失败。有时候，我们不希望函数处于阻塞状态，希望它能立马返回，那么可以把这个套接字设置为非阻塞（代码在v1.1.0）。</p>
-<blockquote>
-<p>怎样理解同步异步与阻塞非阻塞的区别：<a href="https://www.zhihu.com/question/19732473" target="_blank" rel="external">https://www.zhihu.com/question/19732473</a></p>
-</blockquote>
-<p> （3）库函数send：发送数据给对方主机，通过flags设置是阻塞模式还是非阻塞模式，但是，如果套接字是非阻塞模式，则不能把send函数设置为阻塞模式。若无错误发生，该函数返回所发送数据的总数。<br>TCP套接字编程中，系统会为套接字申请两段缓存，一段内存用于保存用户将要发送的内容，另一段内存用于接收对方主机发送过来的数据。</p>
-<p> （4）库函数recv：接收对方发送过来的数据。若无错误发生，返回所接收数据的总数。</p>
-<p> <strong>服务端</strong>：<br> （1）库函数listen：函数原型<code>int listen(int sockfd, int backlog)</code>，成功则返回0。其中backlog用于规定内核为此套接口排队的最大连接数。比如10个客户端同时调用connect函数连接服务器，那么服务器这边调用listen之后就会得到10个链接，系统会将这10个连接组织成链表，称为连接管理队列。这个链表的最大节点数就由backlog确定。那么这个参数是不是就决定了服务器支持的最大连接数呢？不是的，尽管系统会帮我们管理连接，但我们还是要自己管理的，因为要通过连接向客户端返回数据。怎么管理呢？通过accept函数把连接从链表里取出来，之后系统就会将该节点从队列中删除，再之后就需要我们自己的应用程序来管理这个连接了。这样系统又有空闲的节点去接受新的链接，所以我们也可以把系统的这个链表叫做连接的缓冲区。<br> （2）库函数accept：功能是从已完成连接的系统队列头返回下一个已完成连接，获取客户端的信息，创建新的套接字，并返回该套接字的文件描述符。此函数是阻塞的，即一直阻塞到有一个客户端完成了连接才返回。当然也可以设置成非阻塞的。</p>
-<blockquote>
-<p>accept函数是配合listen使用的。理论上，listen一旦监听到客户端的连接，就应该立即调用accept函数，把客户端的连接从系统的连接里面取出到应用程序里面，这样客户端发送过来的数据，服务端才能接收到，否则就会影响整体网络的速度。</p>
-</blockquote>
-<p> （3）代码第87，88行，提醒我们在服务器端有两类套接字：一类是自己监听的套接字；另一类是客户端连接时创建的套接字，这个套接字在连接断开、出错时，要进行关闭，否则就会产生资源泄漏。</p>
-<p> <strong>发送缓存与接收缓存</strong>：<br> （1）缓存，也叫缓冲，数据首先是从网卡传入的，之后就会存放在内核的缓冲区内（对应socket缓冲区内），然后应用程序调用recv函数把这个数据从内核缓冲区读到应用程序自己的内存中。如果应用进程一直不调用recv函数读取的话，此数据会一直留在socket接收缓冲区中。recv函数所作的事情，不过是把内核缓冲区中的数据拷贝到应用层用户的buffer里面，仅此而已，并未直接与客户端通信。<br> （2）进程调用send函数时也是类似，最简单情况（也是一般情况）下，将数据拷贝进入socket的内核发送缓冲区中，然后send就在上层返回。换句话说send()返回之时，数据不一定会发送到对端去（和write写文件有些类似），send仅仅是把应用层buffer的数据拷贝进socket的内核发送buffer中，发送是TCP的事情，和send其实没有太大关系。<br> （3）接收缓冲区被TCP用来缓存网络上来的数据，一直保存到应用进程读走为止。对于TCP，如果应用进程一直没有读取，接收缓冲区满了之后，发生的动作是：收端通知发端，接收窗口关闭（win=0）。这个便是滑动窗口的实现，保证TCP套接口接收缓冲区不会溢出，从而保证了TCP是可靠传输。因为对方不允许发出超过所通告窗口大小的数据。这就是TCP的流量控制，如果对方发送超出窗口大小的数据，接收方将丢弃它。可通过<code>cat /proc/sys/net/ipv4/tcp_wmem</code>查看发送缓冲区的大小，这个值是不固定的，由系统自动分配，当然也可以自己调用库函数进行修改。</p>
-</li>
-<li><p>UDP编程的补充<br>（1）UDP无需调用connect，但在实际编程中，收发数据之前我们经常会调用connect函数，所以我们把UDP套接字分为两种：未连接的套接字和已连接的套接字。<br>（2）UDP编程时调用connect与TCP调用connect是不同的，它没有三路握手的过程。内核只是检查一些立即可知的错误（比如不可达的目标）并且立马返回，如果没有立即可知的错误就记录ip和端口号，下次调用发送数据的函数时就可以不带上目标地址信息了。<br>（3）已连接的套接字在编程上与未连接的套接字相比有一些变化：发送数据时sendto可改用write或send；接收数据时recvfrom可改用read、recv或revmsg；已连接UDP套接字引发的异步错误会返回给它归属的进程，而未连接的套接字不接受任何异步错误。比如发送一个数据之后，如果对端没有启动接收的进程，那么UDP将丢弃这个数据，并且生成一个相应的ICMP端口不可达错误。<br>（4）可以出于以下目的给一个UDP套接字多次调用connect：1.指定新的IP地址和端口号（TCP不能）；2.断开套接字（将sin_family设置成AF_UNSPEC）。<br>（5）要注意，UDP仍然是“无连接”的，因为上面“已连接的套接字”中的“连接”（简单地记录ip和端口）与TCP中的“连接”（三次握手的过程）不是一回事。</p>
-</li>
-<li><p>面试题：怎样用UDP实现可靠传输？<br> 在应用层实现。当一端的应用程序发送一个UDP数据后，对端必须回应一下。如果一端时间之后没有收到这个回应，那么就再次重新发送。</p>
-</li>
-<li><p>网络字节序是大端的，如果机器的字节序是小端的话，需要调用socket函数htons、ntohs等进行转换。</p>
-</li>
-</ol>
-<h2 id="端口复用"><a href="#端口复用" class="headerlink" title="端口复用"></a>端口复用</h2><ol>
-<li><p>通过select实现I/O复用。</p>
-</li>
-<li><p>select函数非常重要，可以确定一个或多个套接口的状态，一般我们用此函数来确定套接字是否可读（有数据可读区）、可写，用得最多的是判断多个套接字是否可读。select可以通过参数timeout设置等待的超时时间（即在timeout时间内阻塞）。调用此函数之前，一般会把所有的套接字加入一个集合（库函数FD_SET），再用select判断网络中是否有数据可读，如果有，再判断具体那个套接字可读（库函数FD_ISSET）。select编程在处理多连接的时候是经常用到的。源代码示例： <code>project_network/project_tcp_v2.0.0_select</code></p>
-</li>
-<li><p>select函数的实现过程是linux内核中最难的部分，其调用路径是 sys_select-&gt;core_sys_select-&gt;do_select，前面两个函数主要做一些准备工作，所以主要分析do_select函数。</p>
-</li>
-<li><p>了解了select的原理后，可以分析出v2.0.0_select中的tcp_data_process_thread效率并不理想。它分了4步：第一步，把所有套接字加入集合；第二步，通过select判断是否有套接字可读；第三步，判断具体的某个套接字是否在可读的集合中；第四步，读取套接字的数据。第一、二、三步都遍历了一遍套接字，有重叠，v2.1.0_select对此作了改进。当服务器程序监听到连接后，就把新的套接字放进套接字集合中，当发现连接无效时，再把此套接字从集合中删除，从而可以把第一步去掉。</p>
-</li>
-</ol>
-<h2 id="三个重要的数据处理过程"><a href="#三个重要的数据处理过程" class="headerlink" title="三个重要的数据处理过程"></a>三个重要的数据处理过程</h2><ol>
-<li><p>清楚以下三个数据处理过程，对于解决项目实际问题会有很大帮助：（1）连接的建立过程，（2）数据的发送、接收过程，（3）连接的关闭过程。重点研究TCP/IP协议。</p>
-</li>
-<li><p>TCP/IP协议族的四层模型：应用层、传输层、网络层、链路层。<br> （1）链路层：网卡就属于链路层，负责从上层接收IP数据报并发送，或者从网络上接收物理帧，抽出IP数据报，交给IP层。链路层具有流量控制、错误检测和纠正等功能，数据的单位是帧（以太网的帧值总是在一定范围内浮动，最大的帧值是1518字节，最小的帧值是64字节。在实际应用中，帧的大小是由设备的MTU，即每次能够传输的最大字节数来自动确定的）。<br> （2）网络层：负责相邻计算机之间的通信，主要的协议有IP协议、ICMP协议、ARP协议（根据IP 查MAC地址，也有很多人说ARP是链路层的）、RARP协议（根据MAC地址查IP地址），其功能包括三方面：处理来自传输层（上层）的分组发送请求；处理输入的数据报（即接收下层的数据报请求）；处理路径、流控（即不会发送大于下一跳缓冲大小的数据）、拥塞（通过ICMP传递）等问题。注意弄清协议的概念和拥塞的概念。<br> （3）传输层：网络层负责点对点（point to point，这里的“点”指主机或路由器）的传输，而传输层负责端到端（end to end，这里的“端”指源主机和目的主机）的传输，提供应用程序间的通信。其功能主要是提供可靠传输，为此，传输层协议规定了接收端必须发回确认，并且假如分组丢失，必须重新发送。传输层协议主要是TCP（传输控制协议）和UDP（用户数据报协议），在这一层，数据的单位称为段。<br> （4）应用层：自己的软件，如telnet、http、ftp、DNS、SMTP、POP3等。</p>
-</li>
-<li><p>数据封装过程<br>   《TCP/IP详解》卷1，第7页，图1-7。</p>
-<pre><code>以下几个问题也通过此书学习。
-</code></pre></li>
-<li><p>TCP数据的传输过程总结<br> （1） TCP三次握手后，收发双方建立起连接通道，双方协商并确定要采用的MSS(最大分段长度，对于以太网，可达1460bytes)，之后当用户调用send函数发送数据时，TCP层会把用户数据按照MSS大小进行分段，各个分段数据被逐一添加TCP报头后，送给下一层网络层。<br> （2）网络层接收到这些分段后，在添加端主机的IP报头前，按照主机所在的局域网链路层的MTU（最大传输单元，一般设置为1500bytes）进行分片，并在分片后分别添加20字节的IP报头。<br> （3）接收端的网络层，对分片按照标记序号进行重组，并交给上一层传输层进行处理，传输层去掉各分片的IP报头，形成完整的分段。</p>
-</li>
-<li><p>数据传输过程中的一些异常处理</p>
-</li>
-<li><p>滑动窗口的原理是怎样的？（面试会问到，《TCPIP详解》P212）</p>
-</li>
-<li><p>打开连接三次握手、关闭连接四次握手（这是由TCP的半关闭造成的，既然TCP连接是全双工的，故每个方向必须单独地进行关闭）</p>
-</li>
-<li><p>TCP连接过程中的TIMED WAIT状态是什么？<br>TIMED WAIT状态是TCP关闭过程中的状态，即TCP完成了四个报文的交互之后所处的状态。在此状态下，还要等待2个MSL的时间，才会清除。目的在于保证发送的ACK被对方收到（《TCPIP详解》P183）</p>
-</li>
-<li><p>网络层IP提供的是一种不可靠的服务，它只是尽可能快地把分组从源结点送到目的结点，但并不提供任何可靠性保证。TCP通过超时重传、确认分组等机制在不可靠的IP层上提供了一个可靠的运输层。</p>
-</li>
-<li><p>ping程序是对两个TCP/IP系统连通性进行测试的基本工具。它只利用ICMP回显请求和回显应答报文，而不用经过传输层（TCP/UDP）。</p>
-</li>
-<li><p>TCP和 UDP用端口号来区分进程。<br>注意《TCP/IP详解》卷1，第194页，第一段话，并将其与应用层进程相区别：TCP使用由本地地址和远端地址组成的4元组：目的ip地址、目的端口地址、源ip地址、源端口地址。所以，对服务器而言，多个已建立的tcp连接可能具有相同的本地端口。</p>
-</li>
-<li><p>TFTP（简单文件传送协议，熟知端口69）是使用UDP传送，(而FTP是使用TCP传送)。TFTP提供一定形式的并发，客户端通过熟知端口与服务器建立连接后，服务器会新申请一个端口用于文件传送，以便熟知端口能够监听来自其他主机的连接请求。由于TFTP设计用于系统引导进程，没有提供安全特性（用户名和口令）。</p>
-</li>
-<li><p>广播和多播仅限于UDP，因为TCP是一个面向连接的协议。（IP地址的分类，查看《TCPIP详解》）<br>D类IP地址就是多播地址（32位bit的前四位为1110，点分十进制从224.0.0.0到239.255.255.255）.能够接收发往一个特定多播组地址数据的主机集合称为主机组（host group）。一个主机组可以跨越多个网络。主机组中成员可以跨越多个网络。主机组中对主机的数量没有限制，同时不属于某一主机组的主机可以向该组发送信息。另外，一些多播地址被IANA确定为知名的地址，即已经被占用了。比如224.0.0.1表示子网内的所有系统组，224.0.0.2表示子网内的所有路由器组。224.0.1.1被用作网络时间协议NTP，224.0.0.9被用作RIP-2。多播的具体实现需要路由器支持。</p>
-</li>
-<li><p>广播容易产生广播风暴，因此应尽量使用多播（组播），网上视频会议、网上视频点播特别适合采用多播方式。<br>参考：组播IP地址到底是谁的IP地址：<br><a href="http://www.zhihu.com/question/27233903" target="_blank" rel="external">http://www.zhihu.com/question/27233903</a></p>
-<blockquote>
-<p>P2P会造成大量的数据重复，并且给路由器造成很大的压力，广播又让每一个接收者去判断流量是不是给自己的，在浪费带宽的同时也给所有人带来判断流量的压力。组播便应运而生，它实现的关键技术在于把流量给合适的路由器，并且在合适的节点复制，尽可能的减轻网络负担。</p>
-</blockquote>
-</li>
-</ol>
-<h2 id="网络服务器（TCP模块）设计要点"><a href="#网络服务器（TCP模块）设计要点" class="headerlink" title="网络服务器（TCP模块）设计要点"></a>网络服务器（TCP模块）设计要点</h2><ol>
-<li><p>应用层数据要可靠传输<br> 因为虽然TCP会保证数据到达对端，但它不会告诉应用层数据到达了对端。解决方法很简单，只要在应用层加上确认机制就可以了。如果没有收到对端应用层的回应，就重发或者打印错误日志。<br> 有时候还要再加上序列号机制，即客户端每次向服务器端发送的数据都有一个唯一的编号（一般是递增的）。在金融行业，丢失数据是一件很严重的事，比如上次收到的数据编号是97，这次收到的是100，说明有数据丢失，必须打印错误日志。</p>
-</li>
-<li><p>分层<br> 在做服务器时必须有层次的概念，你要设计的TCP网络层是个独立的模块，这个模块的功能就是确保数据能正确高效地传输给对端。不要关心上层究竟发了什么数据。一般来说，这个模块需要加上一个自定义的包头，包头至少包含如下信息：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> msg_head_struct</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> iCmd; <span class="comment">//操作命令，比如管理命令、数据传送命令</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uSng; <span class="comment">//命令序列号</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uUserDataLen; <span class="comment">//用户数据的长度</span></div><div class="line">&#125; msg_head_st;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>通过第三个变量，接收端就知道后面的用户数据有多长了。</p>
-<ol>
-<li>断点续传<br> 比如传输一个1G的大文件的时候，如果最后一个分组无法到达，前面所有的数据都会失效。一般来说，如果应用程序让你的TCP模块传输一个很长的数据，那么你也应该进行分段传输。代码上实现也很简单，上面的结构体中的uSng是区分命令的数据号，如果数据太长，需要对数据分段编号，加上一个子序列号就可以了。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> msg_head_struct</div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> iCmd; <span class="comment">//操作命令，比如管理命令、数据传送命令</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uSng; <span class="comment">//命令序列号</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uSonSng; <span class="comment">//子序列号</span></div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> uUserDataLen; <span class="comment">//用户数据的长度</span></div><div class="line">&#125; msg_head_st;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>除此之外，客户端与服务端还要协商好总数据长度，总分段数目等。</p>
-<ol>
-<li><p>心跳机制<br> 如果一端出现宕机、掉线、交换机故障等问题，另一端如何快速感知呢？最有效的方法是采用心跳机制，在规定的时间内没有收到对端的消息，就认为对端出故障了，就关闭TCP连接，之后等待客户端再次发起连接。心跳间隔一般设为5秒，其中也有很多技巧。比如如果在5秒内收到了消息（非心跳消息），那么也可以认为是一个心跳消息，对端就无需再额外发送心跳消息了。另外，心跳消息也可以附带其他数据（比如CPU、内存的使用情况等）。面试的时候会问客户端连接出现了问题怎么办，或者连接断开了怎么办。对此，可以回答，在两端采用心跳机制，如果三次还没有收到对端的心跳消息，那么一端就认为另外一端出现了问题。<br> 系统内核也为TCP编程提供了一套类似心跳的选项SO_KEEPALIVE，但一般还是自己来实现心跳机制比较灵活。</p>
-</li>
-<li><p>会话（session）与状态<br> 一个会话建立在一个连接、或多个连接甚至多种连接之上。<br> 利用状态来管理连接，比如用户登录成功之前是一种状态，登录之后是一种状态，不同状态有不一样的权限。</p>
-</li>
-<li><p>有时候需要自己对服务器的网口进行管理，捆绑不同网口的IP。</p>
-</li>
-<li><p>数据流量统计<br> 对于一个网络服务器来说，用户需要知道自己所使用的系统服务器每秒数据流量的多少，这个流量分接收数据的流量和发送数据的流量。统计时一般以秒为单位。</p>
-</li>
-</ol>
-<h2 id="select、poll、epoll编程对比"><a href="#select、poll、epoll编程对比" class="headerlink" title="select、poll、epoll编程对比"></a>select、poll、epoll编程对比</h2><ol>
-<li><p>必须要<strong>了解</strong>poll网络编程，<strong>熟悉</strong>epoll网络编程。<br> poll()和select()函数要处理的问题是相同的，而epoll()是linux2.6在2003年才推出来的新技术。<br> select、poll、epoll都是IO多路复用的机制。所谓IO多路复用，就是通过一种机制，监视多个描述符，一旦某个描述符就绪，能够通知程序进行相应的读写操作。这个过程对select、poll、epoll来说本质上都是差不多的。</p>
-</li>
-<li><p>select、poll、epoll之间的区别总结<br> <a href="http://www.cnblogs.com/Anker/p/3265058.html" target="_blank" rel="external">http://www.cnblogs.com/Anker/p/3265058.html</a></p>
-</li>
-<li><p>设想有100万个客户端同时与一个服务器进程保持着TCP连接，而每一时刻，通常只有几百上千个TCP连接是活跃的，如何实现这样的高并发？<br> 在select/poll时代，系统内核要去轮询100万个套接字上是否有事件发生，这一过程资源消耗较大。因此，select/poll一般只能处理几千的并发连接。<br> epoll的设计和实现与select完全不同。epoll通过在linux内核中申请一个简易的文件系统（文件系统一般用B+树实现），把原先的select/poll调用分成了3个部分：<br> （1）调用epoll_create()建立一个epoll对象（在epoll文件系统中为这个句柄对象分配资源）；<br> （2）调用epoll_ctl()向epoll对象中添加这100万个连接的套接字；<br> （3）调用epoll_wait()收集发生事件的连接（效率非常高，不需要系统去遍历所有连接）。</p>
-</li>
-<li><p>IO多路复用的“水平触发模式”与“边缘触发模式”（概念来源于示波器）<br> <a href="http://www.jianshu.com/p/dfd940e7fca2" target="_blank" rel="external">http://www.jianshu.com/p/dfd940e7fca2</a></p>
-</li>
-<li><p>虽然epoll有很好的扩展性，但是，除非你做的项目是用在互联网上，并且需要支持的连接数特别多，否则不建议采用epoll编程。实际而言，我们做的绝大多数项目无需支持太多的连接，一般都是50个以下，建议使用更简便的select编程。</p>
-</li>
-</ol>
-<h2 id="网络拥塞和带外数据"><a href="#网络拥塞和带外数据" class="headerlink" title="网络拥塞和带外数据"></a>网络拥塞和带外数据</h2><ol>
-<li><p>网络拥塞，是指在分组网络中传送分组的数目太多时，由于存储转发节点（路由器或交换机）的资源有限而造成网络传输性能下降的情况。解决网络拥塞的方法是拥塞控制。</p>
-</li>
-<li><p>带外数据(out-of-band data)，有时也称为加速数据，是指连接双方中的一方发生重要事情，想要迅速地通知对方。这种通知在已经排队等待发送的任何“普通”数据之前发送（高优先级）。带外数据是映射到现有的连接中的，而不是在客户机和服务器间再用一个连接。一般来说，几乎所有的传输层协议（不仅仅是TCP协议）都会有带外数据，但UDP协议是没有实现带外数据的。</p>
-</li>
-<li><p>TCP没有真正的带外数据，而是提供了一个“紧急模式”。带外数据在实际的商用项目中使用较少，了解即可。</p>
-</li>
-</ol>
-<h2 id="网络编程问题收集"><a href="#网络编程问题收集" class="headerlink" title="网络编程问题收集"></a>网络编程问题收集</h2><ol>
-<li>TCP/IP协议族的四层模型，以及各自的功能。</li>
-<li>ISO网络的七层模型，以及各自的功能。</li>
-<li><p>MTU、路径MTU、MSS的含义<br>MTU：最大传输单元，一般默认是1500<br>路径MTU：两主机之间最小的MTU<br>分片：如果数据报大小超过了相应链路的MTU，那么将执行分片<br>MSS：TCP报文中数据段的最大分节大小，不包括TCP头部。MSS是TCP连接建立时通过SYN数据包协商确定的。以太网MSS最大可以是1460（去掉20字节IP头部和20字节TCP头部）</p>
-</li>
-<li><p>TCP的连接过程和TCP的关闭过程</p>
-</li>
-<li>TCP连接过程中的TIMED_WAIT状态是什么（两方面）</li>
-<li>TCP滑动窗口的原理是怎样的</li>
-<li>怎样使用UDP实现可靠传输</li>
-<li>SO_REUSEADDR选项有什么作用（避免因为TIMED_WAIT导致bind失败）</li>
-<li>什么是网络号、子网络号、主机号（IP地址由这三部分组成）</li>
-<li>有一个IP地址是192.168.222.136，子网掩码是255.255.255.192，求网络号、子网号和主机号</li>
-<li>什么是网络拥塞</li>
-<li>什么是带外数据</li>
-<li>客户端与服务器连接出现了故障怎么办（心跳机制，断线重连，心跳包可包含CPU使用情况、内存使用情况等信息）</li>
-<li>广播与多播的区别（广播和多播都采用的是UDP）</li>
-<li>netstat工具的作用有哪些？（用于显示各种网络相关信息，如网络连接，路由表，接口状态，多播成员等等，一般使用最多的是查看某个端口是否被占用，以及被哪个进程占用等等）</li>
-<li>抓包工具：tcpdump</li>
-<li>TCP端口复用有哪些机制？它们的实现原理是怎样的，各有什么优缺点？（select、poll、epoll）<br>select、poll、epoll都是IO多路复用的机制。TCP端口复用也叫IO多路复用，就是通过一种机制，可以监视多个描述符，一旦某个描述符就绪，就能够通知程序进行相应的读写操作。这个过程对select、poll、epoll本质上都是差不多的，因为他们都需要在读写事件就绪后自己负责进行读写。select与poll的性能是差不多的，实现原理也差不多。<br>select的实现原理简述如下：应用程序调用select后，系统内核就会扫描一次所有监听的套接字，查看是否有可读写的套接字。如果有套接字可读写，就立马返回给应用程序，应用程序再逐个查找出可读写的套接字，然后再进行读写。如果没有套接字可读写，那么就把内核进程注册给套接字底层，等底层有数据时，底层程序会触发此进程再次运行，从而又可以重新扫描所有的套接字。<br>所以select机制有三层，一层是应用程序，另外一层是内核，但内核又分两层：内核层、再底层。通过这三层来描述端口复用的原理就非常简单。<br>epoll的实现原理是，再底层把可读写的套接字放在一个链表上，内核层只要扫描这个链表就可以知道是否有可读写的套接字，然后返回给应用程序。</li>
-<li><p>epoll编程有哪些触发模式？原理分别是什么？<br>有两种触发模式：水平触发模式和边缘触发模式。<br>水平触发模式（Level-triggered，LT）：指当通过select、poll或者epoll相关函数触发可读写的信息给应用程序之后，如果应用程序不读写，或者不把可读写的数据读写完成，那么还可以多次调用select、poll、epoll相关函数把读写的信息触发给应用程序，直到可读写信息被读写完成。比如，当应用程序调用select函数发现一个套接字可读，之后应用程序不去调用读函数读数据，或者只读一部分数据，那么之后，应用数据还可以调用select函数来触发此套接字可读。之前介绍的select、poll就是水平触发模式。<br>边缘触发模式（Edge-triggered, ET）：只触发一次读写信息给应用程序，之后再也不会触发了。所以应用程序在收到触发信息后，必须把所有的数据读写完成。</p>
-</li>
-<li><p>如果select返回有套接字可读，结果只读到0字节，什么情况？<br>select返回套接字可读，大致有以下四种：<br>（1）socket缓冲区有数据可读；<br>（2）连接的读方关闭，即对方使用close/shutdown接口，发送了FIN；<br>（3）socket为一个可监听的套接字，可以使用accept接收新的连接；<br>（4）某个socket有错误待处理。<br>结果只读到0字节，（2）（3）（4）都有可能。</p>
-<ol>
-<li>怎么检测socket是不是断开了？<br>设置接收到的socket为异步方式，使用select函数检测socket是否可读，如果select返回的值为1，但是使用recv读取到的数据长度为0，那么说明该socket已经断开，但是还需要判断errno是否等于EINTR。如果errno＝EINTR则说明recv函数是由于接收到中断信号后返回的，socket连接应该还是正常，不应该关闭该socket的连接。</li>
-</ol>
-</li>
-</ol>
+          “一切皆Socket！”话虽些许夸张，但事实也确实如此，现在的网络编程几乎都是用的socket。
 
-          
+UDP编程相关函数
+ 客户端：（1）库函数inet_pton：功能是把字符串ip地址转换到网络地址结构成员变量中去，转换以后的结果是一个二进制的数字。pton的意思就是presentation_to_
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/11/networkProgramming/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2282,58 +1729,17 @@ int show_all(int a, int b=1, int c); // 不合法
       
         
           
-            <p>  编译就是把高级语言变成计算机可以识别的二进制语言。 编译程序把一个源程序翻译成目标程序的工作过程分为五个阶段：词法分析；语法分析；语义检查和中间代码生成；代码优化；目标代码生成。</p>
-<ol>
-<li><p>从源代码到可执行文件，需要经过预处理、编译、汇编、链接四个过程，每个过程都有对应的gcc命令。<br> （1）预处理：<code>gcc -E -o test.i test.c</code>，预编译生成test.i文件；<br> （2）编译：<code>gcc -S -o test.s test.i</code>，编译生成test.s文件；<br> （3）汇编：<code>gcc -c -o test.o test.s</code>，汇编生成test.o文件；<br> （4）链接：<code>gcc -o test test.o</code>，连接生成可执行文件test。</p>
-</li>
-<li><p>预编译的功能：<br> （1）宏定义的替换<br> （2）条件编译指令，如<code>#ifdef</code>、<code>#ifndef</code>、<code>#else</code>、<code>#elif</code>、<code>#endif</code>等。这些伪指令可以指示编译程序对哪些代码进行处理。<br> （3）头文件包含指令，把头文件中包含的宏定义、类型定义等加入到.i文件。<br> （4）特殊符号，比如<code>__LINE__</code>标识将被解释为当前行号（十进制数），<code>__FILE__</code>则被解释为当前被编译的C源程序的名称，<code>__FUNCTION__</code>为当前函数名。</p>
-</li>
-<li><p>编译阶段一般还包括优化阶段，所以也叫编译、优化阶段。编译阶段要做的工作就是通过词法分析和语法分析，在确认所有的指令都符合语法规则后，将其翻译成等价的中间代码表示或汇编代码，所以我们编译的时候经常碰到语法不符合规则的提示。<br> 优化处理是编译系统中一项比较艰深的技术，它涉及到的问题不仅同编译技术本身有关，而且同机器的硬件环境也有很大的关系。</p>
-</li>
-<li><p>汇编<br> 汇编实际上是指把汇编语言代码翻译成目标机器指令的过程。对于被翻译系统处理的每一个C语言源程序，都将最终经过这一处理而得到相应的目标文件。目标文件中所存放的也就是与源程序等效的目标的机器语言代码。目标文件由段组成。通常一个文件中至少包含两个段（代码段和数据段）。<br> UNIX环境下主要有三种类型的目标文件：<br> （1）可重定位文件：其中包含有适合于其他目标文件链接来创建一个可执行的或者共享的目标文件的代码和数据；<br> （2）共享的目标文件：这种文件存放了适合在两种上下文里链接的代码和数据。第一种是链接程序可把它与其它可重定位文件及共享的目标文件一起处理来创建另一个目标文件；第二种是动态链接程序将它与另一个可执行文件及其它的共享目标文件结合到一起，创建一个进程映像；<br> （3）可执行文件：它包含了一个可以被操作系统创建一个进程来执行的文件。<br>  汇编程序生成的实际上是第一种类型的目标文件，对于后两种还需要其它的一些处理方能得到，这个就是链接程序的工作了。</p>
-</li>
-<li><p>链接<br> 由汇编程序生成的目标文件并不能立即就被执行，其中还有许多没有解决的问题，比如：文件调用了其它源文件或库文件中的函数。这些问题需要经过链接程序的处理才能解决。<br> 链接程序的主要工作就是将有关的目标文件彼此相连接（把一个文件中引用的符号与该符号在另一个文件中的定义连接起来），使之成为一个可以装入系统执行的整体。根据开发人员指定的同库函数的链接方式的不同，链接处理可分为两种：静态链接和动态链接。<br> 静态链接：函数的代码从其所在的静态链接库中被拷贝到最终到可执行程序中。这样该程序在被执行时这些代码将被装入到该进程的虚拟地址空间中。静态链接库实际上是一个目标文件的集合，其中的每个文件含有库中的一个或者一组相关函数的代码。<br> 动态链接：函数的代码被放到称作是动态链接库或者共享对象的某个目标文件中。链接程序所做的只是在最终的可执行程序中记录下共享对象的名字以及其他少量的登记信息。在此可执行文件被执行时，动态链接库的全部内容将被映射到运行时相应进程的虚地址空间。动态链接程序将根据可执行程序中记录的信息找到相应的函数代码。<br> 对于可执行文件中的函数调用，可分别采用动态链接或静态链接的方法。使用动态链接能够使最终的可执行文件比较短小，并且当共享对象被多个进程使用时能节约一些内存。但动态链接并不是一定比静态链接优越，在某些情况下动态链接可能降低性能，因为只有动态库的函数被调用时，才会把动态库加载到内存中，这个过程比较耗时，而静态库在程序运行时就已经加载，后续调用不需要再加载。</p>
-</li>
-<li><p>可执行文件的启动过程<br>以shell命令为例：root&gt;./a.out<br>因为a.out不是内置shell命令，所以shell会认为a.out是一个可执行目标文件，通过调用某个驻留在存储器中、称为加载器的操作系统代码来运行它。linux系统通过调用execve函数来调用加载器。加载器将可执行文件中的代码和数据从磁盘拷贝到存储器中，然后跳转到程序入口（即程序第一条指令）来运行程序。这个过程叫做加载（loading），加载完成之后，linux程序都有一个存储器映像（也叫进程的虚拟地址空间）。</p>
-</li>
-<li><p>条件编译<br> （1）场景一：要求一份代码给客户，既可以在linux下编译，也可以在UNIX、Solaris等系统下编译。</p>
-<pre><code>场景二：程序要连接数据库，但是有的客户使用mysql数据库，有的客户使用oracle数据库，这时就需要用预编译来处理与数据库的操作。
-</code></pre><p> （2）两种预编译方法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">if</span> (1 == VAR)</span></div><div class="line">...</div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line">...</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span>  (或者 #<span class="meta-keyword">ifndef</span>)</span></div><div class="line">...</div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line">...</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
-<ol>
-<li><p>对于大项目，经常会头文件包含头文件，可能出现一个头文件被一个代码文件包含多次的情况，导致编译不通过。为防止这种情况，有一个办法是，每个头文件都用如下形式定义：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _NAME_H</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> _NAME_H</span></div><div class="line">...</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div></pre></td></tr></table></figure>
-<p>  注意，预编译一定要有一个#endif来结束。</p>
-</li>
-<li><p>用以识别不同操作系统的预定义宏：<br> 参考链接：<br> <a href="http://onestraw.net/cprogram/os-macro/" target="_blank" rel="external">http://onestraw.net/cprogram/os-macro/</a></p>
-</li>
-<li><p>IDE中的Debug模式和Release模式只是编译参数不同而已，参考链接：<br><a href="http://www.cnblogs.com/jembai/archive/2009/01/13/1374805.html" target="_blank" rel="external">http://www.cnblogs.com/jembai/archive/2009/01/13/1374805.html</a></p>
-</li>
-</ol>
-<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><ol>
-<li><p>一般来说，一个软件会有多个子模块，每个子模块的代码放在不同的目录下，这样的项目需要编写makefile来进行编译。makefile可以实现编译过程的自动化，make程序是一个解释makefile中指令的命令工具。make定义了很多命令，把这些命令放在makefile里面，让make顺序执行，就达到了我们的目的。</p>
-</li>
-<li><p>make的规则：</p>
-<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">target:</span> prerequisite1 prerequisite2 prerequisite3 ...  <span class="meta"># 目标： 依赖1  依赖2  依赖3  ... </span></div><div class="line">            Command                                                          <span class="meta"># 命令</span></div></pre></td></tr></table></figure>
-<p> target就是一个目标文件，可以是Objectfile， 也可以是可执行文件，还可以是一个自定义的标签。command是任意的shell命令。<br> 这是一个文件的依赖关系，即target依赖于prerequisites中的文件，其生成规则定义在Command中。如果prerequisites中有一个以上的文件比target新，Command中的命令就会被执行。这是makefile最核心的内容。</p>
-</li>
-<li><p>例子：有三个文件service.c、db.c、tcp.c，其中main函数在service.c中，可以建立如下的makefile：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">test: service<span class="selector-class">.o</span> db<span class="selector-class">.o</span> tcp<span class="selector-class">.o</span></div><div class="line">         cc -o test service<span class="selector-class">.o</span> db<span class="selector-class">.o</span> tcp<span class="selector-class">.o</span></div><div class="line">service<span class="selector-class">.o</span>: service<span class="selector-class">.c</span></div><div class="line">         cc -c service<span class="selector-class">.c</span> comm<span class="selector-class">.h</span></div><div class="line">db<span class="selector-class">.o</span>: db<span class="selector-class">.c</span></div><div class="line">         cc -c db<span class="selector-class">.c</span></div><div class="line">tcp<span class="selector-class">.o</span>: tcp<span class="selector-class">.c</span></div><div class="line">         cc -c tcp.c</div></pre></td></tr></table></figure>
-<p>  注意理解target只是一个标签而已，写成如下形式也可以得到一样的效果：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">aaa: bbb ccc ddd</div><div class="line">         cc -o test service<span class="selector-class">.o</span> db<span class="selector-class">.o</span> tcp<span class="selector-class">.o</span></div><div class="line">bbb: service<span class="selector-class">.c</span></div><div class="line">         cc -c service<span class="selector-class">.c</span> comm<span class="selector-class">.h</span></div><div class="line">ccc: db<span class="selector-class">.c</span></div><div class="line">         cc -c db<span class="selector-class">.c</span></div><div class="line">ddd: tcp<span class="selector-class">.c</span></div><div class="line">         cc -c tcp.c</div></pre></td></tr></table></figure>
-<p> 但是第一种方法更好，如果某目标文件依赖的源文件没有改变，就不必重新编译，可以节省时间。</p>
-</li>
-<li><p>大型项目Makefile的书写<br> （1）一个项目分模块放在不同目录下，每个目录下都会有本模块的Makefile，有一个最先被执行的Makefile。<br> （2）每个Makefile文件可能有一些相同的变量，在变量定义时前面加上export即可在全局生效，未用export的变量只在本文件有效。引用变量时用$标记。</p>
-<p> 参考“多目录Makefile（分层目录）”：<br> <a href="http://www.latelee.org/programming-under-linux/multi-makefile-for-app.html" target="_blank" rel="external">http://www.latelee.org/programming-under-linux/multi-makefile-for-app.html</a></p>
-</li>
-<li><p>Makefile 参考链接：<br>  <a href="http://blog.csdn.net/liang13664759/article/details/1771246" target="_blank" rel="external">http://blog.csdn.net/liang13664759/article/details/1771246</a></p>
-</li>
-</ol>
+            编译就是把高级语言变成计算机可以识别的二进制语言。 编译程序把一个源程序翻译成目标程序的工作过程分为五个阶段：词法分析；语法分析；语义检查和中间代码生成；代码优化；目标代码生成。
 
-          
+从源代码到可执行文件，需要经过预处理、编译、汇编、链接四个过程，每个过程都有对应的gcc命令。 （1）预处理：gc
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/09/compiling/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
