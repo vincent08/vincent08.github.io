@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /tag/
+Allow: /
+
+Sitemap: http://yanggang.site/sitemap.xml

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+        <title>复习笔记</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://yanggang.site/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://yanggang.site/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="http://yanggang.site/theme/pygment.css" />
+
+        <script src="http://yanggang.site/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://yanggang.site/">东坡烟尘 </a></h1>
+                  <h2><a href="http://yanggang.site/"><strong>静能生悟，即鸟啼花落，都是化机。</strong></a></h2>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://yanggang.site/">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://yanggang.site/fu-xi-bi-ji.html" rel="bookmark"
+                   title="Permalink to 复习笔记">复习笔记</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2016-10-01T13:17:00+08:00">
+                六 01 十月 2016
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="http://yanggang.site/author/yanggang.html"> yanggang</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <ol>
+<li>
+<p>反转链表
+可理解为在head左右有分别以pre和next为头节点的两个子链表。</p>
+<p>struct ListNode * reverseList(struct ListNode <em>head)
+{
+        struct ListNode</em> pre=NULL;
+        struct ListNode* next=NULL;
+        while(head!=NULL){
+            next=head-&gt;next;
+            head-&gt;next=pre;
+            pre=head;
+            head=next;
+        }
+        return pre;
+}</p>
+</li>
+<li>
+<p>一个有意思的问题：编程语言中为什么要定义数据类型？</p>
+<p>Thinking in C++: 数据类型定义了使用存储空间（内存）的方式。通过定义数据类型，告诉编译器怎样创建一片特定的存储空间，以及怎样操纵这片存储空间。</p>
+</li>
+<li>
+<p>scanf如何读入包含空格的字符串？</p>
+</li>
+</ol>
+<p><code>scanf( "%[^\n]", str );</code>
+百分号之后的格式控制串实际上是一种正则表达式。</p>
+<p>```
+  1、定制自己的扫描集 %[abc]、%[a-z]、%[^abc]、%[^a-z]，比isdigit()、isalpha()更加灵活。[]内是匹配的字符,^表示求反集。</p>
+<div class="highlight"><pre><span></span><span class="nt">int</span> <span class="nt">i</span><span class="o">;</span>
+<span class="nt">char</span> <span class="nt">str</span><span class="cp">[</span><span class="mi">80</span><span class="cp">]</span><span class="o">,</span> <span class="nt">str2</span><span class="cp">[</span><span class="mi">80</span><span class="cp">]</span><span class="o">;</span>
+<span class="o">//</span> <span class="nt">scanf</span><span class="o">(</span><span class="s2">&quot;%d%</span><span class="cp">[</span><span class="nx">abc</span><span class="cp">]</span><span class="s2">%s&quot;</span><span class="o">,</span> <span class="o">&amp;</span><span class="nt">i</span><span class="o">,</span> <span class="nt">str</span><span class="o">,</span> <span class="nt">str2</span><span class="o">);</span>  
+<span class="o">//</span> <span class="nt">printf</span><span class="o">(</span><span class="s2">&quot;%d %s   %s\n&quot;</span><span class="o">,</span><span class="nt">i</span><span class="o">,</span><span class="nt">str</span><span class="o">,</span><span class="nt">str2</span><span class="o">);</span>
+<span class="o">//</span> <span class="nt">scanf</span><span class="o">(</span><span class="s2">&quot;%</span><span class="cp">[</span><span class="nx">a</span><span class="na">-zA-Z0</span><span class="o">-</span><span class="mi">9</span><span class="cp">]</span><span class="s2">&quot;</span><span class="o">,</span> <span class="nt">str</span><span class="o">);</span>
+<span class="o">//</span> <span class="nt">scanf</span><span class="o">(</span><span class="s2">&quot;%</span><span class="cp">[</span><span class="p">^</span><span class="nx">abce</span><span class="cp">]</span><span class="s2">&quot;</span><span class="o">,</span> <span class="nt">str</span><span class="o">);</span>
+<span class="nt">scanf</span><span class="o">(</span><span class="s2">&quot;%</span><span class="cp">[</span><span class="p">^</span><span class="nx">a</span><span class="na">-z</span><span class="cp">]</span><span class="s2">&quot;</span><span class="o">,</span> <span class="nt">str</span><span class="o">);</span>
+<span class="nt">printf</span><span class="o">(</span><span class="s2">&quot;%s\n&quot;</span><span class="o">,</span><span class="nt">str</span><span class="o">);</span>
+  <span class="nt">2</span><span class="err">、</span><span class="nt">读入一个地址并显示内存地址的内容</span>
+<span class="nt">int</span> <span class="nt">main</span><span class="o">(</span><span class="nt">void</span><span class="o">)</span><span class="p">{</span>
+<span class="err">char</span> <span class="err">ch=&#39;c&#39;</span><span class="p">;</span>
+<span class="err">printf(&quot;%p\n&quot;,</span> <span class="err">&amp;ch)</span><span class="p">;</span> <span class="err">//</span> <span class="err">print</span> <span class="err">the</span> <span class="err">address</span> <span class="err">of</span> <span class="err">ch.</span>
+<span class="err">char</span> <span class="err">*p</span><span class="p">;</span>
+<span class="err">cout&lt;&lt;&quot;Enter</span> <span class="err">an</span> <span class="n">address</span><span class="p">:</span> <span class="s2">&quot;;</span>
+<span class="s2">scanf(&quot;</span><span class="o">%</span><span class="n">p</span><span class="s2">&quot;, &amp;p);     //input the address displayed above</span>
+<span class="s2">printf(&quot;</span><span class="n">Value</span> <span class="n">at</span> <span class="n">location</span> <span class="o">%</span><span class="n">p</span> <span class="n">is</span> <span class="o">%</span><span class="n">c</span><span class="err">\</span><span class="n">n</span><span class="err">&quot;</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="o">*</span><span class="n">p</span><span class="p">);</span>
+<span class="err">return</span> <span class="err">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>3、丢弃不想要的空白符：scanf("%c %c")；
+4、控制字符串中的非空白符：导致scanf()读入并丢弃输入流中的一个匹配字符。"%d，%d"；
+5、压缩输入：在格式码前加上<em>，则用户就可以告诉scanf()读这个域，但不把它赋予任何变量。
+    scanf("%c%</em>c, &amp;ch); 使用此方法可以在字符处理时吃掉多余的回车。
+  ```
+3. linux系统调用和库函数调用的区别</p>
+<p>http://www.cnblogs.com/yanlingyin/archive/2012/04/23/2466141.html</p>
+<p>linux系统调用过程分析</p>
+<p>http://blog.csdn.net/hustyangju/article/details/40340633</p>
+<ol>
+<li>
+<p>gdb 调试多线程</p>
+<p>http://blog.163.com/zhangjie_0303/blog/static/99082706201511344758347/</p>
+</li>
+<li>
+<p>Linux C 线程池
+    http://www.cnblogs.com/venow/archive/2012/11/22/2779667.html</p>
+</li>
+<li>
+<p>Linux C 进程池
+    https://github.com/vincent08/ProcessPool</p>
+</li>
+<li>
+<p>Linux C 数据库连接池
+    http://blog.chinaunix.net/uid-25612258-id-3648185.html</p>
+</li>
+<li>
+<p>函数指针的宏定义
+    http://fouri.iteye.com/blog/483974</p>
+</li>
+<li>
+<p>原子操作的实现原理. 注意<code>i++</code>不是原子操作
+    http://m.blog.csdn.net/article/details?id=8434060
+    http://blog.csdn.net/yeyuangen/article/details/19612795</p>
+</li>
+<li>
+<p>通过fork使python脚本后台运行
+    http://www.cnblogs.com/MikeZhang/p/pythonDeamon_20150307.html</p>
+</li>
+</ol>
+<h1>平台项目（含db、cc、telnet、log、msg等模块）相关笔记</h1>
+<ol>
+<li>
+<p>对于一个软件项目，哪些功能是基本的？
+  日志功能，telnet管理功能（或自己实现TCP编程代替telnet），模块间的交互功能，定时器功能格，配置文件功能，各个模块内存的分配等。一般把这些功能归属于一个大的模块中，称之为平台模块。
+  把各个业务都要使用的功能放在平台层来实现，可以节省开发成本，增加系统稳定性。有时把数据库调用、网络传输等模块也放在平台层。</p>
+</li>
+<li>
+<p>简单说明一下平台项目中后台维护系统等实现过程？
+  （1）后台维护系统是通过命令的方式来执行相关操作的。
+  （2）命令分两种，一种是状态命令，一种是普通命令。普通命令必须归属于一个状态命令下，通常一个子模块分配一个状态命令。
+  （3）系统在启动的过程中，就把状态命令注册好，各个模块自己可以注册自己的状态命令、普通命令，而无需平台组干预。这样就可以降低各个模块之间的耦合度。注册过程在各模块自己的init函数中实现。
+  （4）子模块支持再划分，即子模块的子模块都可以有自己的命令。</p>
+</li>
+<li>
+<p>C语言宏定义中的 <code>## __VA_ARGS__</code> 
+    http://www.cnblogs.com/alexshi/archive/2012/03/09/2388453.html</p>
+</li>
+<li>
+<p><code>strchr()</code>函数：查找某字符在字符串中首次出现的位置</p>
+</li>
+<li>
+<p>模块注册和模块功能函数的注册：
+  为了通用化，一个项目中，如果需要添加一个新的模块，只需将其在平台层进行注册，而后就可以与其他模块通讯。由平台层统一管理这些模块。
+  而当模块内部需要添加功能时，采用模块功能函数在平台层进行注册的形式，这样平台层通过Telnet接收到命令后交给子模块功能函数去处理，其代码实现大量用到函数指针和宏定义。</p>
+</li>
+<li>
+<p>信号的屏蔽
+  在软件项目设计中，为了系统的稳定性和安全（防止用户误杀进程），有些信号必须要屏蔽。如果一个软件系统是由一个进程加多个线程来实现的，应该把信号的屏蔽工作统一放在平台模块上来处理。</p>
+</li>
+<li>
+<p>平台层的功能还可以有：统一申请内存空间，然后按需分配给其他各个模块，监控各个模块的运行状态等。</p>
+</li>
+<li>
+<p><code>#if</code> 和 <code>#ifdef</code> 的区别
+  http://www.jianshu.com/p/609ff54ec6a5
+  简而言之，<code>#ifdef</code>只关心宏是否被定义，不关心宏逻辑的真假；<code>#if</code>不仅关心宏是否被定义，而且关心宏逻辑的真假。</p>
+</li>
+<li>
+<p>模块间的消息传递采用内存块的双向链表（队列）。消息有优先级，高优先级的消息可以插到队列的前面。消息在被接收后释放内存块。平台层的消息结构中分别记录收发消息的模块，进程id，消息块总长度，以及负载数据（由发消息的模块添加）的首地址和长度。消息的发送是开辟内存并添加元素到消息队列，消息的处理线程负责根据消息内容执行回调函数（就是之前各个模块在平台层注册的回调函数）。</p>
+</li>
+<li>
+<p>链表的宏遍历
+  http://blog.csdn.net/kevinx_xu/article/details/8472411</p>
+</li>
+<li>
+<p>关于container_of宏，注意<code>NULL</code>和0地址的区别
+  https://www.zhihu.com/question/22203461</p>
+</li>
+<li>
+<p>日志模块中日志消息的多线程读写应该加上锁。</p>
+</li>
+<li>
+<p>定时器的设计采用了三个链表(FreeTimerList, WaitTimerList, TimeoutTimerList)，而链表上的每个元素又有自己的状态（未开始，等待，超时，停止等），超时之后的定时器负责执行消息发送任务或者执行回调函数。模块间传递的消息可以是即时消息，也可以是定时消息(加入消息队列中，但等到计时器时间到才发送，需要定义消息队列每个元素的类型、优先级)。
+  http://blog.csdn.net/zhoudaxia/article/details/9286229</p>
+</li>
+<li>
+<p>send、recv函数的阻塞、非阻塞
+  http://blog.csdn.net/xiaofei0859/article/details/6037814</p>
+</li>
+<li>
+<p>多线程中使用信号机制 <code>pthread_sigmask</code> 函数
+  http://blog.csdn.net/i_am_jojo/article/details/7592219 </p>
+</li>
+<li>
+<p>通过 <code>ioctl</code> + <code>FIONREAD</code> 判定socket数据是否可读，可替代 <code>select</code> 使用。
+  https://my.oschina.net/moooofly/blog/522725</p>
+</li>
+<li>
+<p><code>do{...} while(0)</code>的使用场合：（1）在宏中使用，用于包含多条分号分隔的单独语句；（2）在程序中使用，包裹多条if语句，if出错时可通过<code>break</code>来跳出。</p>
+</li>
+<li>
+<p>文件指针与文件描述符的区别
+  http://www.cnblogs.com/qianye/archive/2012/11/24/2786357.html</p>
+</li>
+<li>
+<p>长连接和短连接
+  http://www.cnblogs.com/0201zcr/p/4694945.html</p>
+</li>
+<li>
+<p>单例模式及其C++实现
+  http://www.zkt.name/dan-li-mo-shi-singleton-ji-c-shi-xian/</p>
+</li>
+<li>
+<p>C++解析配置文件
+  http://cooker.iteye.com/blog/777455</p>
+</li>
+<li>
+<p>自己写出String类
+  在这个类中包括了指针类成员变量m_data，当类中包括指针类成员变量时，一定要重载其拷贝构造函数、赋值函数和析构函数，这既是对C++程序员的基本要求，也是《Effective　C++》中特别强调的条款。
+  http://www.cnblogs.com/fangyukuan/archive/2010/09/18/1830493.html</p>
+</li>
+<li>
+<p>全局对象是在main函数调用之前创建的,析构在main函数之后,程序结束之前。</p>
+</li>
+<li>
+<p>假设现有一个单向的链表,但是只知道只有一个指向该节点的指针 p,并且假设这个节点 不是尾节点,试编程实现删除此节点。
+  O(1)的办法:用 p 指向的节点的下一节点的值替换 p 指向的节点的值,然后删除 p 指向的节点的下一节点。</p>
+</li>
+<li>
+<p>用&lt;&lt;,&gt;&gt;,|,&amp;实现一个 WORD(2 个字节)的高低位交换。
+  (w &gt;&gt; 8) | (w &lt;&lt; 8),要求w是无符号的。</p>
+</li>
+<li>
+<p>Map与HashMap的选择：
+  http://blog.csdn.net/dongtingzhizi/article/details/8629285</p>
+</li>
+<li>
+<p>什么时候需要用<code>new</code>动态分配内存？
+  http://blog.jobbole.com/90147/</p>
+</li>
+<li>
+<p>虚拟IP和IP漂移
+  http://xiaobaoqiu.github.io/blog/2015/04/02/xu-ni-iphe-ippiao-yi/</p>
+</li>
+<li>
+<p>RAID5算法：存储备份，异或运算
+  http://itindex.net/detail/54453-raid5-工作-原理</p>
+</li>
+<li>
+<p>KMP算法中next表的构造（看前缀集合和后缀集合的交集的字符数）：
+  http://xeostream.github.io/blog/2013/11/10/kmp/</p>
+</li>
+<li>
+<p>Huffman树的构造：
+  http://www.cnblogs.com/kubixuesheng/p/4397798.html</p>
+</li>
+<li>
+<p>Hamming Weight的算法分析：
+  http://www.cnblogs.com/yongssu/p/4348479.html</p>
+</li>
+<li>
+<p>memcpy和memmove函数的区别和实现
+  http://blog.csdn.net/ce123/article/details/9002276</p>
+</li>
+<li>
+<p>线程的joinable与detached
+  一个可join的线程所占用的内存仅当有线程对其执行了pthread_join()后才会释放，因此为了避免内存泄漏，所有线程的终止，要么已设为DETACHED，要么就需要使用pthread_join()来回收。
+  http://blog.csdn.net/computerhenu/article/details/5860635</p>
+</li>
+</ol>
+            </div><!-- /.entry-content -->
+            <div class="comments">
+              <h3>Comments</h3>
+              <div id="disqus_thread"></div>
+              <script type="text/javascript">
+                var disqus_identifier = "fu-xi-bi-ji.html";
+                (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://yanggang-site.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+              </script>
+            </div>
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul class="blank">
+		<li><a href="http://yanggang.site/category/ji-suan-ji.html">计算机</a></li>
+		<li><a href="http://yanggang.site/category/xin-qing.html">心情</a></li>
+</ul>
+
+
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul class="blank">
+    <li><a href="https://github.com/vincent08">github</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    交友须带三分侠气，做人要存一点素心。
+                    <br>
+                    E-mail: yanggang@yanggang.site
+                    <br>
+                    本博客使用<a href="http://getpelican.com/">Pelican</a>搭建，基于<a target="_blank" href="http://gumbyframework.com">Gumby</a>框架。
+                    <br>
+                    Copyright 2016 - 2018 东坡烟尘.
+                  </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+<script type="text/javascript">
+    var disqus_shortname = 'yanggang-site';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+  <script src="http://yanggang.site/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://yanggang.site/theme/js/libs/gumby.min.js"></script>
+  <script src="http://yanggang.site/theme/js/plugins.js"></script>
+</body>
+</html>

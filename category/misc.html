@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>misc - 东坡烟尘</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+    <meta name="author" content="yanggang" />
+    <meta name="keywords" content="misc" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="东坡烟尘" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="东坡烟尘"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:description" content="东坡烟尘"/>
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+东坡烟尘            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/category/ji-suan-ji.html">计算机</a>
+                        </li>
+                        <li class="active">
+                            <a href="/category/misc.html">Misc</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-9">
+            <article>
+                <h2><a href="/ji-zhu-wen-zhang-can-kao-lian-jie.html">技术文章参考链接</a></h2>
+                <div class="summary"><p>收集、整理工作中遇到的有价值的文章链接。</p>
+<ol>
+<li>
+<p>Webbench 一款 Linux 下的压力测试工具 for Mac</p>
+<p>http://www.open-open.com/news/view/d6dff4</p>
+</li>
+<li>
+<p>Linux优化、安全运维、黑客攻防</p>
+<p>http://www.cnblogs.com/cp-miao/p/5515074.html</p>
+</li>
+<li>
+<p>理解https与中间人攻击</p>
+<p>http://techblog.youdao.com/?p=1159</p>
+</li>
+<li>
+<p>理解网关的概念：WSGI/CGI 等各种网关协议</p>
+<p>https://liuliqiang.info/compare-between-wsgi-cgi/</p>
+</li>
+<li>
+<p>用python脚本监控服务器</p>
+<p>https://www.ibm.com/developerworks/cn/linux/1312_caojh_pythonlinux …</p></li></ol>
+                    <a class="btn btn-default btn-xs" href="/ji-zhu-wen-zhang-can-kao-lian-jie.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/mian-shi-ti-zheng-li.html">面试题整理</a></h2>
+                <div class="summary"><p>Linux 系统开发常见面试题
+Linux 网络开发常见面试题
+常见算法笔试题</p>
+<p>参考博客：
+http://logic0.blog.163.com/blog/static/188928146201412325629952/</p>
+<h2>腾讯C++面试</h2>
+<ol>
+<li>大端与小端的概念？各自的优势是什么？</li>
+<li>TIME_WAIT状态的产生、危害、如何避免？</li>
+<li>select/poll/epoll的区别</li>
+<li>系统调用与库函数的区别</li>
+<li>守护进程、僵尸进程、孤儿进程的概念</li>
+<li>TCP和UDP的区别</li>
+<li>请画出TCP的头部</li>
+<li>new和malloc的区别</li>
+<li>指针和引用的区别</li>
+<li>为什么TCP叫数据流模式，UDP叫数据报模式？</li>
+<li>简述一下TCP的滑动窗口机制</li>
+<li>TCP的拥塞控制机制是什么？请简单说说。</li>
+<li>为什么析构函数要设为虚函数？</li>
+<li>linux下你常用的命令有哪些？</li>
+<li>static关键字的作用？</li>
+<li>C++的内存分区</li>
+<li>C++对象的内存布局</li>
+<li>vector、map/multimap、unordered_map/unordered_multimap的底层数据结构，以及几种map容器如何选择 …</li></ol>
+                    <a class="btn btn-default btn-xs" href="/mian-shi-ti-zheng-li.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/fu-xi-bi-ji.html">复习笔记</a></h2>
+                <div class="summary"><ol>
+<li>反转链表
+可理解为在head左右有分别以pre和next为头节点的两个子链表。</li>
+</ol>
+<p><code>struct ListNode * reverseList(struct ListNode *head)
+{
+        struct ListNode* pre=NULL;
+        struct ListNode* next=NULL;
+        while(head!=NULL){
+            next=head-&gt;next;
+            head-&gt;next=pre;
+            pre=head;
+            head=next;
+        }
+        return pre;
+}</code></p>
+<ol>
+<li>一个有意思的问题：编程语言中为什么要定义数据类型？</li>
+</ol>
+<p>Thinking in C++: 数据类型定义了使用存储空间（内存）的方式。通过定义数据类型，告诉编译器怎样创建一片特定的存储空间，以及怎样操纵这片存储空间。</p>
+<ol>
+<li>scanf如何读入包含空格的字符串？</li>
+</ol>
+<p><code>scanf( "%[^\n]", str );</code>
+百分号之后的格式控制串实际上是一种正则表达式。</p>
+<p><code>1、定制自己的扫描集 %[abc …</code></p>
+                    <a class="btn btn-default btn-xs" href="/fu-xi-bi-ji.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/wang-luo-bian-cheng-yao-dian.html">网络编程要点</a></h2>
+                <div class="summary"><p>“一切皆Socket！”话虽些许夸张，但事实也确实如此，现在的网络编程几乎都是用的socket。</p>
+<ol>
+<li>
+<p>UDP编程相关函数</p>
+<p><strong>客户端</strong>：
+  （1）库函数inet_pton：功能是把字符串ip地址转换到网络地址结构成员变量中去，转换以后的结果是一个二进制的数字。pton的意思就是presentation_to_numeric（表达式转成数值）。与之相反的库函数是inet_ntop，将整形ip地址转换成ASCII字符串。
+  （2）向系统申请一个网络套接字<code>int socket(int family, int type, int protocol)</code>：网络套接字与文件句柄的功能完全类似，所以计算机网络编程又叫套接字编程。
+  （3）库函数sendto：将数据由指定的socket传给对方主机，成功则返回实际传送出去的字符数，失败则返回－1，错误原因存于errno中。
+  （4）库函数recvfrom：接收来自服务器的数据并保存源地址，成功则返回接收到的字符数，失败则返回－1，错误原因存于errno中。调用此函数时，此函数会一直处于阻塞状态，直到接收到服务器发送过来的数据。</p>
+<p><strong>服务器端</strong>：（<code>project_network/project_udp_v1.0.0/udp_server.c …</code></p></li></ol>
+                    <a class="btn btn-default btn-xs" href="/wang-luo-bian-cheng-yao-dian.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/bian-yi-guo-cheng-yao-dian.html">编译过程要点</a></h2>
+                <div class="summary"><p>编译就是把高级语言变成计算机可以识别的二进制语言。 编译程序把一个源程序翻译成目标程序的工作过程分为五个阶段：词法分析；语法分析；语义检查和中间代码生成；代码优化；目标代码生成。</p>
+<ol>
+<li>
+<p>从源代码到可执行文件，需要经过预处理、编译、汇编、链接四个过程，每个过程都有对应的gcc命令。
+    （1）预处理：<code>gcc -E -o test.i test.c</code>，预编译生成test.i文件；
+    （2）编译：<code>gcc -S -o test.s test.i</code>，编译生成test.s文件；
+    （3）汇编：<code>gcc -c -o test.o test.s</code>，汇编生成test.o文件；
+    （4）链接：<code>gcc -o …</code></p></li></ol>
+                    <a class="btn btn-default btn-xs" href="/bian-yi-guo-cheng-yao-dian.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/shu-ju-ku-yao-dian.html">数据库要点</a></h2>
+                <div class="summary"><p>数据库(Database)是按照数据结构来组织、存储和管理数据的仓库，它产生于距今六十多年前，随着信息技术和市场的发展，特别是二十世纪九十年代以后，数据管理不再仅仅是存储和管理数据，而转变成用户所需要的各种数据管理的方式。数据库有很多种类型，从最简单的存储有各种数据的表格到能够进行海量数据存储的大型数据库系统都在各个方面得到了广泛的应用。</p>
+<ol>
+<li>
+<p>索引的类型:
+    (1) 唯一索引
+    (2) 非唯一索引
+    (3) 主键索引
+    (4) 聚集索引</p>
+</li>
+<li>
+<p>主键与索引的区别:
+    (1) 主键一般在创建表的时候指定，而索引可以在任何时候创建；
+    (2) 一个表只能有一个主键，但可以有多个索引；
+    (3) 主键也是一种索引，但索引不是主键;
+    (4) 索引可以创建也可以删除。</p>
+<p>参考资料：Mysql索引详解大全
+http://www.cnblogs.com/renfanzi/p/5742650.html</p>
+</li>
+<li>
+<p>C语言操作库函数：</p>
+<p>http://blog.csdn.net/caisini_vc/article/details …</p></li></ol>
+                    <a class="btn btn-default btn-xs" href="/shu-ju-ku-yao-dian.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/jin-cheng-yu-xian-cheng-yao-dian.html">进程与线程要点</a></h2>
+                <div class="summary"><p>进程（process）和线程（thread）是操作系统的基本概念。它们是两种不同的操作系统资源管理方式。进程有独立的地址空间，一个进程崩溃后，在保护模式下不会对其它进程产生影响，而线程只是一个进程中的不同执行路径。线程有自己的堆栈和局部变量，但线程之间没有单独的地址空间，一个线程死掉就等于整个进程死掉，所以多进程的程序要比多线程的程序健壮，但在进程切换时，耗费资源较大，效率要差一些。但对于一些要求同时进行并且又要共享某些变量的并发操作，只能用线程，不能用进程。</p>
+<h2>线程</h2>
+<ol>
+<li>
+<p>在Linux中，当用户注销或者网络断开时，终端会收到HUP（hang up）信号，从而关闭其所有子进程。那么如何让程序不随着终端的关闭而停止运行呢？两个思路：（1）让进程忽略HUP信号:  比如<code>nohup ./process01 &amp;</code>  ;（2）让进程运行在新的会话里，从而成为不属于此终端的子进程：比如 <code>setsid ./process01</code> 或者 <code>(./process01 &amp;)</code> 。</p>
+<blockquote>
+<p>将一个或多个命令包含在小括号中就能让这些命令在子shell中运行，从而扩展出很多有趣的功能。
+Linux下第一个用户进程是init，它的进程号是1。</p>
+</blockquote>
+</li>
+<li>
+<p>创建线程的库 pthread.h …</p></li></ol>
+                    <a class="btn btn-default btn-xs" href="/jin-cheng-yu-xian-cheng-yao-dian.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/shu-ju-jie-gou-yao-dian.html">数据结构要点</a></h2>
+                <div class="summary"><p>在计算机科学中，数据结构（英语：data structure）是计算机中存储、组织数据的方式。 数据结构意味着介面或封装：一个数据结构可被视为两个函数之间的介面，或者是由数据类型联合组成的存储内容的访问方法封装。 大多数数据结构都由数列、记录、可辨识联合、引用等基本类型构成。</p>
+<p>大中型服务器软件一般应考虑以下几点：</p>
+<blockquote>
+<ul>
+<li>数据的安全性</li>
+<li>结构清晰（尽量减少耦合）</li>
+<li>易扩展性</li>
+<li>易使用</li>
+<li>易维护、易升级（日志信息充分，易定位问题）</li>
+<li>数据的处理效率</li>
+<li>平台的可移植性</li>
+<li>保证性能的前提下，尽量少占用CPU和内存</li>
+</ul>
+</blockquote>
+<ol>
+<li>
+<p>手写链表，要注意头节点、尾节点的操作，还有参数的合法性，都是得分点，不可大意。</p>
+</li>
+<li>
+<p>队列的原理在实际项目中非常广，栈的应用多在库函数中，实际项目比较少见。</p>
+<blockquote>
+<p>经典题：如何用两个栈实现队列的功能？</p>
+</blockquote>
+</li>
+<li>实现队列有单链表和双链表两种方法。
+  单向链表实现队列可以从头部增加节点，从尾部删除节点，也可以反过来。但是必然有一个操作要遍历整个列表，效率低。因此可采用双向循环链表，减少查询链表尾节点的时间。代价是内存上需要在每个节点上增加一个指针，一个指针在32位系统上占4个字节，如果最大支持1万个节点 …</li></ol>
+                    <a class="btn btn-default btn-xs" href="/shu-ju-jie-gou-yao-dian.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/cyu-yan-yao-dian.html">C语言要点</a></h2>
+                <div class="summary"><p>C语言是C++的基础，广泛用于系统软件与应用软件的开发。Linux本身就是C语言的杰出作品，其重要性毋庸置疑。因此将复习C语言时自己注意到的要点记录于此。</p>
+<ol>
+<li>程序中对数字的引用，优先考虑无符号整型，其次是有符号整型、浮点型。整型要注意溢出问题（越界问题），浮点型要注意精度问题（一般float有效数字为6-7位）。例如，1.25元，尽量用整型125分表示。</li>
+</ol>
+<p>对编程人员来说，double 和 float 的区别是double精度高，有效数字16位，float精度7位。但double消耗内存是float的两倍，double的运算速度比float慢得多，C语言中数学函数名称double 和 float不同，不要写错，能用单精度时不要用双精度（以省内存，加快运算速度）。</p>
+<ol>
+<li>
+<p>字符常量'x'与字符串常量"x"的区别：(1)前者是基本型数据， 后者是构造型数据；（2）占用的存储空间大小不同，前者占1个字节，后者占2个字节（因为有'\0'）。</p>
+</li>
+<li>
+<p>定义符号常量的方法：（1）宏定义，如 …</p></li></ol>
+                    <a class="btn btn-default btn-xs" href="/cyu-yan-yao-dian.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="/ping-fan-zhi-lu.html">平凡之路</a></h2>
+                <div class="summary"><p>十年前，你说生命要如夏花般灿烂；十年后，你说平凡才是唯一的答案。</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="http://music.163.com/outchain/player?type=2&id=29750099&auto=1&height=32"></iframe>
+
+<blockquote>
+<p><em>徘徊着的 在路上的
+你要走吗 via via
+易碎的 骄傲着
+那也曾是我的模样
+沸腾着的 不安着的
+你要去哪 via via
+谜一样的 沉默着的
+故事你真的在听吗
+我曾经跨过山和大海
+也穿过人山人海
+我曾经拥有着的一切
+转眼都飘散如烟
+我曾经失落失望失掉所有方向
+直到看见 平凡才是唯一的答案
+当你仍然 还在幻想
+你的明天 via via
+她会好吗 还是更烂
+对我而言是另一天
+我曾经毁了我的一切
+只想永远地离开
+我曾经堕入无边黑暗
+想挣扎无法自拔
+我曾经像你像他像那野草野花
+绝望着 也渴望着 也哭也笑平凡着
+向前走 就这么走
+就算你被给过什么
+向前走 就这么走
+就算你被夺走什么
+向前走 …</em></p></blockquote>
+                    <a class="btn btn-default btn-xs" href="/ping-fan-zhi-lu.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+<!-- Sidebar -->
+<section class="well well-sm">
+  <ul class="list-group list-group-flush">
+
+<!-- Sidebar/Social -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+  <ul class="list-group" id="social">
+    <li class="list-group-item"><a href="#"><i class="fa fa-you--square fa-lg"></i> You </a></li>
+    <li class="list-group-item"><a href="#"><i class="fa fa-another-social-link-square fa-lg"></i> Another social link</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Social -->
+
+<!-- Sidebar/Links -->
+<li class="list-group-item">
+  <h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+  <ul class="list-group" id="links">
+    <li class="list-group-item">
+      <a href="http://getpelican.com/" target="_blank">Pelican</a>
+    </li>
+    <li class="list-group-item">
+      <a href="http://python.org/" target="_blank">Python.org</a>
+    </li>
+    <li class="list-group-item">
+      <a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Links -->
+  </ul>
+</section>
+<!-- End Sidebar -->            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container-fluid">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 yanggang
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+
+
+</body>
+</html>
