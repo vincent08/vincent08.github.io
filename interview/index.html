@@ -1,131 +1,68 @@
-<!DOCTYPE html><html lang="zh"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>面试题整理 | 东坡烟尘</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">面试题整理</h1><a id="logo" href="/.">东坡烟尘</a><p class="description">静能生悟，即鸟啼花落，都是化机。</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 主页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/timeline/"><i class="fa fa-calendar"> 时间线</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">面试题整理</h1><div class="post-meta">Oct 23, 2016<span> | </span><span class="category"><a href="/categories/technology/">technology</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-thread-key="interview/" href="/interview/#comments" class="ds-thread-count"></a><div class="clear"><div id="toc" class="toc-article"><div class="toc-title">Inhalte</div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#腾讯C-面试"><span class="toc-number">1.</span> <span class="toc-text">腾讯C++面试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#腾讯python电话面试"><span class="toc-number">2.</span> <span class="toc-text">腾讯python电话面试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#大公司经典面试题系列"><span class="toc-number">3.</span> <span class="toc-text">大公司经典面试题系列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他问题"><span class="toc-number">4.</span> <span class="toc-text">其他问题</span></a></li></ol></div></div><div class="post-content"><p>Linux 系统开发常见面试题<br>Linux 网络开发常见面试题<br>常见算法笔试题</p>
-<p>参考博客：<br><a href="http://logic0.blog.163.com/blog/static/188928146201412325629952/" target="_blank" rel="external">http://logic0.blog.163.com/blog/static/188928146201412325629952/</a></p>
-<h2 id="腾讯C-面试"><a href="#腾讯C-面试" class="headerlink" title="腾讯C++面试"></a>腾讯C++面试</h2><ol>
-<li>大端与小端的概念？各自的优势是什么？</li>
-<li>TIME_WAIT状态的产生、危害、如何避免？</li>
-<li>select/poll/epoll的区别</li>
-<li>系统调用与库函数的区别</li>
-<li>守护进程、僵尸进程、孤儿进程的概念</li>
-<li>TCP和UDP的区别</li>
-<li>请画出TCP的头部</li>
-<li>new和malloc的区别</li>
-<li>指针和引用的区别</li>
-<li>为什么TCP叫数据流模式，UDP叫数据报模式？</li>
-<li>简述一下TCP的滑动窗口机制</li>
-<li>TCP的拥塞控制机制是什么？请简单说说。</li>
-<li>为什么析构函数要设为虚函数？</li>
-<li>linux下你常用的命令有哪些？</li>
-<li>static关键字的作用？</li>
-<li>C++的内存分区</li>
-<li>C++对象的内存布局</li>
-<li>vector、map/multimap、unordered_map/unordered_multimap的底层数据结构，以及几种map容器如何选择？</li>
-<li>栈溢出的原因及解决办法</li>
-<li>内存泄漏怎么产生的？如何避免？</li>
-<li>TCP建立连接为什么需要三次？断开连接又为什么需要四次？</li>
-<li>core产生的原因，如何调试定位问题？</li>
-<li>死锁产生的四个条件，死锁发生后怎么检测和恢复？</li>
-<li>堆和栈的区别</li>
-<li>简单描述一下TCP三次握手和四次挥手的过程</li>
-<li>数据库索引的优缺点</li>
-<li>数据库的三范式</li>
-<li>如何在一个不安全的环境中实现安全的数据通信</li>
-<li>说几个C++ 11的新特性</li>
-<li>C++ STL中vector内存用尽后，为啥每次是两倍增长，而不是3倍或其他倍数？</li>
-<li>阻塞IO、非阻塞IO、同步IO、异步IO的区别？</li>
-<li>分时系统与实时系统的区别？</li>
-<li>除了sleep之外，usleep也是linux系统调用，它号称自己是微秒级的，你相信它真的有这么快吗？为什么？</li>
-<li>简述一下ping的原理</li>
-<li>进程调度算法有哪些？Linux使用的什么进程调度方法？</li>
-<li>static_cast和dynamic_cast的区别</li>
-<li>DNS使用什么协议</li>
-<li>traceroute命令有什么作用？原理是什么？</li>
-<li>什么是事务？事务有哪些特性？</li>
-<li>MySQL的引擎InnoDB和MyISAM的区别。</li>
-</ol>
-<p>来源及参考答案见：<br><a href="http://m.blog.csdn.net/article/details?id=51327586" target="_blank" rel="external">lisong694767315的CSDN博客</a></p>
-<h2 id="腾讯python电话面试"><a href="#腾讯python电话面试" class="headerlink" title="腾讯python电话面试"></a>腾讯python电话面试</h2><p>电话面试的问题大致分为项目经历、计算机基础和python基础三个部分。</p>
-<p>计算机基础方面问了线程和进程的区别，http三次握手的过程，TCP/IP协议栈等，进程间通信时共享内存、管道的实现方式等，不算太难。 </p>
-<p>而Python语言方面问得更深一些，除了数据类型、用法之外，还问到了这几个问题：</p>
-<p>（1）元组和列表的区别？为什么python要设计一个元组类型？它有什么用途是列表不能替代的？</p>
-<p>   元组和列表相比有一个很重要的区别，元组是一种不可变类型。正因为这个原因，元组能做一些列表不能做的事情，例如，用做一个字典的 key（必须是可哈希的对象）。另外当处理一组对象时,这个组默认是元组类型。<br>   最好使用不可变类型变量的一个情况是,如果你在维护一些敏感的数据,并且需要把这些数据传递给一个并不了解的函数(或许是一个根本不是你写的 API),作为一个只负责一个软件某一部分的工程师,如果你确信你的数据不会被调用的函数篡改,你会觉得安全了许多。</p>
-<p>（2）python解释器是怎么运行的？或者说，当你在命令行输入python hello.py之后，内部的运行过程是怎样的？</p>
-<p><a href="http://www.restran.net/2015/10/22/how-python-code-run/" target="_blank" rel="external">http://www.restran.net/2015/10/22/how-python-code-run/</a></p>
-<p>（3）知道python的duck类型吗？</p>
-<p><a href="http://www.jianshu.com/p/650485b78d11" target="_blank" rel="external">http://www.jianshu.com/p/650485b78d11</a></p>
-<p>（4）解释一下python的装饰器，以及使用装饰器有什么优点？</p>
-<p><a href="https://www.zhihu.com/question/31265857" target="_blank" rel="external">https://www.zhihu.com/question/31265857</a></p>
-<p>（5）知道GIL吗？</p>
-<p><a href="http://cenalulu.github.io/python/gil-in-python/" target="_blank" rel="external">http://cenalulu.github.io/python/gil-in-python/</a></p>
-<p>机会确实是留给有准备的人的，想做成一件事，就要深入，一个一个细节地抠，力争弄清楚每一个，积少成多。努力一年可以进步很大。</p>
-<p><a href="http://www.dongwm.com/archives/liao-liao-pythonmian-shi-zhe-jian-shi-er/" target="_blank" rel="external">http://www.dongwm.com/archives/liao-liao-pythonmian-shi-zhe-jian-shi-er/</a></p>
-<p>上面的链接推荐了一些python的面试题，概括得比较全面，比如：</p>
-<p><a href="https://github.com/taizilongxu/interview_python" target="_blank" rel="external">https://github.com/taizilongxu/interview_python</a></p>
-<h2 id="大公司经典面试题系列"><a href="#大公司经典面试题系列" class="headerlink" title="大公司经典面试题系列"></a>大公司经典面试题系列</h2><p><a href="http://blog.csdn.net/fivedoumi/article/details/7961831" target="_blank" rel="external">http://blog.csdn.net/fivedoumi/article/details/7961831</a></p>
-<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><ol>
-<li><p>逻辑地址、线性地址、物理地址之间的关系<br>软件一旦从硬盘加载到内存中，就拥有了最大的内存空间（如果是32位机，那么这个空间就是<code>2^32=4G</code>），这些空间在进程中是分段管理的（代码段、数据段、堆、栈等）。寻址方式是段地址＋偏移量，即逻辑地址。逻辑地址需要转换为线性地址，线性地址经过计算得到页地址，最后得到物理地址。<br><strong>例</strong>：当采用4KB分页大小时，线性地址的高10位为页目录项在页目录表中的编号，中间10位为页表中的页号，其余12位为偏移地址；当采用4MB分页机制时，则高10位是页号，低22位为偏移地址。<br>早先的线性地址就是物理地址，但是采用分页机制后，线性地址就不再是物理地址了。通过分页可以提高内存的使用率。<br>无论你申请1个字节的内存，还是1kB的内存，都会占用一个页的内存。所以为了提高内存的使用率，最好是以4K的整数倍来申请内存空间。<br>内存管理（《操作系统概念》）<br><a href="http://c.biancheng.net/cpp/html/2608.html" target="_blank" rel="external">http://c.biancheng.net/cpp/html/2608.html</a></p>
-</li>
-<li><p>虚拟内存（《操作系统概念》第九章）<br>原理：内存空间不够的时候可以将程序不需要用到的数据交换到磁盘空间上去，以达到扩展内存空间的目的。</p>
-</li>
-<li><p>全局变量能否定义在可被多个<code>.c</code>文件包含的头文件中？为什么？<br>不可以。一般来说编译会报错，因为会造成重复定义。可以在一个<code>.c</code>文件中定义，然后在一个头文件中用<code>extern</code>进行声明，对于要用到这个全局变量的代码文件，只要包含此头文件即可。</p>
-</li>
-<li><p>C、C++中<code>const</code>实现机制的区别：<br><a href="http://www.cnblogs.com/xiaogege/archive/2013/04/11/const_c_cpp.html" target="_blank" rel="external">http://www.cnblogs.com/xiaogege/archive/2013/04/11/const_c_cpp.html</a></p>
-</li>
-<li><p>请定义一个宏，比较两个数a、b的大小，不能使用大于、小于、if语句。<br><code>＃define max(a,b) ((((a)-(b))&amp;&amp;(1&lt;&lt;31))?(b):(a))</code><br><a href="https://www.nowcoder.com/questionTerminal/9240327b0f184184984deb3e387c0e24" target="_blank" rel="external">https://www.nowcoder.com/questionTerminal/9240327b0f184184984deb3e387c0e24</a></p>
-</li>
-<li><p>什么是内存泄漏？怎样定位？如何避免？<br>内存泄漏是指由于疏忽或错误造成程序未能释放已经不再使用的内存的情形。为避免内存泄漏，要保证malloc/free、new/delete成对使用。一些检测工具也是利用这个原理。我们可以通过查看每个进程内存使用的情况来定位，如果进程使用的内存在逐步增加，超出了程序正常运行所需，那么就发生了内存泄漏。</p>
-</li>
-<li><p>什么是线程安全？<br>所谓线程安全，是指在多线程程序中，不同线程在访问同一个资源，能成功进行访问，不会产生错误。如果产生错误，那么就是线程不安全的。通常为了线程安全性，采用互斥锁，或者P、V操作进行。</p>
-</li>
-<li><p>什么是函数可重入？<br>可重入函数主要用于多任务环境中。一个可重入的函数简单来说就是可以被中断的函数，也就是说，可以在这个函数执行的任何时刻中断它，转入OS调度去执行下一段代码，而返回控制时不会出现什么错误。不可重入的函数由于使用了一些系统资源，比如全局变量区、中断向量表等，如果被中断的话可能出现问题，这类函数是不能运行在多任务环境下的。编写可重入函数时，若使用全局变量，则应通过关中断、信号量（P、V操作）等手段对其加以保护。</p>
-</li>
-<li><p>Linux是怎样管理内存的？<br>在linux系统中，采用逻辑地址、线性地址、物理地址来管理内存。程序运行是在逻辑地址之上。为解决内存使用率（内存碎片）的问题，采用分页的方法，即把物理内存空间分页来进行管理，每个内存页占用4kB的空间。Linux系统采用伙伴算法来管理内存空间。</p>
-</li>
-<li><p>进程和线程的差别？<br>（1）线程是指进程内的一个执行单元，也是进程内可调度的实体。<br>（2）调度：线程作为调度和分配的基本单位，进程作为拥有资源的基本单位。<br>（3）并发性：不仅进程之间可以并发执行，同一进程的多个线程之间也可并发执行。<br>（4）拥有资源：进程是拥有资源的一个独立单位，线程不拥有系统资源，但可以访问隶属于进程的资源。<br>（5）系统开销：在创建或撤销进程时，由于系统都要为之分配和回收资源，导致系统的开销明显大于创建或撤销线程的开销。</p>
-</li>
-<li><p>如何从1亿个数字中取出最大的100个？<br>采用电话号码分析树的设计原理，假设每个整数有32位，建立一棵二叉树，左节点都为0，右节点都为1，这个整数的32位的每一位都是一个节点，高位放在上层。此节点的结构包括如下两个元素：是否是数据、相同的数据当前有多少个。<br>考虑到内存不够，不可能把这1亿个数据都建立在这棵树上，当此二叉树有了100个数字后（包括相同的数字），每插入一个数字时，就把最小的（靠最左边的）数字删除掉。</p>
-</li>
-<li><p>SQL语句性能调优<br><a href="http://coolshell.cn/articles/1846.html" target="_blank" rel="external">http://coolshell.cn/articles/1846.html</a><br>经验表明 80%-90% 的性能调优是在应用级做的，而不是在数据库级。<br><a href="https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1002limh/" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/data/library/techarticles/dm-1002limh/</a></p>
-</li>
-<li><p>两个整数集合A和B，求其交集？<br>（1）读取集合A中的整数，将读到的整数插入到map中，并把相应的值设为1；<br>（2）读取集合B中的整数，如果该整数在map中存在且值为1，则将此数加入到交集中，并将map中的对应值改为2.</p>
-</li>
-<li><p>给定40亿个不重复的unsigned int型整数，未排序，然后再给几个数，如何快速判断这几个数是否在那40亿个数当中?<br>unsigned int的取值范围是0到<code>2^32-1</code>。我们可以申请连续的<code>2^32/8=512MB</code>的内存，用一个bit对应一个unsigned int数字是否出现过。遍历这40亿个数，并做相应标记。</p>
-</li>
-<li><p>判断机器是大端还是小端的程序：<br><a href="http://bbs.chinaunix.net/thread-2110977-1-1.html" target="_blank" rel="external">http://bbs.chinaunix.net/thread-2110977-1-1.html</a></p>
-</li>
-<li><p>进程一定会遇到的两个信号是什么？<br>一个是引起进程终止执行的SIGSTOP信号，另一个是引起进程退出的SIGKILL信号。这两个信号如果不处理，进程申请的资源就无法回收。</p>
-</li>
-<li><p><code>i++</code>是否是原子操作？<br>如果是32位系统，且i没有跨页，那么是原子操作；如果是64位系统，则一定不是原子操作。<br><code>i++</code>被编译成多条指令，由于中途没有写回内存的操作，系统应该不会中断这个操作，因为一旦中断，寄存器的值就会被冲掉而导致错误，所以可认为是原子操作，即在单线程下是安全的。但是在多线程的情况下，考虑到编译优化和寄存器的作用，并不能保证多个线程同时操作i能同步。<br>所有系统调用都是以原子操作方式执行的。write系统调用在<strong>buf大小不超过内核缓存的时候</strong>是原子操作。</p>
-</li>
-<li><p>说说linux的各类同步机制。<br>信号量（信号灯）：pv操作；<br>互斥锁：计数器；<br>读写锁：<br>条件变量：<a href="http://www.cnblogs.com/blueclue/archive/2010/07/21/1780779.html" target="_blank" rel="external">http://www.cnblogs.com/blueclue/archive/2010/07/21/1780779.html</a><br>(条件变量为我们提供了另一种线程间同步的方法，然而，互斥量是通过控制线程访问数据来实现同步，条件变量允许线程同步是基于实际数据的值。如果没有条件变量，程序员需要让线程不断地轮询，以检查是否满足条件。由于线程处在一个不间断的忙碌状态，所以这是相当耗资源的。条件变量就是这么一个不需要轮询就可以解决这个问题的方法。条件变量总是跟互斥锁（mutex lock）一起使用。)</p>
-</li>
-</ol>
-<ol>
-<li><p>列举说明linux系统的各类异步机制。<br>比如TCP的send函数，它只是把数据写到缓存，并没有到达对端。</p>
-</li>
-<li><p>在C中主流编译器对sizeof(空结构体)编译后执行的结果是0，而在C++中主流编译器对sizeof(空结构体)或对sizeof(空类)编译后执行的结果均为1.<br><a href="http://itindex.net/detail/27437-结构-sizeof" target="_blank" rel="external">http://itindex.net/detail/27437-结构-sizeof</a></p>
-</li>
-<li><p>设计一个洗牌算法，并说明其复杂度。<br><code>for(0&lt;i&lt;55)</code>随机产生一个数k<code>（0&lt;k&lt;5）</code>，与第i张互换。时间复杂度O(n)。</p>
-</li>
-<li><p>注意C++中，如果自己定义了一个构造函数，那么系统就不会自动添加默认构造函数了，如果要用的话必须显式写出来。</p>
-</li>
-<li><p>什么时候可以为类定义一个静态成员变量？<br>当希望类的所有对象共享一个相同的属性值时，就可以定义一个静态成员变量。或者希望不同对象间能相互通讯，也可通过静态成员变量。</p>
-</li>
-<li><p>为什么要把析构函数声明为虚析构函数？<br>（实现多态的需要）这样做是为了当用一个基类的指针删除一个派生类的对象时，派生类的析构函数会被调用。<br>当然，并不是要把所有类的析构函数都写成虚函数。因为当类里面有虚函数的时候，编译器会给类添加一个虚函数表，里面来存放虚函数指针，这样就会增加类的存储空间。所以，只有当一个类被用来作为基类的时候，才把析构函数写成虚函数。<br><a href="http://blog.csdn.net/starlee/article/details/619827" target="_blank" rel="external">http://blog.csdn.net/starlee/article/details/619827</a></p>
-</li>
-<li><p>关键字<code>volatile</code>有什么含义？<br><code>volatile</code>关键字是一种类型修饰符，用它声明的类型变量表示可以被某些编译器未知的因素更改，比如：操作系统、硬件或者其他线程等。遇到这个关键字声明的变量，编译器对访问该变量的代码就不再进行优化，从而可以提供对特殊地址对稳定访问。声明时的语法是<code>int volatile iValue;</code>。当要求使用<code>volatile</code>声明的变量时，系统总是从它所在的内存中读取数据并且立即保存，即使它前面的指令刚刚读取过该数据。</p>
-</li>
-<li><p>总结<code>const</code>的作用。<br>（1）阻止一个变量被改变。<br>（2）对指针来说，可以指定指针本身是const，也可以指定其指向的数据为const，也可以二者都是const。<br>（3）在函数声明中，const修饰形参，表示在函数内部不得改变其值。<br>（4）const修饰成员函数（const放在声明语句的分号之前），表示其不得修改成员变量的值。<br>（5）const修饰成员函数的返回值类型，表示其返回值不得为左值。</p>
-</li>
-<li><p>C++的空类中，默认产生哪些类成员函数？<br>（1）默认构造函数；<br>（2）默认拷贝构造函数；<br>（3）默认赋值操作符（operator=）；<br>（4）默认取址操作符（operator&amp;）；<br>（5）默认析构函数。</p>
-</li>
-</ol>
-</div><div class="tags"><a href="/tags/面试题/">面试题</a></div><div class="post-nav"><a href="/reference/" class="pre">技术文章参考链接</a><a href="/note/" class="next">复习笔记</a></div><div data-thread-key="interview/" data-title="面试题整理" data-url="http://yanggang.site/interview/" class="ds-share flat"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a href="javascript:void(0);" class="ds-more">分享到：</a></li><li><a href="javascript:void(0);" data-service="weibo" class="ds-weibo">微博</a></li><li><a href="javascript:void(0);" data-service="qzone" class="ds-qzone">QQ空间</a></li><li><a href="javascript:void(0);" data-service="qqt" class="ds-qqt">腾讯微博                     </a></li><li><a href="javascript:void(0);" data-service="wechat" class="ds-wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div data-thread-key="interview/" data-title="面试题整理" data-url="http://yanggang.site/interview/" data-author-key="1" class="ds-thread"></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yanggang.site"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Kategorien</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/emotion/">emotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/technology/">technology</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/阅读/">阅读</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/网络/" style="font-size: 15px;">网络</a> <a href="/tags/书单/" style="font-size: 15px;">书单</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a> <a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/计划/" style="font-size: 15px;">计划</a> <a href="/tags/人生/" style="font-size: 15px;">人生</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/平凡/" style="font-size: 15px;">平凡</a> <a href="/tags/参考/" style="font-size: 15px;">参考</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Letzte</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/booklist/">2018阅读书单</a></li><li class="post-list-item"><a class="post-list-link" href="/mysql-tutorial/">MySQL多表查询</a></li><li class="post-list-item"><a class="post-list-link" href="/svn-tutorial/">SVN命令使用详解</a></li><li class="post-list-item"><a class="post-list-link" href="/cpp/">C++ 语言要点</a></li><li class="post-list-item"><a class="post-list-link" href="/shitiesheng2/">史铁生：好运设计</a></li><li class="post-list-item"><a class="post-list-link" href="/reference/">技术文章参考链接</a></li><li class="post-list-item"><a class="post-list-link" href="/interview/">面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/note/">复习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/networkProgramming/">网络编程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/compiling/">编译过程要点</a></li></ul></div><div class="widget"><div class="comments-title"><i class="fa fa-comment-o"> Letzte Kommentare</i></div><div data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城" target="_blank">屠城</a><ul></ul><a href="http://ibruce.info/" title="不如" target="_blank">不如</a><ul></ul><a href="http://coderlin.coding.me/" title="Edgar的博客" target="_blank">Edgar的博客</a><ul></ul><a href="https://www.the5fire.com/" title="the5fire的技术博客" target="_blank">the5fire的技术博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© 2018 - <a href="/." rel="nofollow">东坡烟尘 - </a>粤 ICP 备 12345678 号<p></p> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script>var duoshuoQuery = {short_name:'yanggang0055'};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
+extends base
+
+block title
+  title= page.title + ' | ' + config.title
+
+block content
+  .post
+    h1.post-title= page.title
+    .post-meta= page.date.format('ll')
+      if page.categories.length > 0
+        span= ' | '
+        span.category
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= category.name
+      if theme.busuanzi == true
+        script(src='https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js', async)
+        span#busuanzi_container_page_pv= ' | '
+          span#busuanzi_value_page_pv
+          span= ' ' + __('Hits')
+      if theme.wordcount == true
+        include _partial/wordcount.pug
+    if theme.disqus
+      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
+    if theme.changyan
+      a.ds-thread-count(href=url_for(page.path) + '#SOHUCS')
+        span#changyan_count_unit(style='font-size: 15px; color: #6E7173;') 0
+        span= ' ' + __('Comment')
+      script(src='https://assets.changyan.sohu.com/upload/plugins/plugins.count.js', async)
+    if theme.valine.enable
+      a.disqus-comment-count( href=url_for(page.path) + '#vcomment')
+        span.valine-comment-count(data-xid=url_for(page.path))
+        span= ' ' + __('Comment')
+    if page.toc
+      div(class='clear')
+        div(id='toc' class='toc-article')
+          div(class='toc-title')= __('contents')
+          != toc(page.content, {list_number: theme.toc_number})
+    .post-content
+      != page.content
+    if theme.donate.enable == true
+      iframe(src='/donate/?AliPayQR=' + theme.donate.alipay_qr + '&WeChatQR=' + theme.donate.wechat_qr + '&GitHub=' + theme.donate.github + '&BTCQR=' + theme.donate.btc_qr + '&BTCKEY='+ theme.donate.btc_key + '&PayPal=' + theme.donate.paypal_url, style='overflow-x:hidden; overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;', frameborder='0', scrolling='no')
+
+    if theme.post_copyright.enable == true
+      div
+        ul.post-copyright
+          li.post-copyright-author
+            strong= __('copyright_author_prefix')
+            = theme.post_copyright.author
+          li.post-copyright-link
+            strong= __('copyright_link_prefix')
+            a(href='/' + page.path)= page.permalink
+          li.post-copyright-license
+            strong= __('copyright_declare_prefix')
+            if theme.post_copyright.copyright_text
+              != theme.post_copyright.copyright_text
+            else
+              != __('copyright_default_text')
+      br
+
+    if theme.shareto == true
+      script(type='text/javascript', src=url_for(theme.js) + '/share.js' + '?v=' + theme.version, async)
+      a.article-share-link(data-url=page.permalink, data-id=page._id, data-qrcode=qrcode(page.permalink))= __('shareto')
+
+    include _partial/tag.pug
+    include _partial/post_nav.pug
+
+    if page.comments
+      include _partial/comments.pug

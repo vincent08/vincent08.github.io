@@ -1,146 +1,68 @@
-<!DOCTYPE html><html lang="zh"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>C++ 语言要点 | 东坡烟尘</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">C++ 语言要点</h1><a id="logo" href="/.">东坡烟尘</a><p class="description">静能生悟，即鸟啼花落，都是化机。</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 主页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/timeline/"><i class="fa fa-calendar"> 时间线</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">C++ 语言要点</h1><div class="post-meta">Nov 12, 2016<span> | </span><span class="category"><a href="/categories/technology/">technology</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-thread-key="cpp/" href="/cpp/#comments" class="ds-thread-count"></a><div class="post-content"><p>  C++是C语言的继承，它既可以进行C语言的过程化程序设计，又可以进行以抽象数据类型为特点的基于对象的程序设计，还可以进行以继承和多态为特点的面向对象的程序设计。因而C++就适应的问题规模而论，大小由之。</p>
-<p>  近日复习C++语言基础，将其要点记录于此。</p>
-<ol>
-<li><p>面向对象的编程思想<br>通俗地讲，用C语言描述一个系统时，我们会说这个系统有哪些模块，这个模块的具体功能是什么，最后数据是怎样通过这些模块得到处理的。而用面向对象来描述一个系统时，需要从另一个角度来说，我这个系统有哪些成员变量，然后我是如何操作这些成员变量。</p>
-</li>
-<li><p>面向对象的编程方法具有四个基本特征：<br>抽象、封装、继承、多态性<br>类的基本思想是<strong>数据抽象</strong>和<strong>封装</strong>。数据抽象是一种依赖于<strong>接口</strong>和<strong>实现</strong>分离的编程技术。封装实现了类的接口和实现的分离，隐藏了类的实现细节。<br>封装有两个重要的优点：一是确保用户代码不会无意间破坏封装对象的状态；二是被封装的类的具体实现细节可以随时改变，而无需调整用户级别的代码。</p>
-</li>
-<li><p><code>std::endl</code>的作用是结束当前行，并且将关联的缓存区的数据写到IO设备上去。<br><code>std::cerr</code>：告警或错误信息<br><code>std::clog</code>：一般性的日志信息<br>使用using声明命名空间之后，就可以直接使用名字了。</p>
-</li>
-<li><p>C++中，动态内存的申请方法如下：<br>（1）申请单个对象：<br>   <code>数据类型 指针变量 ＝ new 数据类型; // int *pInt = new int</code><br>   释放：<br>   <code>delete 指针变量</code><br>（2）申请数组对象：<br>   <code>数据类型 指针变量 ＝ new 数据类型[个数]; // int *pInt = new int[100]</code><br>   释放：<br>   <code>delete []指针变量</code></p>
-</li>
-<li><p>引用：在C++中引入了引用，这是C语言中所没有的。例如，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">   <span class="keyword">int</span> a=<span class="number">100</span>;</div><div class="line">   <span class="keyword">int</span> &amp;j=a; <span class="comment">//这就是引用</span></div><div class="line">   <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"j="</span>&lt;&lt;j&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">   <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可理解为，引用为对象（包括变量）起了一个别名。其原理是：定义引用时，程序会把引用和初始化的对象绑定在一起，而不是将初始化的对象值拷贝给引用。一旦完成，引用和初始化的对象就一直捆绑在一起，不能再重新捆绑。所以引用必须在定义的时候进行初始化。注意，引用只是一个别名，不是对象，因此不能定义引用的引用（如 <code>int &amp;&amp;k = a</code>是非法的）。<br>引用的数据类型必须与初始化的数据类型一致（如 <code>char &amp;k = a</code>是非法的）。<br>在实际项目中，引用一般会用在函数参数中。例如，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">change_value</span><span class="params">(<span class="keyword">int</span> &amp;a)</span></span></div><div class="line">&#123;</div><div class="line">    a = <span class="number">1000</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> b=<span class="number">10</span>;</div><div class="line">    change_value(b);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"b="</span>&lt;&lt;b&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>其输出结果是<code>b=1000</code>。<br>引用比指针更安全，因为不存在空引用，而且引用一旦初始化就不可改变。从效率来讲，指针和引用是差不多的；从编码来讲，指针需要判断其是否非空，而引用不需要。<br>总结：指针指向一块内存，其内容是所指内存的地址，并且可以为空；引用是某块内存的别名，不可改变指向。</p>
-</li>
-<li><p>函数参数默认值：在C语言中，调用函数必须传递与声明中数量相同的参数；但C++中可以设置参数默认值，不一定传递每个参数。为避免引起混乱，一般在定义函数的时候，最后一个参数、或者最后几个参数有默认值才是合法的。</p>
-<pre><code>int show_all(int a, int b=1, int c=2); //合法
-int show_all(int a, int b=1, int c); // 不合法
-</code></pre></li>
-<li><p>函数重载：在C语言中，不允许定义两个名称完全相同的函数。但C++是允许的，只要参数个数或类型不完全相同即可。所谓函数重载，即一个作用域内几个函数名字相同，但参数不同。main函数不能重载。</p>
-</li>
-<li><p>类的成员函数实现也可以写在类的定义中，但在实际项目中，一般会把类的定义放在头文件（<code>.h</code>）中，类成员函数的实现放在<code>.cpp</code>文件中。</p>
-</li>
-<li><p>访问控制：<br><code>private</code>：只能由该类中的函数、其友元函数访问，不能被该类的对象访问。<br><code>protected</code>：可以被该类中的函数、子类的函数、其友元函数访问，但不能被该类的对象访问。<br><code>public</code>：可以被该类中的函数、子类的函数、其友元函数访问，也可以被该类的对象访问。</p>
-</li>
-<li><p>构造函数与析构函数：<br>构造函数：对象创建时自动调用的函数<br>析构函数：对象销毁时自动调用的函数（程序执行到将要超出对象作用域时）<br>注意：构造函数与析构函数没有返回值，不允许加<code>void</code>。<br>构造函数可以重载（即定义多个构造函数，但它们的参数不同）。此时在定义对象时，如果要传递参数，则写成<code>Employee em(&quot;LiLei&quot;, 28);</code>，如果不传参数，则应写成<code>Employee em;</code>，不能写成<code>Employee em();</code>。<br>析构函数不能重载。析构函数的作用是完成对成员变量占用内存空间的释放（如果没有<strong>动态</strong>申请内存空间，那么就不需要释放了）。</p>
-</li>
-<li><p>继承与派生（派生类&lt;子类&gt;继承基类&lt;父类&gt;）<br><strong>如果不写继承方式的话</strong>，默认是<code>private</code>。<br>存在继承关系时构造函数的运行顺序是（可理解为父类“照看”着子类）：<br><code>父类构造函数-&gt;子类构造函数-&gt;...-&gt;子类析构函数-&gt;父类析构函数</code><br>子类能否访问一个父类的成员函数、成员变量受两个因素控制：<br>（1）父类的成员变量、成员函数的访问权限；<br>（2）继承方式。</p>
-</li>
-<li><p>继承方式<br>（<strong>记忆：基类的private始终不可访问，public和protected视情况而定</strong>）<br>1) <code>public</code>继承方式（公有继承）<br>基类中所有<code>public</code>成员在派生类中为<code>public</code>属性；<br>基类中所有<code>protected</code>成员在派生类中为<code>protected</code>属性；<br>基类中所有<code>private</code>成员在派生类中不可访问。</p>
-<p>2) <code>protected</code>继承方式（保护继承）<br>基类中的所有<code>public</code>成员在派生类中为<code>protected</code>属性；<br>基类中的所有<code>protected</code>成员在派生类中为<code>protected</code>属性；<br>基类中的所有<code>private</code>成员在派生类中仍然不可访问。</p>
-<p>3) <code>private</code>继承方式（私有继承）<br>基类中的所有<code>public</code>成员在派生类中均为<code>private</code>属性；<br>基类中的所有<code>protected</code>成员在派生类中均为<code>private</code>属性；<br>基类中的所有<code>private</code>成员在派生类中均不可访问。</p>
-</li>
-<li><p>派生类的构造函数<br>设计派生类的构造函数时，还要考虑基类的初始化，调用基类的构造函数即可。(《C++编程思想（第一卷）》P329 构造函数的初始化表达式表)<br>重点要注意构造函数和析构函数与众不同之处在于每一层函数都被调用。而对于普通成员函数，只是这个函数被调用，而它的那些基类版本并不会被调用。如果还想调用成员函数的基类版本，必须显式地去做。</p>
-</li>
-<li><p>多重继承引起的二义性<br>（1）两个基类具有相同的函数名，并且参数也相同。比如C继承于A和B，且A和B都有<code>print()</code>函数，那么C的对象<code>c_obj</code>调用A的<code>print()</code>函数要写成<code>c_obj.A::print()</code>。<br>（2）派生类与两个基类有同名的成员。这就是overriding（重写），默认访问派生类的，但是依然可以用（1）中的方法去访问基类的同名成员。</p>
-</li>
-<li><p>虚基类<br>如果B、C继承于A，而D继承于B、C，且A有成员变量iAge，那么在D中将会有两份iAge，它们分别归属于B和C。这种现象一般是我们不希望出现的。<br>C++提供虚基类的方法，使得继承间接共同基类时只保留一份成员。使用方法：<strong>在继承方式前加一个关键字virtual即可</strong>。此时从B和C访问iAge将得到同一个值，也可以通过C访问得到同样的值。<br><strong>注意</strong>：虚基类并不是在定义基类的时候声明的，而是在声明派生类的时候，通过修饰继承方式来声明的。一个基类可以在派生类中作为虚基类，而在生成另外一个派生类时不作为虚基类。<br>如果B、C、D继承于A，E继承于B、C、D，且A有成员变量iAge，为保证iAge在E中只存在一个拷贝，应该在B、C、D的继承定义中<strong>均把A声明为虚基类</strong>，缺一不可。<br>虚基类对象的初始化：B、C、D各自的初始化表达式中会对A中的iAge进行初始化，由于对E而言，A是虚基类，所以在E的初始化表达式中除了有对直接基类B、C、D的初始化之外还要有对虚基类A的初始化，并且<strong>iAge的值以A初始化的值为准</strong>。这就保证了虚基类的成员数据不会被多次初始化。</p>
-</li>
-<li><p>基类与派生类的类型转换<br>（1）可以使用派生类的对象来给基类的对象赋值（实际只是<strong>对基类的成员变量赋值</strong>），这个过程将舍弃派生类的额外成员，即大材小用。<br>（2）可以使用派生类的对象来给基类的引用赋值（如：B继承自A，且有 <code>A a; B b; A &amp;aa=a; aa=b;</code> 注意，此时<code>aa</code>不是<code>b</code>的别名，也不与<code>b</code>共享同一段存储单元。最后一条语句应理解为用<code>b</code>给<code>aa</code>指向的内存赋值，而不是将<code>aa</code>指向<code>b</code>）。<br>（3）如果函数的形参是基类对象或者基类对象的引用，那么实参可以是派生类对象。此时，函数只能访问派生类对象中的基类成员。<br>（4）可以使用派生类对象的地址来给基类对象的指针赋值（C++：把特殊的赋给一般的，类似特殊类型的指针可以赋给<code>void*</code>指针，但反过来不行）。</p>
-</li>
-<li><p>C++中类所占内存空间的总结<br><a href="http://blog.sina.com.cn/s/blog_69c189bf0100mkeu.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_69c189bf0100mkeu.html</a><br>C++中引用不能重新赋值的理解<br><a href="http://blog.sina.com.cn/s/blog_61853b6b0100leg5.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_61853b6b0100leg5.html</a></p>
-</li>
-<li><p>类结构占用内存的分析<br>基类（非派生类）的占用内存：（1）成员函数在编译时被放在正文段，不占用类的空间.（2）空类占用1个字节，因为每个实例在内存中都要占有一个独一无二的地址，所以编译器一般会给<strong>空类</strong>加上一个字节。(3)类与结构类似，有内存对齐的问题。<br>派生类的占用内存：基类占用的空间加上自身成员变量占用的空间。(如果B继承自A，A为空类，B也未添加成员变量，那么A、B均占用1字节；如果A有一个成员变量，而B未添加成员变量，那么A、B均不是空类，占用内存大小相同。)</p>
-</li>
-<li><p>对象数组的初始化<br>注意易错点，初始化与赋值的区别（初始化不用生成对象）<br><a href="http://zhujiangtao.com/?p=925" target="_blank" rel="external">http://zhujiangtao.com/?p=925</a></p>
-</li>
-<li><p>定义对象指针后可以用<code>-&gt;</code>运算符访问对象的成员。</p>
-</li>
-<li><p><code>this</code>指针<br><code>this</code>指针是C++所特有的。类的所有对象共享成员函数的代码，那么成员函数被执行时如何知道是哪个对象要调用自己呢？解决方案很简单，在每个成员函数中都包含有一个特殊的指针，这个指针的名字是固定的，即<code>this</code>指针，它是指向本对象的指针（常量指针）。它的指针值是当前被调用的成员函数<strong>所在的对象</strong>的起始地址。<br>注意：<br>(1)<code>this</code>指针只有在成员函数中才有定义。因此，不能通过对象使用<code>this</code>指针，只能在成员函数里使用。<br>(2)<code>this</code>在成员函数开始执行前构造，在成员函数执行结束后清除。<br>(3)<code>this</code>指针的典型用法（对象引用传递、判断两个对象是否相同）：<br> <a href="http://www.cnblogs.com/hnrainll/archive/2011/05/20/2051939.html" target="_blank" rel="external">http://www.cnblogs.com/hnrainll/archive/2011/05/20/2051939.html</a><br> 引用传递的好处(引用是对象的别名，获取引用的地址要用<code>&amp;</code>运算符)：<br> <a href="http://www.cnblogs.com/xiaofengkang/archive/2011/05/16/2048262.html" target="_blank" rel="external">http://www.cnblogs.com/xiaofengkang/archive/2011/05/16/2048262.html</a></p>
-</li>
-<li><p>对象的动态内存<br>关于<code>operator new</code>和<code>operator delete</code>，以及对象数组内存空间的<code>new</code>和<code>delete</code>。(《C++编程思想（第一卷）》第13章 动态对象创建)<br><code>new</code>分两步：<br>（1）分配空间：调用 <code>operator new</code> 来实现。<br>（2）调用构造函数：调用 <code>placement new</code> 来实现。<br><a href="http://blog.csdn.net/xiaorenwuzyh/article/details/44514815" target="_blank" rel="external">http://blog.csdn.net/xiaorenwuzyh/article/details/44514815</a></p>
-</li>
-<li><p>对象的赋值<br>同类的对象之间可以相互赋值（只是成员变量，非成员函数），因为C++默认实现了每个类对赋值运算符<code>=</code>的重载。<br><strong>注意</strong>：类的数据成员中不能包括动态分配的数据，如果类中存在动态分配内存的，赋值过程中会产生内存泄漏。（例如，类的成员变量中含有字符串指针<code>char *pszName</code>，并且在构造函数中使用<code>new</code>分配了内存。）</p>
-</li>
-<li><p>对象的复制<br>对象复制的场景：有时候我们需要多个完全相同的对象，并进行相同的初始化；或者要将对象某一瞬间的状态保留下来。<br>使用类似<code>Employee A(&quot;Zhangsan&quot;); Employee B(A);</code> 的语句即可完成对象的复制。因为C++默认为每个类实现了复制构造函数（拷贝构造函数）。复制构造函数也是构造函数（无返回类型），但它只有一个参数，就是对象的引用。复制构造函数对成员变量一一进行赋值。<br>(《C++ Primer》第13章 拷贝控制)<br>“浅拷贝”与“深拷贝”（在“深拷贝”的情况下，对于对象中动态成员，就不能仅仅简单地赋值了，而应该重新动态分配空间.）<br><a href="http://blog.csdn.net/bluescorpio/article/details/4322682" target="_blank" rel="external">http://blog.csdn.net/bluescorpio/article/details/4322682</a></p>
-</li>
-<li><p>C++11 中值得关注的几大变化<br><a href="http://coolshell.cn/articles/5265.html" target="_blank" rel="external">http://coolshell.cn/articles/5265.html</a></p>
-</li>
-<li><p>静态数据成员<br>实际项目中，有时候会希望某个成员变量是所有对象共享的，就可以将其定义为静态数据成员。静态数据成员在内存只占一份空间，所有对象都可以引用它。（类似于对象之间的“全局变量”）<br>类中的<code>static int i;</code>语句只是静态变量的声明。静态成员变量的定义和初始化必须放在类的外部（除非是初始化为常量表达式），因为静态数据成员不属于类的任何一个对象，不是由类的构造函数初始化的。<br><strong>注意</strong>：<em>静态成员函数可以在类的内部定义，也可以在类的外部定义。</em><br>静态数据成员的初始化语句格式：<code>类型名 类名::成员变量名[=初值]</code><br>静态数据成员可以用类名访问，也可以用类的对象访问，但要遵循 <code>private</code>、<code>protected</code> 和 <code>public</code> 关键字的访问权限限制。<br>C++的静态数据成员的创建与释放不依赖于对象的建立与销毁（与C中静态局部变量不依赖于函数的执行类似）。<br>(参考《C++ Primer》P269 第7.6节 类的静态成员)</p>
-</li>
-<li><p>静态成员函数<br>静态成员函数是为了能够处理静态数据成员。通过对象访问静态成员函数和通过类名访问静态成员函数的效果是一样的。<br>可以说，静态成员函数与非静态成员函数的根本区别是：非静态成员函数有 this 指针，而静态成员函数没有 this 指针(因为它不属于哪一个具体的对象)。由此决定了静态成员函数不能访问本类中的非静态成员。(<strong>注意</strong>：在普通成员函数中可以访问静态成员变量)<br>参考链接：<br><a href="http://c.biancheng.net/cpp/biancheng/view/209.html" target="_blank" rel="external">http://c.biancheng.net/cpp/biancheng/view/209.html</a></p>
-</li>
-<li><p>友元<br>友元有两种，一种是友元函数，一种是友元类。<br>（1）友元函数。普通函数加<code>friend</code>关键字，在访问类的成员变量时，不能像类的成员函数那样直接访问，必须通过类的对象来访问。<br>（2）友元成员函数。声明其他类中的成员函数为友元函数。要注意声明顺序，避免编译器报错。<br>（3）友元类。把类B声明为类A的友元，那么B中所有的成员函数都是类A的友元函数。注意友元的关系是单向的，而且不可传递。<br>参考链接： <a href="http://c.biancheng.net/cpp/biancheng/view/211.html" target="_blank" rel="external">http://c.biancheng.net/cpp/biancheng/view/211.html</a></p>
-</li>
-<li><p>函数模板<br>定义方法：<code>template &lt;typename DataType1, typename DataType2, ...&gt;</code><br>其中关键字<code>typename</code>也可以用<code>class</code>替代。</p>
-</li>
-<li><p>类模板<br>定义方法：<code>template &lt;class DataType1, class DataType2, ...&gt;</code><br>其中关键字<code>class</code>也可以用<code>typename</code>替代。<br>应用（实例化）时的格式为<code>类模版名称&lt;实际类型&gt; 对象名(参数表)</code></p>
-</li>
-<li><p>模板的编译原理<br>当运行中的程序<strong>调用</strong>函数模板时，会用实际类型将模板<strong>实例化</strong>。注意模板与宏的机制不同，宏替换是在预编译阶段，而模板的实例化是在<strong>编译阶段</strong>。<br>模板编译过程:<br><a href="http://houjixin.blog.163.com/blog/static/35628410201252093052611/" target="_blank" rel="external">http://houjixin.blog.163.com/blog/static/35628410201252093052611/</a></p>
-</li>
-<li><p>运算符重载<br>定义方法：<code>&lt;返回类型说明符&gt; operator&lt;运算符符号&gt; (&lt;参数表&gt;) {}</code><br>运算符重载的实质就是函数重载。在实现过程中，首先把指定的运算表达式转化为对运算符的调用，运算对象转化为运算符函数的实参，然后根据实参的类型来确定需要调用的函数。<strong>这是在编译过程中完成的</strong>。<br>可以把运算符重载为成员函数，也可以重载为友元函数。这两种形式都可以访问类中的私有成员。<br>运算符重载不改变原运算符的优先级和结合性。<br>（《C++ Primer》第14章 重载运算与类型转换）</p>
-</li>
-<li><p>多态性<br>在面向对象语言中，接口的多种不同的实现方式即为多态。<br>多态性又分两种，一种是静态多态性，另外一种是动态多态性。<br>静态多态性是通过函数的重载来实现的，或者说由函数重载或者运算符重载形成的多态属于静态多态性，要求在程序编译时就知道调用函数的具体信息。所以静态多态性又被称为编译时的多态性。（由于编译时就已经知道了具体的实现，所以在程序运行时，静态多态性具有运行快、效率高的特点。）<br>动态多态性的特点是：不在编译的时候确定调用哪个函数，而是在程序运行过程中才动态地确定操作所针对的对象。动态多态性是通过虚函数来实现的。</p>
-</li>
-<li><p>虚函数<br>通过定义虚函数，可以让基类指针更灵活，既可以指向基类对象，又可以指向派生类对象。<br>注意：<br>（1）在基类中用关键字<code>virtual</code>声明成员函数为虚函数，如果此成员函数的具体实现是在类外定义，那么在外部定义的时候不必再加上<code>virtual</code>；<br>（2）在派生类中重新定义此函数时，函数名、参数类型、参数个数必须与基类的虚函数相同；<br>（3）当一个成员函数被声明为虚函数后，其派生类中的同名函数都自动成为虚函数，也可以加上关键字<code>virtual</code>；<br>（4）通过该指针变量调用此虚函数时，调用的就是指针指向的对象的同名函数；<br>什么时候应该把一个函数声明为虚函数呢？<br>（1）首先看成员函数所在的类是否作为基类，然后看成员函数在类的继承后有无可能被更改。如果派生类希望更改此函数的功能，那么就将它声明为虚函数；<br>（2）如果对成员函数的调用是通过基类的<strong>指针</strong>或者<strong>引用</strong>来访问，那么就应该把它声明为虚函数。如果只是通过派生类自己的对象来访问，那么就无需定义为虚函数；<br>（3）有时候在定义虚函数时，并不定义其函数体，即函数体是空的，它的作用只是定义虚函数名，具体功能留给派生类去添加。这就是所谓的<strong>纯虚函数</strong>。</p>
-</li>
-<li><p>使用虚函数，系统要有一定的空间开销，当一个类带有虚函数时，编译系统会为该类构造一个<strong>虚函数表</strong>，简称V-Table。它是一个指针数组，存放着每个虚函数的入口地址，系统在动态关联的时候要用到它。<br>问题：为什么基类指针在执行派生类对象时，能访问到派生类的虚函数呢？<br>答：这是通过虚函数表来实现的。基类和派生类都各自的虚函数表，实例化后会带到对象的内存中，虚函数表指明了实际应该调用的函数。</p>
-</li>
-<li><p>虚析构函数<br>（1）如果将基类的析构函数声明为虚析构函数，那么由该类派生出的所有派生类的析构函数都自动成了虚析构函数。<br>（2）最好把基类的析构函数声明为虚析构函数。这样的话，基类的析构函数、派生类的析构函数都可以得到正确的运行（比如，有个基类指针指向用new动态分配内存的派生类对象的情形，直接用delete释放即可，如果没有声明为虚析构函数，那么派生类的析构函数不会运行，只运行基类的析构函数，导致内存泄漏）。<br>（3）一般来说，软件工程师都会把析构函数声明为虚析构函数。即使基类并不需要析构函数，也显式地定义一个空的虚析构函数，以保证在撤销动态分配空间时能得到正确的处理。但是，当确定一个类不需要多态性的时候，就不必这样做，因为使用虚函数会有额外的空间开销。<br>（4）构造函数不能声明为虚函数，这是因为在执行构造函数时，类对象还未完成建立过程，就更谈不上把函数与类对象捆绑了。</p>
-</li>
-<li><p>纯虚函数<br>定义：<code>virtual 类型 函数名(参数列表) = 0;</code><br>注意纯虚函数是没有具体实现的，即没有函数体，加大括号<code>{}</code>是不对的。<br>一个类如果包含纯虚函数，那么这个类不能用来定义对象。<br>如果在一个类中声明了纯虚函数，而在其派生类中没有实现该函数，那么该虚函数在派生类中仍然为虚函数，该派生类依然不能用来定义对象。</p>
-</li>
-<li><p>抽象类<br>只要是包含纯虚函数的类都是抽象类，抽象类不能创建对象。<br>在派生类中只有实现了抽象基类的所有纯虚函数之后，才能被用来定义对象。只要有一个纯虚函数没被实现，那么这个派生类仍然是个抽象类。<br>派生类虽然不能用来定义对象，但可以用来定义指针变量，并且该指针可以指向派生类的对象，从而实现多态。</p>
-</li>
-<li><p>对多态性的理解<br>一个对象或者一个函数，可以以不同的形式存在或使用。比如运算符或函数可以重载，又比如派生类可以通过基类指针访问。<br>多态性是面向对象语言的一个基本特征。</p>
-</li>
-<li><p>C++怎样使用C语言的库<br>如果有两个文件<code>file1.c</code>和<code>file2.cpp</code>，file2调用file1，那么先用<code>gcc</code>编译file1，再在file2的起始用以下语句声明后，带上<code>file1.o</code>用<code>g++</code>编译：<br><code>extern &quot;C&quot;</code><br><code>{  // 声明file1中自己定义的函数，C标准库函数不用声明</code><br>  <code>void my_func1();</code><br>  <code>void my_func2();</code><br><code>}</code><br>为什么要用<code>extern &quot;C&quot;</code>声明C语言编译的函数呢？<br>C++由于支持函数重载，C语言不支持，所以C++与C对某个函数编译之后产生的函数名是不同的。必须告诉编译器哪些函数是C写的，以便按C的编译规则进行查找。</p>
-</li>
-<li><p>异常处理<br>程序的错误分为编译时的错误和运行时的错误，我们把运行时错误统称为异常。<br>C++中处理异常的过程是这样的：在执行程序发生异常时，可以不在本函数处理，而是抛出一个错误信息，把它传递给上一级的函数来解决，上一级解决不了，再传给上一级。如此逐级上传，直到最高一级还无法处理的话，运行系统会自动调用函数<code>terminate</code>，由它调用<code>abort</code>终止程序。<br>C++异常处理机制有三步：<br>（1）检查（try）：一个try可以对应多个catch，具体调用哪个catch要看throw抛出的数据的类型和哪个catch的参数能对应上。<br>（2）抛出（throw）：只能抛出一个变量，如果有多个数据，可以用结构体。<br>（3）捕捉（catch）：类似函数，后面要有参数。如果参数用不上，可以只写参数类型。如果catch后没有参数，可写成<code>catch(...){}</code>，表示捕捉任何类型的异常。类似switch语句的default，一般把它写在多个catch语句的最后。<br>try－catch结构可以与throw出现在同一个函数中，也可以不在同一个函数中。当throw抛出一个异常后，依次往上一个函数中查找匹配的catch语句。<br>如果捕获了一个异常，但不想处理，可以用<code>throw;</code>语句继续像上一层抛出。<br>编程风格：<br>如果自己写的函数定义了抛出异常，可类似以下格式进行声明和定义：<br><code>int division(int a,int b) throw(int, char, double);</code><br>这个声明表示<code>division</code>函数可能抛出三种类型的异常。</p>
-</li>
-<li><p>命名空间<br>定义：如下，把类和函数的定义放在namespace的大括号中即可。<br><code>namespace newname</code><br><code>{</code><br><code>class A { }</code><br><code>int fun() { }</code><br><code>}</code><br>如果不写newname，那么就是无名的命名空间，可用于将代码的作用域限制为本文件。<br>在main函数中调用时可用<code>namespace nn = newname</code>给命名空间取别名，以简化书写。</p>
-</li>
-<li><p>string类<br>面试题：用C++代码实现string类，包括常用运算符的重载。</p>
-</li>
-<li><p>vector<br>刚开始vector一次性分配一段内存后，可循秩访问，速度很快；但当空间不足时，会重新申请一段更大的空间，并且把原来空间的数据拷贝到新的空间，再释放原来的空间，这一步操作很慢。<br><strong>注意</strong>：vector动态增加大小时，并不是在原空间之后持续新空间（因为无法保证原空间之后尚有可供配置的空间），而是以原大小的两倍另外配置一块较大的空间，然后将原内容拷贝过来，然后才开始在原内容之后构造新元素，并释放原空间。因此，对vector的任何操作，一旦引起空间重新配置，指向原vector的所有迭代器就都失效了。这是程序员易犯的一个错误，务需小心。</p>
-</li>
-<li><p>Iterator（迭代器）<br>C++的STL提出了迭代器的概念，这是C所没有的。在一般的使用中，iterator的行为很像C的指针。对于指针，当指向连续内存时，可以用<code>p++</code>进行操作，而对于像链表这样的结构，就不能这样了。C++使用迭代器解决了这个问题，其原理是重载了<code>++</code>运算符。迭代器很多相关方法都是用重载来实现的。<br>iterator（迭代器）又称cursor（游标），用于提供一种方法顺序访问一个聚合对象中的各个元素，而又不暴露该对象的内部表示。<br>迭代器的作用：能够让迭代器与算法不干扰地互相发展，最后又能无间隙地粘合起来。重载了<code>*</code>、<code>++</code>、<code>==</code>、<code>!=</code>、<code>=</code>运算符，用以操作复杂的数据结构。</p>
-</li>
-<li><p>关于用迭代器删除map的注意点<br>删除节点，可能会有如下代码：<br><code>map&lt;string,int&gt;::iterator my_itr;</code><br><code>for(my_itr=my_Map.begin(); my_itr!=my_Map.end(); my_itr++)</code><br><code>{</code><br><code>my_Map.erase(my_itr);</code><br><code>}</code><br>这是一种错误的写法，会导致程序出现意想不到的结果！因为map是关联容器，对于关联容器来说，如果某一个元素已经被删除，那么其对应的迭代器就失效了，不应该再被使用。<br>正确写法应该是：<br><code>map&lt;string,int&gt;::iterator my_itr;</code><br><code>for(my_itr=my_Map.begin(); my_itr!=my_Map.end(); )</code><br><code>{</code><br><code>my_Map.erase(my_itr++);</code><br><code>}</code><br>其原因是在erase的时候，<code>my_itr</code>已经指向了下一个地址。</p>
-</li>
-<li><p>泛型编程<br>C++是一种强制类型的编程语言，而STL容器却是支持任何数据类型的，这就叫泛型编程，它是一种软件复用技术。STL的泛型编程在C++中取得了极大的成功。</p>
-</li>
-<li><p>STL(标准模板库可以说是标准库的子集)的六大组件<br>（1）容器（Container）：是一种数据结构，如list、vector、deque等，以模板类的形式提供。<br>（2）迭代器（Iterator）：提供了访问容器中对象的方法。常见迭代器类型：iterator、const_iterator、reverse_iterator、const_reverse_iterator。<br>（3）算法（Algorithm）：是用来操作容器中数据的模版函数。例如，STL用<code>sort()</code>来给vector中的数据排序，用<code>find()</code>来搜索list中的对象等。<br>（4）仿函数（Functor，又称函数对象，Function object）：就是重载了函数的<code>()</code>操作符。<br>（5）适配器（Adaptor）：可以理解为封装，比如queue的底层就是采用deque来实现的，它只是在deque的接口上再进行了封装。<br>（6）空间配置器（Allocator）：其主要工作包括两部分：对象的创建与销毁，内存的获取与释放。</p>
-</li>
-<li><p>动态链接库<br>如果想把一个模块编译成动态链接库（dll），则需要在定义类的时候加上关键字<code>DLLEXPORT</code>（这是一个宏），如<code>class DLLExport Employee {};</code>。<br>在实际工作中，我们一般会把代码编译成静态库。</p>
-</li>
-<li><p>const<br>（1）可以用<strong>非常量</strong>初始化一个底层const对象，但是反过来不行。<br>（2）一个普通的引用必须用同类型的对象初始化。<br>（3）对于函数中不会被改变的形参，应定义其为常量引用。否则在其他函数（正确地）将它们的形参定义成常量引用时，该函数将不能正常使用（因为不能用const初始化非const变量）。<br>顶层const（常量指针）与底层const（指向常量的指针）：<br><a href="https://segmentfault.com/a/1190000005168641" target="_blank" rel="external">https://segmentfault.com/a/1190000005168641</a><br>（4）在类的成员函数定义中，可用const紧跟参数列表之后，表示这是常量成员函数。常量对象，以及常量对象的指针或引用都只能调用常量成员函数。</p>
-</li>
-<li><p>return：返回值的方式和初始化一个变量或形参的方式完全一样：返回的值用于初始化调用点的一个临时量，该临时量就是函数调用的结果。<br>不要返回局部对象的引用或指针，因为函数终止后，它们将指向不再有效的内存区域。<br>调用一个返回<strong>引用</strong>（常量引用除外）的函数得到左值，其他返回类型得到右值。<br>如果<code>main</code>函数中没有return语句，编译器将隐式地插入一条<code>return 0;</code>语句。</p>
-</li>
-<li><p>inline：一般来说，内联机制用于优化规模较小、流程直接、频繁调用的函数。内联说明只是编译器发出的一个请求，编译器可以忽略这个请求。<br>constexpr函数：能用于常量表达式的函数。函数的返回类型及所有形参答类型都得是字面值类型。</p>
-</li>
-<li><p>调试帮助：<code>assert</code>预处理宏（行为类似于内联函数）和<code>NDEBUG</code>预处理变量（如果定义了该变量，则assert什么也不做；默认状态下没用定义，assert将执行运行时检查）。<br>assert应该仅用于验证那些确实不可能发生的事情。</p>
-</li>
-<li><p>函数指针：函数是命名了的计算单元，函数指针指向的是函数而非对象。和其他指针一样，函数指针指向某种特定类型。函数的类型由它的返回类型和形参类型共同决定，与函数名无关。声明函数指针时只要用<code>(*pf)</code>替代函数名即可，注意括号必不可少。<br>注意：如果把函数func赋值给pf指针，取地址符<code>&amp;</code>是可选的；当通过指针调用函数时，解引用符<code>*</code>也是可选的。<br>和数组类似，虽然不能定义函数类型的形参，但是可以把指向函数的指针作为形参。如果参数写的就是函数，那么它会隐式地转换成函数指针。即以下两种写法等价：<br><code>void use(const string &amp;s1, bool func(int a));</code><br><code>void use(const string &amp;s1, bool (*pf)(int a));</code></p>
-</li>
-<li><p>IO类（istream、ostream）属于不能被拷贝的类型，因此我们只能通过引用来传递它们。而且，因为读取和写入的操作会改变流的内容，所以两个函数接收的都是普通引用，而非对常量的引用。</p>
-</li>
-<li><p>使用<code>class</code>和<code>struct</code>定义类的唯一区别在于默认访问权限。前者默认成员都是<code>private</code>，后者默认都是<code>public</code>。</p>
-</li>
-<li><p>当我们定义变量时习惯于对其进行初始化，而非先定义、再赋值。比如构造函数尽量写成如下形式，而不是将成员变量的赋值写在函数体中。<br><code>Sales::Sales(const string &amp;s, double price):bookNo(s), bookPrice(price)</code><br>而且，如果成员是常量或者引用的话，必须采用这种方式（<strong>构造函数初始值列表</strong>）初始化。</p>
-</li>
-<li><p>IO对象不可拷贝或赋值，因此我们不能将形参或返回类型设为流类型。进行IO操作的函数通常以引用方式传递和返回流。读写一个IO对象会改变其状态，因此传递和返回的引用不能是<code>const</code>的。</p>
-</li>
-<li><p>除了顺序容器外，标准库还定义了三个顺序容器适配器：stack、queue和priority_queue。<strong>适配器</strong>是标准库中的一个通用概念。一个容器适配器接受一种已有的容器类型，使其行为看起来像一种不同的类型。默认情况下，stack和queue是基于deque实现的，priority_queue是在vector之上实现的。不过我们可以在创建一个适配器时将一个命名的顺序容器作为第二个类型参数，来重载默认容器类型。</p>
-</li>
-<li><p><code>explicit</code>关键字<br><a href="http://www.cnblogs.com/winnersun/archive/2011/07/16/2108440.html" target="_blank" rel="external">http://www.cnblogs.com/winnersun/archive/2011/07/16/2108440.html</a> </p>
-</li>
-<li><p>C++命名风格<br>Google开源项目C++风格指南中文版：<br><a href="http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/" target="_blank" rel="external">http://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/</a><br>一般而言：<br>（1）类：<code>MyClass</code><br>（2）函数、变量：<code>myMethod</code><br>（3）常量：<code>const double PI=3.1415926</code><br>C++标准库和Boost库采用以下约定：<br>（1）宏：<code>INT_MAX</code><br>（2）模板参数名：<code>InputInterator</code><br>（3）其他名：<code>unordered_map</code><br>对于类的成员变量，加上<code>m_</code>，如<code>m_width</code>、<code>m_height</code>，可理解为member。<br>对于类的成员函数的形参，加上<code>t_</code>，如<code>t_width</code>、<code>t_height</code>，可理解为the。</p>
-</li>
-<li><p>C++最佳实践<br>(1)安全性<br>C++ 11中推荐使用<code>nullptr</code>。<br>为了保持跨平台特性，应始终使用正确的integer类型，如<code>size_t</code>类型，不要简单地用<code>int</code>替代。<br>使用<code>std::array</code>或者<code>std::vector</code>替代C风格的数组。<br>使用异常机制。<br>使用C++风格的类型转换机制（<code>static_cast</code>、<code>dynamic_cast</code>）。<br>（2）可维护性<br>避免使用编译器宏（如<code>#define PI 3.14159</code>）<br>（3）线程安全<br>避免使用全局数据，而是使用静态数据、共享指针和单例。<br>避免堆操作。<br>（4）性能<br>尽量使用<code>class MyClass;</code>语句替代<code>#include &quot;MyClass.h&quot;</code>，可以减少编译时间。<br>简化代码，一般来说，越简洁的代码编译器优化得越好。<br>使用初始化列表进行初始化。<br>减少使用临时变量（比如应直接写<code>doSomeThing(getObj1(), getObj2())</code>，而不要定义临时变量存储obj1和obj2的值）。<br>变量应该尽可能晚地声明，使其在必要的尽量小的作用域。<br>尽量使用<code>double</code>来替代<code>float</code>。<br>尽量使用<code>++i</code>而不是<code>i++</code>。</p>
-</li>
-</ol>
-</div><div class="tags"><a href="/tags/C/">C++</a></div><div class="post-nav"><a href="/svn-tutorial/" class="pre">SVN命令使用详解</a><a href="/shitiesheng2/" class="next">史铁生：好运设计</a></div><div data-thread-key="cpp/" data-title="C++ 语言要点" data-url="http://yanggang.site/cpp/" class="ds-share flat"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a href="javascript:void(0);" class="ds-more">分享到：</a></li><li><a href="javascript:void(0);" data-service="weibo" class="ds-weibo">微博</a></li><li><a href="javascript:void(0);" data-service="qzone" class="ds-qzone">QQ空间</a></li><li><a href="javascript:void(0);" data-service="qqt" class="ds-qqt">腾讯微博                     </a></li><li><a href="javascript:void(0);" data-service="wechat" class="ds-wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div data-thread-key="cpp/" data-title="C++ 语言要点" data-url="http://yanggang.site/cpp/" data-author-key="1" class="ds-thread"></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yanggang.site"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Kategorien</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/emotion/">emotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/technology/">technology</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/阅读/">阅读</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/网络/" style="font-size: 15px;">网络</a> <a href="/tags/书单/" style="font-size: 15px;">书单</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a> <a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/计划/" style="font-size: 15px;">计划</a> <a href="/tags/人生/" style="font-size: 15px;">人生</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/平凡/" style="font-size: 15px;">平凡</a> <a href="/tags/参考/" style="font-size: 15px;">参考</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Letzte</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/booklist/">2018阅读书单</a></li><li class="post-list-item"><a class="post-list-link" href="/mysql-tutorial/">MySQL多表查询</a></li><li class="post-list-item"><a class="post-list-link" href="/svn-tutorial/">SVN命令使用详解</a></li><li class="post-list-item"><a class="post-list-link" href="/cpp/">C++ 语言要点</a></li><li class="post-list-item"><a class="post-list-link" href="/shitiesheng2/">史铁生：好运设计</a></li><li class="post-list-item"><a class="post-list-link" href="/reference/">技术文章参考链接</a></li><li class="post-list-item"><a class="post-list-link" href="/interview/">面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/note/">复习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/networkProgramming/">网络编程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/compiling/">编译过程要点</a></li></ul></div><div class="widget"><div class="comments-title"><i class="fa fa-comment-o"> Letzte Kommentare</i></div><div data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城" target="_blank">屠城</a><ul></ul><a href="http://ibruce.info/" title="不如" target="_blank">不如</a><ul></ul><a href="http://coderlin.coding.me/" title="Edgar的博客" target="_blank">Edgar的博客</a><ul></ul><a href="https://www.the5fire.com/" title="the5fire的技术博客" target="_blank">the5fire的技术博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© 2018 - <a href="/." rel="nofollow">东坡烟尘 - </a>粤 ICP 备 12345678 号<p></p> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script>var duoshuoQuery = {short_name:'yanggang0055'};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
+extends base
+
+block title
+  title= page.title + ' | ' + config.title
+
+block content
+  .post
+    h1.post-title= page.title
+    .post-meta= page.date.format('ll')
+      if page.categories.length > 0
+        span= ' | '
+        span.category
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= category.name
+      if theme.busuanzi == true
+        script(src='https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js', async)
+        span#busuanzi_container_page_pv= ' | '
+          span#busuanzi_value_page_pv
+          span= ' ' + __('Hits')
+      if theme.wordcount == true
+        include _partial/wordcount.pug
+    if theme.disqus
+      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
+    if theme.changyan
+      a.ds-thread-count(href=url_for(page.path) + '#SOHUCS')
+        span#changyan_count_unit(style='font-size: 15px; color: #6E7173;') 0
+        span= ' ' + __('Comment')
+      script(src='https://assets.changyan.sohu.com/upload/plugins/plugins.count.js', async)
+    if theme.valine.enable
+      a.disqus-comment-count( href=url_for(page.path) + '#vcomment')
+        span.valine-comment-count(data-xid=url_for(page.path))
+        span= ' ' + __('Comment')
+    if page.toc
+      div(class='clear')
+        div(id='toc' class='toc-article')
+          div(class='toc-title')= __('contents')
+          != toc(page.content, {list_number: theme.toc_number})
+    .post-content
+      != page.content
+    if theme.donate.enable == true
+      iframe(src='/donate/?AliPayQR=' + theme.donate.alipay_qr + '&WeChatQR=' + theme.donate.wechat_qr + '&GitHub=' + theme.donate.github + '&BTCQR=' + theme.donate.btc_qr + '&BTCKEY='+ theme.donate.btc_key + '&PayPal=' + theme.donate.paypal_url, style='overflow-x:hidden; overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;', frameborder='0', scrolling='no')
+
+    if theme.post_copyright.enable == true
+      div
+        ul.post-copyright
+          li.post-copyright-author
+            strong= __('copyright_author_prefix')
+            = theme.post_copyright.author
+          li.post-copyright-link
+            strong= __('copyright_link_prefix')
+            a(href='/' + page.path)= page.permalink
+          li.post-copyright-license
+            strong= __('copyright_declare_prefix')
+            if theme.post_copyright.copyright_text
+              != theme.post_copyright.copyright_text
+            else
+              != __('copyright_default_text')
+      br
+
+    if theme.shareto == true
+      script(type='text/javascript', src=url_for(theme.js) + '/share.js' + '?v=' + theme.version, async)
+      a.article-share-link(data-url=page.permalink, data-id=page._id, data-qrcode=qrcode(page.permalink))= __('shareto')
+
+    include _partial/tag.pug
+    include _partial/post_nav.pug
+
+    if page.comments
+      include _partial/comments.pug

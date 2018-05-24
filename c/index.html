@@ -1,111 +1,68 @@
-<!DOCTYPE html><html lang="zh"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>C语言要点 | 东坡烟尘</title><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/4.2.0/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.1"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">C语言要点</h1><a id="logo" href="/.">东坡烟尘</a><p class="description">静能生悟，即鸟啼花落，都是化机。</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 主页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/timeline/"><i class="fa fa-calendar"> 时间线</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">C语言要点</h1><div class="post-meta">Sep 1, 2016<script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><a data-thread-key="c/" href="/c/#comments" class="ds-thread-count"></a><div class="post-content"><p>C语言是C++的基础，广泛用于系统软件与应用软件的开发。Linux本身就是C语言的杰出作品，其重要性毋庸置疑。因此将复习C语言时自己注意到的要点记录于此。</p>
-<ol>
-<li><p>程序中对数字的引用，优先考虑无符号整型，其次是有符号整型、浮点型。整型要注意溢出问题（越界问题），浮点型要注意精度问题（一般float有效数字为6-7位）。例如，1.25元，尽量用整型125分表示。<br>对编程人员来说，double 和 float 的区别是double精度高，有效数字16位，float精度7位。但double消耗内存是float的两倍，double的运算速度比float慢得多，C语言中数学函数名称double 和 float不同，不要写错，能用单精度时不要用双精度（以省内存，加快运算速度）。</p>
-</li>
-<li><p>字符常量’x’与字符串常量”x”的区别：(1)前者是基本型数据， 后者是构造型数据；（2）占用的存储空间大小不同，前者占1个字节，后者占2个字节（因为有’\0’）。</p>
-</li>
-<li><p>定义符号常量的方法：（1）宏定义，如 #define PI 3.14；（2）关键字const，如 const int MAX_NUMBER = 30, 这样 MAX_NUMBER是只读的。</p>
-</li>
-<li><p>C语言没有逻辑类型（bool），因此用整数1表示“真”， 用整数0表示“假”。</p>
-</li>
-<li><p>函数使程序模块化，好处在于：（1）分而治之，便于管理；（2）代码重用，提高效率；（3）抽象化，隐藏细节。</p>
-</li>
-<li><p>每个标准库函数都有对应的头文件，其中包含函数原型、参数类型和常量定义。</p>
-</li>
-<li><p>当实参列表中有多个实参时，对实参的求值顺序并不确定，VC和BC是按从右往左的顺序求值。比如调用函数 int max(int a, int b);时， max(x, x++) 的参数传递顺序为 b=x++; a=x; .</p>
-</li>
-<li><p>函数间参数的传递有两种类型：值传递和引用传递。在C语言中，所有参数传递都采用值传递。</p>
-</li>
-<li><p>变量定义的完整格式为： &lt;存储类别&gt; &lt;数据类型&gt; &lt;变量名&gt; ， 存储类别决定了变量在内存中持续的时间（生存期）和在硬件中存放的位置。</p>
-</li>
-<li><p>四种存储类别说明符： auto（自动变量）, register（寄存器变量）, extern, static。其中，auto和register为自动存储（执行到所在程序块时创建，退出程序块时销毁），extern和static为静态存储（程序一开始执行就创建，程序执行期间，即使退出所在程序块，变量也一直存在， 并保留值）。</p>
-</li>
-<li><p>关于作用范围<br>（1）全局变量、函数定义、函数原型等属于在函数外声明的标识符，其作用范围从声明的位置开始，到文件的末尾。称为文件作用范围。<br>（2）语句标号如 loop … goto loop, 只能在函数体内被引用。称为函数作用范围。<br>（3）局部变量在程序块内声明和使用。称为程序块作用范围。<br>（4）函数原型中的参数。函数原型作用范围。</p>
-</li>
-<li><p>声明分两种：定义声明（定义的同时也即声明，创建并分配内存）和引用声明（声明一个需要引用的标识符）。</p>
-</li>
-<li><p>全局变量可以被同一文件内的函数访问，如果需要被其他文件内的函数访问，则必须在其他文件中用extern声明。一个文件定义的函数也可以被其他文件内的函数调用，函数原型的声明可以不需要extern。</p>
-</li>
-<li><p>static关键字：<br>（1）修饰全局变量时，表示限制全局变量只能被同一文件内的函数访问（作用在于隐藏）；<br>（2）修饰函数定义时，表示限制函数只能被同一文件内的函数调用。<br>存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化。<br>总之，把局部变量改变为静态变量后是改变了它的存储方式即改变了它的生存期。把全局变量改变为静态变量后是改变了它的作用域，限制了它的使用范围。</p>
-</li>
-<li><p>数组名是一个指针变量，其值是数组第一个元素的地址。将数组作为参数传递时（仍然是值传递），一般要同时把数组的长度传递给函数。输出指针地址的说明符为 “%p”。</p>
-</li>
-<li><p>字符串：在C语言中，字符串是存储在字符数组中并用空字符（’\0’）结束的字符序列，字符串名就是字符数组名。字符数组所有元素的缺省初值都是’\0’。</p>
-</li>
-<li><p>字符串指针： 指向字符串（字符数组）的指针。系统在编译时为字符串分配内存单元。</p>
-</li>
-<li><p>结构体不能包含自己的实例，但可以包含指向自身的指针。</p>
-</li>
-<li><p>与数组不同， 结构体的变量名不是指针。获取结构体的地址需要用 ‘&amp;’ 运算符。</p>
-</li>
-<li><p>结构体作为参数时：（1）若传递结构体名，则是值传递，被调用函数不能修改调用函数中的结构体；（2）若传递结构体指针，则是模拟引用传递，被调用函数可以修改函数中的结构体。</p>
-</li>
-<li><p>typedef：为已经定义的数据类型创建一个别名，例如 typedef struct date Date，即结构体struct date类型的别名是Date， 并非创建新类型。这样做可以简化程序代码，提高程序的可移植性。</p>
-</li>
-<li><p>srand(time(NULL)); 是拿当前系统时间作为种子产生随机数，由于时间是变化的，种子变化，可以产生不相同的随机数。</p>
-</li>
-<li><p>编译预处理：<br>（1）无参数的宏定义：必须写在函数之外，宏名的有效范围是从宏定义开始到本源程序文件结束，或遇到预处理命令 #undef 时止。宏定义不但可以定义常量，还可以定义C语句和表达式，并且不做任何语法检查。<br>（2）有参数的宏定义：格式为【 #define 宏名（形参表） 字符串】，例如 #define M(a,b) a*b.<br>（3）条件编译：控制代码段是否参加编译。指令有 #if, #ifdef, #ifndef, #else, #endif.</p>
-</li>
-<li><p><code>int main(int argc,char *argv[])</code> ,函数中int argc和argv[]两个参数的说明：<br>（1）argc：命令行总的参数的个数,即argv中元素的个数。<br>（2）*argv[ ]: 字符串数组,用来存放指向你的字符串参数的指针数组,每一个元素指向一个参数：<br>argv[0]:指向程序的全路径名；<br>argv[1]:指向在DOS命令行中执行程序名后的第一个字符串；<br>argv[2]:指向第二个字符串。</p>
-</li>
-<li><p>指针地址就是内存的一个编号，这个编号就是个整型常量，所以在32位机上用int（4字节）表示，在64位机上用long int（8字节）表示。</p>
-</li>
-<li><p>为什么指针要分类型？指针的类型决定了指针计算的度量单位，比如对<code>int *p</code>而言，p+1 和 p 相隔4个字节，对 <code>char *q</code>而言， q+1 和 q 相隔1个字节 。指针相减时的结果也以此度量，而非字节数，比如 p-q = 1，若为int型指针，则p和q所指向的地址相差4个字节。指针类型强制转换时尤其要注意这一点（可通过把结构体指针强转为char型指针，来使其每次移动1个字节）。</p>
-</li>
-<li><p>野指针：也就是指向不可用内存区域的指针。通常对这种指针进行操作的话，将会使程序发生不可预知的错误。<br>“野指针”不是NULL指针，是指向“垃圾”内存的指针。人们一般不会错用NULL指针，因为用if语句很容易判断。但是“野指针”是很危险的，if语句对它不起作用。野指针的成因主要有两种：<br>（1）指针变量没有被初始化。任何指针变量刚被创建时不会自动成为NULL指针，它的缺省值是随机的，它会乱指一气。所以，指针变量在创建的同时应当被初始化，要么将指针设置为NULL，要么让它指向合法的内存。<br>（2）指针p被free或者delete之后，没有置为NULL，让人误以为p是个合法的指针。<br>  参考文章：<a href="http://www.cnblogs.com/yc_sunniwell/archive/2010/06/28/1766854.html" target="_blank" rel="external">http://www.cnblogs.com/yc_sunniwell/archive/2010/06/28/1766854.html</a></p>
-</li>
-<li><p>常见文件操作：（1）软件运行前：配置文件；（2）软件运行中：日志文件；（3）软件退出：数据文件。</p>
-</li>
-<li><p>文件操作的标准：（1）POSIX标准（没有缓存，如write函数，写到磁盘后返回成功，可靠性高，如银行系统）；（2）ANSI标准（优先操作缓存，如fwrite函数，写到内存后就返回成功，内存到磁盘由另外的程序完成，速度快）。<br>需要能讲清楚这两种标准的原理。</p>
-</li>
-<li><p>POSIX标准的文件句柄（ANSI标准的文件句柄实际上是文件指针）：在文件I/O中，要从一个文件读取数据，应用程序首先要调用操作系统函数并传送文件名，并选一个到该文件的路径来打开文件。该函数取回一个顺序号，即文件句柄（file handle），该文件句柄对于打开的文件是唯一的识别依据。要从文件中读取一块数据，应用程序需要调用函数ReadFile，并将文件句柄在内存中的地址和要拷贝的字节数传送给操作系统。当完成任务后，再通过调用系统函数来关闭该文件。返回的文件句柄值小于0时，说明调用失败了。</p>
-</li>
-<li><p>可以使用 _exit(0); 函数代替 return 0; 来模拟系统掉电的情形，即内存中的数据不会被写入磁盘。</p>
-</li>
-<li><p>内存分配方式有三种：<br>[1] 从静态存储区域分配。内存在程序 编译的时候就已经分配好，这块内存 程序 的整个运行期间都存在。例如全局变量， static变量。<br>[2]在栈上创建。在执行函数时，函数内局部变量的存储单元都可以在栈上创建，函数执行结束时这些存储单元自动被释放。栈内存分配运算内置于处理器的指令集中，效率很高，但是分配的内存容量有限。<br>[3]从堆上分配，亦称动态内存分配。 程序 在运行的时候用malloc或new申请任意多少的内存， 程序 员自己负责在何时用free或delete释放内存。动态内存的生存期由 程序 员决定，使用非常灵活，但如果在堆上分配了空间，就有责任回收它，否则运行的 程序 会出现内存泄漏，频繁地分配和释放不同大小的堆空间将会产生堆内碎块</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> a = <span class="number">0</span>; <span class="comment">//全局初始化区</span></div><div class="line"><span class="keyword">char</span> *p1; <span class="comment">//全局未初始化区</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line"><span class="keyword">int</span> b; <span class="comment">//栈</span></div><div class="line"><span class="keyword">char</span> s[] = <span class="string">"abc"</span>; <span class="comment">//栈</span></div><div class="line"><span class="keyword">char</span> *p2; <span class="comment">//栈</span></div><div class="line"><span class="keyword">char</span> *p3 = <span class="string">"123456"</span>; <span class="comment">//123456\\0在常量区，p3在栈上。</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> c =<span class="number">0</span>;<span class="comment">//全局（静态）初始化区</span></div><div class="line">p1 = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">10</span>];</div><div class="line">p2 = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">20</span>];</div><div class="line"><span class="comment">//分配得来得和字节的区域就在堆区。</span></div><div class="line"><span class="built_in">strcpy</span>(p1, <span class="string">"123456"</span>); <span class="comment">//123456\\0放在常量区，</span></div><div class="line"><span class="comment">//编译器可能会将它与p3所指向的\"123456\"优化成一个地方。</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>不要malloc出一大片连续内存，然后用free操作其中的一小段内存，否则容易出错。应该从哪里malloc，就从哪里free。 (员工信息管理demo)</p>
-</li>
-<li><p>所有全局变量最好定义在头文件中一个单独的结构体中进行管理，结构体初始化采用 memset更专业。</p>
-</li>
-<li><p>除非对可靠性要求很高的场合，一般性项目中直接用 fread，fwrite即可，比read，write效率更高。</p>
-</li>
-<li><p>C++内存管理<br><a href="http://www.cnblogs.com/lancidie/archive/2011/08/05/2128318.html" target="_blank" rel="external">http://www.cnblogs.com/lancidie/archive/2011/08/05/2128318.html</a></p>
-</li>
-<li><p>Linux配置文件读取<br><a href="http://blog.csdn.net/zhouzhaoxiong1227/article/details/45563263" target="_blank" rel="external">http://blog.csdn.net/zhouzhaoxiong1227/article/details/45563263</a></p>
-</li>
-<li><p>C语言项目命名规范（匈牙利命名法）</p>
-<ul>
-<li>全局变量加前缀g_，如定义一个全局变量<code>int g_iVal</code>;</li>
-<li>static变量加前缀s_，如定义一个模块全局变量<code>static int s_iVal</code>;</li>
-<li>结构体变量加前缀st_,如COMM_PARA是一个已经定义好的结构体，则<code>COMM_PARA stCommPara</code>;</li>
-<li>枚举变量加前缀e,如ENUM_SEX是一个已经定义好的枚举，则<code>ENUM_SEX eSex</code>;</li>
-<li>int类型变量加前缀i,如<code>int iRet</code>;</li>
-<li>unsinged int类型加前缀ui,如<code>unsigned int uiRetCode</code>;</li>
-<li>float类型变量加前缀f,如<code>float fVal</code>；其实有了double类型，可以不用float，就尽量使用double。</li>
-<li>unsinged float类型变量加前缀uf,如<code>unsinged float ufVal</code>；</li>
-<li>double类型变量加前缀d,如<code>double dVal</code>；</li>
-<li>unsinged double类型变量加前缀ud,如<code>unsinged double udVal</code>；</li>
-<li>short int类型变量加前缀si,如<code>short siVal</code>；</li>
-<li>unsinged short类型变量加前缀usi,如<code>unsinged short usiVal</code>；</li>
-<li>如果定义一个bool类型的变量加前缀b,如<code>int bFlag; char bFlag;</code></li>
-<li>对于字符串类型char[]，如果字符串是需要以0结束符的字符串，则<code>char szCountry[11+1]</code>，这种情况下的字符数组的大小写法是字符个数+1的；如果字符串不需要以0结束符的，则<code>char sCountry[11]</code>。</li>
-<li>对于字符串类型<code>char *</code>，如果字符串是需要以0结束符的字符串，则<code>char *pszCountry</code>，这种情况下的字符数组的大小写法是字符个数+1的；如果字符串不需要以0结束符的，则<code>char *psCountry</code>。</li>
-<li>对于指针类型，如果指针变量是通过malloc动态获取内存的，则<code>int * piValPtx</code>，Ptx代表这个变量是需要动态释放内存；如果指针变来那个不是动态获取内存的，则<code>int piValPtr</code>；如果带上了Ptr或者Ptx的后缀，则前缀的p可省略。</li>
-<li>项目的命名在公司内唯一</li>
-<li>文件的命名：如果某些文件是项目唯一使用的，则文件名称加上项目名称简写加上“_”作为前缀;</li>
-<li>接口函数命名：如果写的是库，则库接口则应该是库名称加上项目名称简写加上“_”作为前缀。</li>
-</ul>
-</li>
-</ol>
-</div><div class="tags"><a href="/tags/计算机/">计算机</a></div><div class="post-nav"><a href="/dataStructure/" class="pre">数据结构要点</a><a href="/ordinary-road/" class="next">平凡之路</a></div><div data-thread-key="c/" data-title="C语言要点" data-url="http://yanggang.site/c/" class="ds-share flat"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a href="javascript:void(0);" class="ds-more">分享到：</a></li><li><a href="javascript:void(0);" data-service="weibo" class="ds-weibo">微博</a></li><li><a href="javascript:void(0);" data-service="qzone" class="ds-qzone">QQ空间</a></li><li><a href="javascript:void(0);" data-service="qqt" class="ds-qqt">腾讯微博                     </a></li><li><a href="javascript:void(0);" data-service="wechat" class="ds-wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div data-thread-key="c/" data-title="C语言要点" data-url="http://yanggang.site/c/" data-author-key="1" class="ds-thread"></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" class="search-form"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://yanggang.site"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Kategorien</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/emotion/">emotion</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/reading/">reading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/technology/">technology</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/阅读/">阅读</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/网络/" style="font-size: 15px;">网络</a> <a href="/tags/书单/" style="font-size: 15px;">书单</a> <a href="/tags/计算机/" style="font-size: 15px;">计算机</a> <a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/计划/" style="font-size: 15px;">计划</a> <a href="/tags/人生/" style="font-size: 15px;">人生</a> <a href="/tags/SVN/" style="font-size: 15px;">SVN</a> <a href="/tags/版本管理/" style="font-size: 15px;">版本管理</a> <a href="/tags/面试题/" style="font-size: 15px;">面试题</a> <a href="/tags/平凡/" style="font-size: 15px;">平凡</a> <a href="/tags/参考/" style="font-size: 15px;">参考</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Letzte</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/booklist/">2018阅读书单</a></li><li class="post-list-item"><a class="post-list-link" href="/mysql-tutorial/">MySQL多表查询</a></li><li class="post-list-item"><a class="post-list-link" href="/svn-tutorial/">SVN命令使用详解</a></li><li class="post-list-item"><a class="post-list-link" href="/cpp/">C++ 语言要点</a></li><li class="post-list-item"><a class="post-list-link" href="/shitiesheng2/">史铁生：好运设计</a></li><li class="post-list-item"><a class="post-list-link" href="/reference/">技术文章参考链接</a></li><li class="post-list-item"><a class="post-list-link" href="/interview/">面试题整理</a></li><li class="post-list-item"><a class="post-list-link" href="/note/">复习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/networkProgramming/">网络编程要点</a></li><li class="post-list-item"><a class="post-list-link" href="/compiling/">编译过程要点</a></li></ul></div><div class="widget"><div class="comments-title"><i class="fa fa-comment-o"> Letzte Kommentare</i></div><div data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-admin="0" data-excerpt-length="32" data-show-title="1" class="ds-recent-comments"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Blogroll</i></div><ul></ul><a href="https://www.haomwei.com/" title="屠城" target="_blank">屠城</a><ul></ul><a href="http://ibruce.info/" title="不如" target="_blank">不如</a><ul></ul><a href="http://coderlin.coding.me/" title="Edgar的博客" target="_blank">Edgar的博客</a><ul></ul><a href="https://www.the5fire.com/" title="the5fire的技术博客" target="_blank">the5fire的技术博客</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© 2018 - <a href="/." rel="nofollow">东坡烟尘 - </a>粤 ICP 备 12345678 号<p></p> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.1" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.1"><script>var duoshuoQuery = {short_name:'yanggang0055'};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.1"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.1"></script></div></body></html>
+extends base
+
+block title
+  title= page.title + ' | ' + config.title
+
+block content
+  .post
+    h1.post-title= page.title
+    .post-meta= page.date.format('ll')
+      if page.categories.length > 0
+        span= ' | '
+        span.category
+          for category in page.categories.toArray()
+            a(href=url_for(category.path))= category.name
+      if theme.busuanzi == true
+        script(src='https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js', async)
+        span#busuanzi_container_page_pv= ' | '
+          span#busuanzi_value_page_pv
+          span= ' ' + __('Hits')
+      if theme.wordcount == true
+        include _partial/wordcount.pug
+    if theme.disqus
+      a.disqus-comment-count(data-disqus-identifier=page.path, href=url_for(page.path) + '#disqus_thread')
+    if theme.changyan
+      a.ds-thread-count(href=url_for(page.path) + '#SOHUCS')
+        span#changyan_count_unit(style='font-size: 15px; color: #6E7173;') 0
+        span= ' ' + __('Comment')
+      script(src='https://assets.changyan.sohu.com/upload/plugins/plugins.count.js', async)
+    if theme.valine.enable
+      a.disqus-comment-count( href=url_for(page.path) + '#vcomment')
+        span.valine-comment-count(data-xid=url_for(page.path))
+        span= ' ' + __('Comment')
+    if page.toc
+      div(class='clear')
+        div(id='toc' class='toc-article')
+          div(class='toc-title')= __('contents')
+          != toc(page.content, {list_number: theme.toc_number})
+    .post-content
+      != page.content
+    if theme.donate.enable == true
+      iframe(src='/donate/?AliPayQR=' + theme.donate.alipay_qr + '&WeChatQR=' + theme.donate.wechat_qr + '&GitHub=' + theme.donate.github + '&BTCQR=' + theme.donate.btc_qr + '&BTCKEY='+ theme.donate.btc_key + '&PayPal=' + theme.donate.paypal_url, style='overflow-x:hidden; overflow-y:hidden; border:0xp none #fff; min-height:240px; width:100%;', frameborder='0', scrolling='no')
+
+    if theme.post_copyright.enable == true
+      div
+        ul.post-copyright
+          li.post-copyright-author
+            strong= __('copyright_author_prefix')
+            = theme.post_copyright.author
+          li.post-copyright-link
+            strong= __('copyright_link_prefix')
+            a(href='/' + page.path)= page.permalink
+          li.post-copyright-license
+            strong= __('copyright_declare_prefix')
+            if theme.post_copyright.copyright_text
+              != theme.post_copyright.copyright_text
+            else
+              != __('copyright_default_text')
+      br
+
+    if theme.shareto == true
+      script(type='text/javascript', src=url_for(theme.js) + '/share.js' + '?v=' + theme.version, async)
+      a.article-share-link(data-url=page.permalink, data-id=page._id, data-qrcode=qrcode(page.permalink))= __('shareto')
+
+    include _partial/tag.pug
+    include _partial/post_nav.pug
+
+    if page.comments
+      include _partial/comments.pug
