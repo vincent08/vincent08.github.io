@@ -54,8 +54,12 @@ Leetcode算法题笔记 | 东坡烟尘    </title>
 <p>时间复杂度是 O(nlogn) + O(n) = O(nlogn)。空间复杂度O(1)。</p>
 <p>【思路三】构造哈希表，再查询。时间复杂度O(n)，空间复杂度O(n)。</p>
 <h4>2. Add Two Numbers</h4>
-<p>【题面】</p>
-<h4>3. Longest Substring Without repeating Characters</h4>
+<p>【题面】多位整数的每一位数字反向存在链表里（比如 587 存储结构为 7-&gt;8-&gt;5 ），计算两个这种链表的和，并输出新链表。</p>
+<p>【思路一】p,q 分别指向两链表的头节点，用一个变量 f 记是否进位。p、q同步前进，求和（p+q+f），把值同时存在p和q中（因为不知道哪个比较长），并更新进位标志f。假设链表长度不一样，那么短的先停止计算。若此时进位标志为1，则继续计算较长链表。如果最后溢出的话，新增节点。</p>
+<p>时间复杂度O(max(m,n))，空间复杂度O(1)</p>
+<p>【思路二】如果不破坏原来的链表，则时间复杂度O(max(m,n))，空间复杂度O(max(m,n))。</p>
+<h4>3. Longest Substring Without Repeating Characters</h4>
+<p>【题面】给定字符串，找出其无重复字符的最长子串。</p>
 <h4>4. Median of Two Sorted Arrays</h4>
 <h4>5. Longest Palindromic Substring</h4>
 <h4>6. Zigzag Conversion</h4>
