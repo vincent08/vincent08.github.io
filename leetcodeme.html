@@ -41,7 +41,14 @@ Leetcode算法题笔记 | 东坡烟尘    </title>
     </div>
     <div class="post-content">
         <h4>1. Two Sum</h4>
-<p>题面：给定整数数组和目标值，找出数组里的两个数，使得他们的和等于目标值。</p>
+<p>【题面】给定整数数组和目标值，找出数组里的两个数，使得他们的和等于目标值。</p>
+<p>【思路一】遍历数组里的每个元素，寻找能与之相加得到目标值的另一个元素。时间复杂度是O(n^2)。</p>
+<p>【思路二】先将数组按从小到大排序，然后用指针p、q分别指向首、尾元素，p向尾部前进，q向首部前进。省略去值运算符*，并记目标值为t，按以下步骤计算。</p>
+<p>如果p+q=t，得到一组结果，p、q分别与自己前进方向的元素作差，差值较小者前进一步；</p>
+<p>如果p+q&gt;t，q前进一步；</p>
+<p>如果p+q&lt;t，p前进一步。</p>
+<p>如果p、q相遇，计算结束。</p>
+<p>时间复杂度是 O(nlogn) + O(n) = O(nlogn)。</p>
 <h4>2. Add Two Numbers</h4>
 <h4>3. Longest Substring Without repeating Characters</h4>
 <h4>4. Median of Two Sorted Arrays</h4>
